@@ -325,7 +325,7 @@ function Home() {
         </div>
       </section>
 
-      <footer id="top" className="border-t border-border">
+      <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row">
           <span>© {new Date().getFullYear()} {shopName}</span>
           <Link to="/auth" className="hover:text-foreground">
