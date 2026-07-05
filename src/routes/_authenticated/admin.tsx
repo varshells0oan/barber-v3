@@ -18,15 +18,30 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const nav = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
-  { to: "/admin/barbeiros", label: "Barbeiros", icon: UserCog },
-  { to: "/admin/servicos", label: "Serviços", icon: Scissors },
-  { to: "/admin/clientes", label: "Clientes", icon: Users },
-  { to: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
-  { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
-];
+const navGroups = [
+  {
+    label: "Visão Geral",
+    items: [
+      { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
+    ],
+  },
+  {
+    label: "Cadastro",
+    items: [
+      { to: "/admin/barbeiros", label: "Barbeiros", icon: UserCog },
+      { to: "/admin/servicos", label: "Serviços", icon: Scissors },
+      { to: "/admin/clientes", label: "Clientes", icon: Users },
+    ],
+  },
+  {
+    label: "Gestão",
+    items: [
+      { to: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
+      { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
+    ],
+  },
+] as const;
 
 function AdminLayout() {
   const loc = useLocation();
@@ -39,26 +54,38 @@ function AdminLayout() {
   };
 
   const NavList = ({ onNavigate }: { onNavigate?: () => void }) => (
-    <nav className="flex-1 space-y-1 p-3">
-      {nav.map((n) => {
-        const active = loc.pathname === n.to || (n.to !== "/admin" && loc.pathname.startsWith(n.to));
-        return (
-          <Link
-            key={n.to}
-            to={n.to}
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
-              active
-                ? "bg-primary/15 text-primary"
-                : "text-muted-foreground hover:bg-accent/40 hover:text-foreground"
-            }`}
-          >
-            <n.icon className="h-4 w-4" /> {n.label}
-          </Link>
-        );
-      })}
+    <nav className="flex-1 space-y-5 overflow-y-auto p-3">
+      {navGroups.map((group) => (
+        <div key={group.label}>
+          <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+            {group.label}
+          </div>
+          <div className="space-y-1">
+            {group.items.map((n) => {
+              const active =
+                loc.pathname === n.to ||
+                (n.to !== "/admin" && loc.pathname.startsWith(n.to));
+              return (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={onNavigate}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                    active
+                      ? "bg-primary/15 text-primary"
+                      : "text-muted-foreground hover:bg-accent/40 hover:text-foreground"
+                  }`}
+                >
+                  <n.icon className="h-4 w-4" /> {n.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </nav>
   );
+
 
   const Brand = () => (
     <div className="border-b border-border/60 p-4">
