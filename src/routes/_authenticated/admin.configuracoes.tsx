@@ -180,16 +180,10 @@ function Config() {
         </p>
       </Section>
 
-      <Section title="Datas bloqueadas / feriados (uma data por linha, YYYY-MM-DD)">
-        <textarea
-          value={blockedDates}
-          onChange={(e) => setBlockedDates(e.target.value)}
-          rows={4}
-          placeholder="2026-12-25"
-          className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
-        />
+      <Section title="Folgas e feriados">
+        <BlockedDatesPicker value={blockedDates} onChange={setBlockedDates} />
         <p className="text-xs text-muted-foreground">
-          Nenhum barbeiro terá horário disponível nessas datas, mesmo que trabalhem no dia da semana.
+          Selecione dias no calendário ou toque nos feriados sugeridos. Nenhum barbeiro terá horário disponível nas datas marcadas.
         </p>
       </Section>
 
