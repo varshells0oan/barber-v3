@@ -13,6 +13,10 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
+  BarChart3,
+  Activity,
+  Trophy,
+  ListChecks,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
