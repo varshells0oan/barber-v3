@@ -253,8 +253,12 @@ function Dashboard() {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5">
-          <h2 className="font-heading text-lg">Status de hoje</h2>
-          <p className="text-xs text-muted-foreground">{todayList.length} agendamentos</p>
+          <SectionHeader
+            icon={Activity}
+            title="Status de hoje"
+            subtitle={`${todayList.length} agendamentos`}
+            tint="sky"
+          />
 
           <div className="mt-4 space-y-2">
             <StatusRow
