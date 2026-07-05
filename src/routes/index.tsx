@@ -62,7 +62,7 @@ function Home() {
   const wa = phone.replace(/\D/g, "");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dark min-h-screen bg-background text-foreground">
       <PublicHeader shopName={shopName} />
 
       {/* HERO */}
