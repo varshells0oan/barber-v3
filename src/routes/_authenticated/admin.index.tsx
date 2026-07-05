@@ -211,15 +211,17 @@ function Dashboard() {
       {/* Chart + status */}
       <div className="grid gap-4 lg:grid-cols-3">
         <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Últimos 7 dias</h2>
-              <p className="text-xs text-muted-foreground">Faturamento atendido por dia</p>
-            </div>
-            <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
-              {brl(last7.reduce((s, d) => s + d.revenue, 0))}
-            </div>
-          </div>
+          <SectionHeader
+            icon={BarChart3}
+            title="Últimos 7 dias"
+            subtitle="Faturamento atendido por dia"
+            tint="primary"
+            right={
+              <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
+                {brl(last7.reduce((s, d) => s + d.revenue, 0))}
+              </div>
+            }
+          />
 
           <div className="mt-6 flex h-48 items-end gap-2">
             {last7.map((d) => {
