@@ -3,31 +3,40 @@ import { Scissors } from "lucide-react";
 
 export function PublicHeader({ shopName = "Barbearia Azul" }: { shopName?: string }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
+        <Link to="/" className="flex items-center gap-2.5 font-semibold text-foreground">
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
             <Scissors className="h-4 w-4" />
           </div>
-          <span className="text-lg">{shopName}</span>
+          <span className="font-heading text-lg tracking-tight">{shopName}</span>
         </Link>
-        <nav className="flex items-center gap-2 sm:gap-4 text-sm">
-          <Link to="/" className="text-muted-foreground hover:text-foreground">
+        <nav className="hidden items-center gap-6 text-sm sm:flex">
+          <Link to="/" className="text-muted-foreground transition hover:text-foreground">
             Home
           </Link>
-          <Link to="/meus-agendamentos" className="text-muted-foreground hover:text-foreground">
+          <a href="#servicos" className="text-muted-foreground transition hover:text-foreground">
+            Serviços
+          </a>
+          <a href="#equipe" className="text-muted-foreground transition hover:text-foreground">
+            Equipe
+          </a>
+          <Link to="/meus-agendamentos" className="text-muted-foreground transition hover:text-foreground">
             Meus agendamentos
-          </Link>
-          <Link to="/admin" className="text-muted-foreground hover:text-foreground">
-            Admin
           </Link>
           <Link
             to="/agendar"
-            className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground hover:bg-primary/90"
+            className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110"
           >
             Agendar
           </Link>
         </nav>
+        <Link
+          to="/agendar"
+          className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground sm:hidden"
+        >
+          Agendar
+        </Link>
       </div>
     </header>
   );
