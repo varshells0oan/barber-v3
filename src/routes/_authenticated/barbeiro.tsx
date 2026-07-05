@@ -21,9 +21,9 @@ function BarberLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary/30 pb-20">
-      <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border bg-card px-4">
-        <span className="font-semibold">Painel do Barbeiro</span>
+    <div className="dark min-h-screen bg-background text-foreground pb-20">
+      <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border/60 bg-card/60 px-4 backdrop-blur">
+        <span className="font-heading text-lg">Painel do Barbeiro</span>
         <div className="ml-auto flex items-center gap-2 text-sm">
           <Link to="/admin" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <Shield className="h-4 w-4" /> Admin
