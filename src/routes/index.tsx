@@ -59,7 +59,13 @@ function Home() {
 
   const shopName = shop?.name ?? "Barbearia Azul";
   const phone = shop?.phone ?? "";
-  const wa = phone.replace(/\D/g, "");
+  const wa = (shop?.whatsapp ?? phone).replace(/\D/g, "");
+  const instagram = shop?.instagram ?? "";
+  const gallery: string[] = (shop?.gallery && shop.gallery.length > 0) ? shop.gallery : GALLERY;
+  const workHours = shop?.work_hours ?? {};
+  const DAY_NAMES = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+  const waHref = wa ? `https://wa.me/${wa.startsWith("55") ? wa : "55" + wa}` : "#top";
+  const igHref = instagram ? `https://instagram.com/${instagram.replace(/^@/, "")}` : "#top";
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
