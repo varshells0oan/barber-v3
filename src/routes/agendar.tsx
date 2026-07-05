@@ -34,6 +34,7 @@ function Booking() {
   const [step, setStep] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [barbers, setBarbers] = useState<any[]>([]);
+  const [shop, setShop] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedBarber, setSelectedBarber] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState("");
@@ -46,12 +47,14 @@ function Booking() {
 
   useEffect(() => {
     (async () => {
-      const [s, b] = await Promise.all([
+      const [s, b, sh] = await Promise.all([
         supabase.from("services").select("*").eq("active", true).order("price"),
         supabase.from("barbers").select("*").eq("active", true),
+        supabase.from("shop_settings").select("*").order("created_at", { ascending: false }).limit(1).maybeSingle(),
       ]);
       setServices(s.data ?? []);
       setBarbers(b.data ?? []);
+      setShop(sh.data);
       if (initialServiceId && s.data) {
         const found = s.data.find((x: any) => x.id === initialServiceId);
         if (found) {
@@ -73,7 +76,18 @@ function Booking() {
         .eq("date", selectedDate);
       const active = (appts ?? []).filter((a) => a.status !== "cancelado");
       const dow = String(new Date(selectedDate + "T00:00:00").getDay());
-      const hours = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
+      const bh = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
+      const sh = (shop?.work_hours ?? {})[dow];
+      // If shop has hours configured, intersect; otherwise use barber hours alone
+      let hours = bh;
+      if (sh && bh) {
+        const start = Math.max(timeToMin(bh.start), timeToMin(sh.start));
+        const end = Math.min(timeToMin(bh.end), timeToMin(sh.end));
+        hours = end > start ? { start: minToTime(start), end: minToTime(end) } : null;
+      } else if (shop?.work_hours && !sh) {
+        // shop configured this day as closed
+        hours = null;
+      }
       if (!hours) {
         setSlots([]);
         return;
@@ -105,9 +119,10 @@ function Booking() {
         setSlots(generated);
       }
     })();
-  }, [selectedDate, selectedBarber, selectedService]);
+  }, [selectedDate, selectedBarber, selectedService, shop]);
 
   const workHours = selectedBarber?.work_hours ?? DEFAULT_HOURS;
+  const shopHours = shop?.work_hours ?? null;
   const blockedDates: string[] = selectedBarber?.blocked_dates ?? [];
   const isDayDisabled = (d: Date) => {
     const today = new Date();
@@ -116,7 +131,9 @@ function Booking() {
     const iso = format(d, "yyyy-MM-dd");
     if (blockedDates.includes(iso)) return true;
     const dow = String(d.getDay());
-    return !workHours[dow];
+    if (!workHours[dow]) return true;
+    if (shopHours && !shopHours[dow]) return true;
+    return false;
   };
 
   const groupedSlots = {

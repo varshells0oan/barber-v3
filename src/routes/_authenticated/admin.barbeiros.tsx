@@ -8,6 +8,8 @@ export const Route = createFileRoute("/_authenticated/admin/barbeiros")({
   component: BarbersPage,
 });
 
+type Hours = Record<string, { start: string; end: string } | null>;
+
 type BarberForm = {
   id?: string;
   name: string;
@@ -17,7 +19,28 @@ type BarberForm = {
   bio: string;
   commission_percent: number;
   active: boolean;
+  work_hours: Hours;
+  blocked_dates: string[];
 };
+
+const DEFAULT_HOURS: Hours = {
+  "1": { start: "09:00", end: "19:00" },
+  "2": { start: "09:00", end: "19:00" },
+  "3": { start: "09:00", end: "19:00" },
+  "4": { start: "09:00", end: "19:00" },
+  "5": { start: "09:00", end: "19:00" },
+  "6": { start: "09:00", end: "17:00" },
+};
+
+const DAYS = [
+  { key: "0", label: "Dom" },
+  { key: "1", label: "Seg" },
+  { key: "2", label: "Ter" },
+  { key: "3", label: "Qua" },
+  { key: "4", label: "Qui" },
+  { key: "5", label: "Sex" },
+  { key: "6", label: "Sáb" },
+];
 
 const empty: BarberForm = {
   name: "",
@@ -27,6 +50,8 @@ const empty: BarberForm = {
   bio: "",
   commission_percent: 50,
   active: true,
+  work_hours: DEFAULT_HOURS,
+  blocked_dates: [],
 };
 
 function BarbersPage() {
@@ -115,6 +140,8 @@ function BarbersPage() {
                       bio: b.bio ?? "",
                       commission_percent: Number(b.commission_percent),
                       active: b.active,
+                      work_hours: (b.work_hours as Hours) ?? DEFAULT_HOURS,
+                      blocked_dates: (b.blocked_dates as string[]) ?? [],
                     })
                   }
                   className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -139,7 +166,7 @@ function BarbersPage() {
           onClick={() => setEditing(null)}
         >
           <div
-            className="w-full max-w-md rounded-xl bg-card p-5 shadow-lg"
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl bg-card p-5 shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold">
@@ -200,6 +227,90 @@ function BarbersPage() {
                 />
                 Ativo
               </label>
+
+              <div className="mt-2 rounded-md border border-border p-3">
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Horário de trabalho
+                </div>
+                <div className="grid gap-1.5">
+                  {DAYS.map((d) => {
+                    const v = editing.work_hours?.[d.key];
+                    const closed = !v;
+                    return (
+                      <div key={d.key} className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="w-10 font-medium">{d.label}</span>
+                        <label className="flex items-center gap-1 text-muted-foreground">
+                          <input
+                            type="checkbox"
+                            checked={!closed}
+                            onChange={(e) =>
+                              setEditing({
+                                ...editing,
+                                work_hours: {
+                                  ...editing.work_hours,
+                                  [d.key]: e.target.checked
+                                    ? { start: "09:00", end: "18:00" }
+                                    : null,
+                                },
+                              })
+                            }
+                          />
+                          Trabalha
+                        </label>
+                        <input
+                          type="time"
+                          disabled={closed}
+                          value={v?.start ?? ""}
+                          onChange={(e) =>
+                            setEditing({
+                              ...editing,
+                              work_hours: {
+                                ...editing.work_hours,
+                                [d.key]: { ...(v ?? { end: "18:00", start: "09:00" }), start: e.target.value },
+                              },
+                            })
+                          }
+                          className="rounded border border-input bg-background px-2 py-1 disabled:opacity-50"
+                        />
+                        <span className="text-muted-foreground">até</span>
+                        <input
+                          type="time"
+                          disabled={closed}
+                          value={v?.end ?? ""}
+                          onChange={(e) =>
+                            setEditing({
+                              ...editing,
+                              work_hours: {
+                                ...editing.work_hours,
+                                [d.key]: { ...(v ?? { start: "09:00", end: "18:00" }), end: e.target.value },
+                              },
+                            })
+                          }
+                          className="rounded border border-input bg-background px-2 py-1 disabled:opacity-50"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <Field label="Datas bloqueadas (folgas / férias — YYYY-MM-DD, uma por linha)">
+                <textarea
+                  value={editing.blocked_dates.join("\n")}
+                  onChange={(e) =>
+                    setEditing({
+                      ...editing,
+                      blocked_dates: e.target.value
+                        .split(/\n+/)
+                        .map((x) => x.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  rows={3}
+                  placeholder="2026-07-10"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
+                />
+              </Field>
             </div>
             <div className="mt-5 flex justify-end gap-2">
               <button
