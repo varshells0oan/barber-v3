@@ -226,7 +226,7 @@ function Home() {
           </h2>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {GALLERY.map((src, i) => (
+          {gallery.map((src, i) => (
             <div
               key={i}
               className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-card"
@@ -242,6 +242,35 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {/* HORÁRIO */}
+      {Object.keys(workHours).length > 0 && (
+        <section className="border-t border-border bg-card/40">
+          <div className="mx-auto max-w-3xl px-4 py-16">
+            <div className="mb-8 text-center">
+              <span className="text-xs font-medium uppercase tracking-widest text-primary">
+                Horários
+              </span>
+              <h2 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">
+                Quando estamos abertos
+              </h2>
+            </div>
+            <div className="grid gap-1.5 rounded-2xl border border-border bg-card p-5 text-sm">
+              {DAY_NAMES.map((n, i) => {
+                const h = workHours[String(i)];
+                return (
+                  <div key={i} className="flex justify-between border-b border-border/40 py-1.5 last:border-0">
+                    <span className="text-muted-foreground">{n}</span>
+                    <span className="font-medium text-foreground">
+                      {h ? `${h.start} — ${h.end}` : "Fechado"}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CONTATO */}
       <section className="border-t border-border bg-card/40">
@@ -260,14 +289,14 @@ function Home() {
             <div className="rounded-2xl border border-border bg-card p-5">
               <Instagram className="h-5 w-5 text-primary" />
               <div className="mt-3 font-heading text-base font-semibold text-foreground">Instagram</div>
-              {shop?.instagram ? (
+              {instagram ? (
                 <a
                   className="mt-1 block text-sm text-primary hover:underline"
-                  href={`https://instagram.com/${shop.instagram}`}
+                  href={igHref}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  @{shop.instagram}
+                  @{instagram.replace(/^@/, "")}
                 </a>
               ) : (
                 <div className="mt-1 text-sm text-muted-foreground">—</div>
@@ -276,33 +305,29 @@ function Home() {
           </div>
 
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            {wa && (
-              <a
-                href={`https://wa.me/55${wa}`}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 transition hover:brightness-110"
-              >
-                WhatsApp
-              </a>
-            )}
-            {shop?.instagram && (
-              <a
-                href={`https://instagram.com/${shop.instagram}`}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg bg-gradient-to-r from-pink-500 to-orange-400 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/20 transition hover:brightness-110"
-              >
-                Instagram
-              </a>
-            )}
+            <a
+              href={waHref}
+              target={wa ? "_blank" : undefined}
+              rel="noreferrer"
+              className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 transition hover:brightness-110"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={igHref}
+              target={instagram ? "_blank" : undefined}
+              rel="noreferrer"
+              className="rounded-lg bg-gradient-to-r from-pink-500 to-orange-400 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/20 transition hover:brightness-110"
+            >
+              Instagram
+            </a>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-border">
+      <footer id="top" className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row">
-          <span>© {new Date().getFullYear()} {shopName}. Todos os direitos reservados.</span>
+          <span>© {new Date().getFullYear()} {shopName}</span>
           <Link to="/auth" className="hover:text-foreground">
             Área da equipe
           </Link>
