@@ -14,16 +14,316 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          barber_id: string | null
+          barber_name: string
+          client_id: string | null
+          client_name: string
+          client_phone: string
+          created_at: string
+          date: string
+          duration: number
+          end_time: string
+          id: string
+          notes: string | null
+          price: number
+          service_id: string | null
+          service_name: string
+          status: string
+          time: string
+          updated_at: string
+        }
+        Insert: {
+          barber_id?: string | null
+          barber_name: string
+          client_id?: string | null
+          client_name: string
+          client_phone: string
+          created_at?: string
+          date: string
+          duration: number
+          end_time: string
+          id?: string
+          notes?: string | null
+          price: number
+          service_id?: string | null
+          service_name: string
+          status?: string
+          time: string
+          updated_at?: string
+        }
+        Update: {
+          barber_id?: string | null
+          barber_name?: string
+          client_id?: string | null
+          client_name?: string
+          client_phone?: string
+          created_at?: string
+          date?: string
+          duration?: number
+          end_time?: string
+          id?: string
+          notes?: string | null
+          price?: number
+          service_id?: string | null
+          service_name?: string
+          status?: string
+          time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      barbers: {
+        Row: {
+          active: boolean
+          bio: string | null
+          blocked_dates: Json
+          commission_percent: number
+          created_at: string
+          id: string
+          name: string
+          phone: string | null
+          photo_url: string | null
+          rating: number | null
+          services: Json
+          specialty: string | null
+          updated_at: string
+          user_id: string | null
+          work_hours: Json
+        }
+        Insert: {
+          active?: boolean
+          bio?: string | null
+          blocked_dates?: Json
+          commission_percent?: number
+          created_at?: string
+          id?: string
+          name: string
+          phone?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          services?: Json
+          specialty?: string | null
+          updated_at?: string
+          user_id?: string | null
+          work_hours?: Json
+        }
+        Update: {
+          active?: boolean
+          bio?: string | null
+          blocked_dates?: Json
+          commission_percent?: number
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          services?: Json
+          specialty?: string | null
+          updated_at?: string
+          user_id?: string | null
+          work_hours?: Json
+        }
+        Relationships: []
+      }
+      clients: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          last_visit: string | null
+          loyalty_points: number
+          name: string
+          notes: string | null
+          phone: string
+          status: string
+          total_spent: number
+          updated_at: string
+          visits: number
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_visit?: string | null
+          loyalty_points?: number
+          name: string
+          notes?: string | null
+          phone: string
+          status?: string
+          total_spent?: number
+          updated_at?: string
+          visits?: number
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_visit?: string | null
+          loyalty_points?: number
+          name?: string
+          notes?: string | null
+          phone?: string
+          status?: string
+          total_spent?: number
+          updated_at?: string
+          visits?: number
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string | null
+          duration: number
+          id: string
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration?: number
+          id?: string
+          name: string
+          price?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration?: number
+          id?: string
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shop_settings: {
+        Row: {
+          address: string | null
+          banner_url: string | null
+          created_at: string
+          description: string | null
+          differentials: Json
+          gallery: Json
+          id: string
+          instagram: string | null
+          logo_url: string | null
+          loyalty_reward: string | null
+          loyalty_target: number
+          name: string
+          phone: string | null
+          updated_at: string
+          whatsapp: string | null
+          work_hours: Json
+        }
+        Insert: {
+          address?: string | null
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          differentials?: Json
+          gallery?: Json
+          id?: string
+          instagram?: string | null
+          logo_url?: string | null
+          loyalty_reward?: string | null
+          loyalty_target?: number
+          name?: string
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          work_hours?: Json
+        }
+        Update: {
+          address?: string | null
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          differentials?: Json
+          gallery?: Json
+          id?: string
+          instagram?: string | null
+          logo_url?: string | null
+          loyalty_reward?: string | null
+          loyalty_target?: number
+          name?: string
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          work_hours?: Json
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "barber"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +450,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "barber"],
+    },
   },
 } as const
