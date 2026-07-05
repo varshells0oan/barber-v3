@@ -71,10 +71,7 @@ function Config() {
         .split(/\n+/)
         .map((x) => x.trim())
         .filter(Boolean),
-      blocked_dates: blockedDates
-        .split(/\n+/)
-        .map((x) => x.trim())
-        .filter(Boolean),
+      blocked_dates: blockedDates.map((x) => x.trim()).filter(Boolean),
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
