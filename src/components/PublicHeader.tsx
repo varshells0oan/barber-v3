@@ -12,8 +12,14 @@ export function PublicHeader({ shopName = "Barbearia Azul" }: { shopName?: strin
           <span className="text-lg">{shopName}</span>
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-sm">
+          <Link to="/" className="text-muted-foreground hover:text-foreground">
+            Home
+          </Link>
           <Link to="/meus-agendamentos" className="text-muted-foreground hover:text-foreground">
             Meus agendamentos
+          </Link>
+          <Link to="/admin" className="text-muted-foreground hover:text-foreground">
+            Admin
           </Link>
           <Link
             to="/agendar"
