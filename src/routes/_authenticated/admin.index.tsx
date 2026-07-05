@@ -362,17 +362,17 @@ function Dashboard() {
 
       {/* Upcoming today */}
       <section className="rounded-2xl border border-border bg-card p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-heading text-lg">Agenda de hoje</h2>
-            <p className="text-xs text-muted-foreground">
-              {upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
-            </p>
-          </div>
-          <Link to="/admin/agendamentos" className="flex items-center gap-1 text-xs text-primary hover:underline">
-            Ver todos <ArrowUpRight className="h-3 w-3" />
-          </Link>
-        </div>
+        <SectionHeader
+          icon={ListChecks}
+          title="Agenda de hoje"
+          subtitle={upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
+          tint="emerald"
+          right={
+            <Link to="/admin/agendamentos" className="flex items-center gap-1 text-xs text-primary hover:underline">
+              Ver todos <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          }
+        />
 
         {loading ? (
           <div className="mt-6 h-24 animate-pulse rounded-lg bg-border/30" />
