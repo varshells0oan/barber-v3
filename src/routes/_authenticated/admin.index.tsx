@@ -13,6 +13,10 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
+  BarChart3,
+  Activity,
+  Trophy,
+  ListChecks,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
@@ -180,17 +184,22 @@ function Dashboard() {
         {stats.map((s) => (
           <div
             key={s.label}
-            className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br ${s.accent} p-4`}
+            className={`group relative overflow-hidden rounded-2xl border bg-gradient-to-br ${s.accent} p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+            <div className="relative flex items-start justify-between">
+              <span className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
                 {s.label}
               </span>
-              <s.icon className="h-4 w-4" />
+              <div className="grid h-8 w-8 place-items-center rounded-lg bg-background/40 ring-1 ring-inset ring-white/10">
+                <s.icon className="h-4 w-4" />
+              </div>
             </div>
-            <div className="mt-3 text-2xl font-semibold text-foreground">{s.value}</div>
+            <div className="relative mt-4 text-2xl font-semibold tracking-tight text-foreground">
+              {s.value}
+            </div>
             {s.hint && (
-              <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="relative mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
                 {s.hint}
               </div>
@@ -202,15 +211,17 @@ function Dashboard() {
       {/* Chart + status */}
       <div className="grid gap-4 lg:grid-cols-3">
         <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Últimos 7 dias</h2>
-              <p className="text-xs text-muted-foreground">Faturamento atendido por dia</p>
-            </div>
-            <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
-              {brl(last7.reduce((s, d) => s + d.revenue, 0))}
-            </div>
-          </div>
+          <SectionHeader
+            icon={BarChart3}
+            title="Últimos 7 dias"
+            subtitle="Faturamento atendido por dia"
+            tint="primary"
+            right={
+              <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
+                {brl(last7.reduce((s, d) => s + d.revenue, 0))}
+              </div>
+            }
+          />
 
           <div className="mt-6 flex h-48 items-end gap-2">
             {last7.map((d) => {
@@ -242,8 +253,12 @@ function Dashboard() {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5">
-          <h2 className="font-heading text-lg">Status de hoje</h2>
-          <p className="text-xs text-muted-foreground">{todayList.length} agendamentos</p>
+          <SectionHeader
+            icon={Activity}
+            title="Status de hoje"
+            subtitle={`${todayList.length} agendamentos`}
+            tint="sky"
+          />
 
           <div className="mt-4 space-y-2">
             <StatusRow
@@ -281,15 +296,17 @@ function Dashboard() {
       {/* Barbers + services */}
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Top barbeiros</h2>
-              <p className="text-xs text-muted-foreground">Faturamento no mês</p>
-            </div>
-            <Link to="/admin/financeiro" className="flex items-center gap-1 text-xs text-primary hover:underline">
-              Financeiro <ArrowUpRight className="h-3 w-3" />
-            </Link>
-          </div>
+          <SectionHeader
+            icon={Trophy}
+            title="Top barbeiros"
+            subtitle="Faturamento no mês"
+            tint="amber"
+            right={
+              <Link to="/admin/financeiro" className="flex items-center gap-1 text-xs text-primary hover:underline">
+                Financeiro <ArrowUpRight className="h-3 w-3" />
+              </Link>
+            }
+          />
           <div className="mt-4 space-y-3">
             {topBarbers.length === 0 && (
               <p className="text-sm text-muted-foreground">Sem atendimentos neste mês ainda.</p>
@@ -314,13 +331,12 @@ function Dashboard() {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Serviços mais pedidos</h2>
-              <p className="text-xs text-muted-foreground">No mês</p>
-            </div>
-            <Scissors className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <SectionHeader
+            icon={Scissors}
+            title="Serviços mais pedidos"
+            subtitle="No mês"
+            tint="indigo"
+          />
           <div className="mt-4 space-y-3">
             {topServices.length === 0 && (
               <p className="text-sm text-muted-foreground">Nenhum serviço atendido ainda.</p>
@@ -346,17 +362,17 @@ function Dashboard() {
 
       {/* Upcoming today */}
       <section className="rounded-2xl border border-border bg-card p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-heading text-lg">Agenda de hoje</h2>
-            <p className="text-xs text-muted-foreground">
-              {upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
-            </p>
-          </div>
-          <Link to="/admin/agendamentos" className="flex items-center gap-1 text-xs text-primary hover:underline">
-            Ver todos <ArrowUpRight className="h-3 w-3" />
-          </Link>
-        </div>
+        <SectionHeader
+          icon={ListChecks}
+          title="Agenda de hoje"
+          subtitle={upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
+          tint="emerald"
+          right={
+            <Link to="/admin/agendamentos" className="flex items-center gap-1 text-xs text-primary hover:underline">
+              Ver todos <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          }
+        />
 
         {loading ? (
           <div className="mt-6 h-24 animate-pulse rounded-lg bg-border/30" />
@@ -433,6 +449,44 @@ function StatusRow({
       </div>
       <div className={`h-1.5 overflow-hidden rounded-full ${map.soft}`}>
         <div className={`h-full rounded-full ${map.bg}`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({
+  icon: Icon,
+  title,
+  subtitle,
+  tint,
+  right,
+}: {
+  icon: any;
+  title: string;
+  subtitle?: string;
+  tint: "primary" | "sky" | "emerald" | "amber" | "indigo";
+  right?: React.ReactNode;
+}) {
+  const tints: Record<string, string> = {
+    primary: "bg-primary/15 text-primary ring-primary/25",
+    sky: "bg-sky-500/15 text-sky-300 ring-sky-500/25",
+    emerald: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/25",
+    amber: "bg-amber-500/15 text-amber-300 ring-amber-500/25",
+    indigo: "bg-indigo-500/15 text-indigo-300 ring-indigo-500/25",
+  };
+  return (
+    <div className="-mx-5 -mt-5 mb-4 border-b border-border/60 px-5 py-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className={`grid h-9 w-9 place-items-center rounded-lg ring-1 ring-inset ${tints[tint]}`}>
+            <Icon className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="font-heading text-base leading-tight">{title}</h2>
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+          </div>
+        </div>
+        {right}
       </div>
     </div>
   );
