@@ -217,31 +217,6 @@ function Home() {
         </div>
       </section>
 
-      {/* GALERIA */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mb-8 text-center">
-          <span className="text-xs font-medium uppercase tracking-widest text-primary">Galeria</span>
-          <h2 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">
-            Trabalhos recentes
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {gallery.map((src, i) => (
-            <div
-              key={i}
-              className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-card"
-            >
-              <img
-                src={src}
-                alt={`Trabalho ${i + 1}`}
-                loading="lazy"
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-primary/0 transition group-hover:bg-primary/15" />
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* HORÁRIO */}
       {Object.keys(workHours).length > 0 && (
