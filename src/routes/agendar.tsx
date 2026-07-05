@@ -190,7 +190,15 @@ function Booking() {
       if (apptErr) throw apptErr;
       navigate({ to: "/agendamento-confirmado" });
     } catch (e: any) {
-      toast.error(e.message ?? "Erro ao agendar");
+      const msg = String(e?.message ?? "");
+      if (msg.includes("SLOT_TAKEN") || e?.code === "23505") {
+        toast.error("Esse horário acabou de ser reservado. Escolha outro.");
+        setSelectedTime("");
+        await loadSlots();
+        setStep(2);
+      } else {
+        toast.error(msg || "Erro ao agendar");
+      }
     } finally {
       setSubmitting(false);
     }
