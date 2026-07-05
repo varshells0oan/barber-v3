@@ -3,11 +3,41 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PublicHeader } from "@/components/PublicHeader";
 import { brl } from "@/lib/format";
-import { Scissors, MapPin, Phone, Instagram, Star, Clock } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Instagram,
+  Star,
+  Clock,
+  Check,
+  ChevronRight,
+  Calendar,
+  Award,
+  Sparkles,
+  Scissors,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
+
+const HERO_IMG =
+  "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1600&q=80";
+const GALLERY = [
+  "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1521490878406-4b1a1af86f7d?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1521490683851-b3ed58ae3b3f?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1596728325488-58c87691e9af?auto=format&fit=crop&w=800&q=80",
+];
+
+const DIFFERENTIALS = [
+  { icon: Calendar, title: "Agendamento online", text: "Escolha barbeiro, serviço e horário em segundos." },
+  { icon: Award, title: "Barbeiros premium", text: "Profissionais experientes e especializados." },
+  { icon: Sparkles, title: "Ambiente exclusivo", text: "Atendimento cuidadoso do início ao fim." },
+  { icon: Check, title: "Sem compromisso", text: "Cancele ou remarque com facilidade." },
+];
 
 function Home() {
   const [services, setServices] = useState<any[]>([]);
@@ -28,42 +58,44 @@ function Home() {
   }, []);
 
   const shopName = shop?.name ?? "Barbearia Azul";
+  const phone = shop?.phone ?? "";
+  const wa = phone.replace(/\D/g, "");
 
   return (
     <div className="min-h-screen bg-background">
       <PublicHeader shopName={shopName} />
 
-      {/* Hero */}
-      <section
-        className="relative border-b border-border"
-        style={{
-          backgroundImage: shop?.banner_url
-            ? `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.95)), url(${shop.banner_url})`
-            : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28 text-center">
-          <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
-            <Scissors className="h-6 w-6" />
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-foreground">
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(rgba(11,17,32,0.55), rgba(11,17,32,0.85) 60%, var(--background)), url(${shop?.banner_url ?? HERO_IMG})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 pt-20 pb-28 sm:pt-28 sm:pb-40 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            <Scissors className="h-3 w-3" /> Est. 2020 · Barbearia Premium
+          </span>
+          <h1 className="mt-6 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
             {shopName}
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            {shop?.description ?? "Agende seu corte online em poucos toques."}
+          <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
+            {shop?.description ??
+              "Estilo, precisão e atendimento sob medida. Agende seu horário em poucos toques."}
           </p>
-          <div className="mt-8 flex justify-center gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               to="/agendar"
-              className="rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground shadow-sm hover:bg-primary/90"
+              className="rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/30 transition hover:brightness-110 active:scale-[0.98]"
             >
               Agendar agora
             </Link>
             <Link
               to="/meus-agendamentos"
-              className="rounded-md border border-border bg-card px-6 py-3 font-medium text-foreground hover:bg-accent"
+              className="rounded-lg border border-border bg-card/60 px-6 py-3 font-medium text-foreground backdrop-blur transition hover:bg-card"
             >
               Meus agendamentos
             </Link>
@@ -71,93 +103,160 @@ function Home() {
         </div>
       </section>
 
-      {/* Serviços */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="text-2xl font-semibold text-foreground">Serviços</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Clique em um serviço para agendar.</p>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* DIFERENCIAIS */}
+      <section className="relative -mt-16 sm:-mt-20">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 px-4 sm:gap-4 lg:grid-cols-4">
+          {DIFFERENTIALS.map((d) => (
+            <div
+              key={d.title}
+              className="rounded-2xl border border-border bg-card/80 p-4 backdrop-blur-xl sm:p-5"
+            >
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 text-primary">
+                <d.icon className="h-4 w-4" />
+              </div>
+              <div className="mt-3 font-heading text-base font-semibold text-foreground">{d.title}</div>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{d.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SERVIÇOS */}
+      <section id="servicos" className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mb-8 text-center">
+          <span className="text-xs font-medium uppercase tracking-widest text-primary">Serviços</span>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">
+            Escolha seu estilo
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">
+            Toque em um serviço para começar seu agendamento.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
             <Link
               key={s.id}
               to="/agendar"
               search={{ service: s.id } as any}
-              className="group rounded-xl border border-border bg-card p-5 transition hover:border-primary hover:shadow-sm"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10"
             >
-              <div className="flex items-start justify-between">
-                <h3 className="font-medium text-foreground">{s.name}</h3>
-                <span className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="font-heading text-lg font-semibold text-foreground">{s.name}</h3>
+                  {s.description && (
+                    <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>
+                  )}
+                </div>
+                <span className="shrink-0 rounded-md bg-primary/15 px-2.5 py-1 text-sm font-semibold text-primary">
                   {brl(s.price)}
                 </span>
               </div>
-              {s.description && (
-                <p className="mt-2 text-sm text-muted-foreground">{s.description}</p>
-              )}
-              <div className="mt-4 flex items-center gap-1 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3" /> {s.duration} min
+              <div className="mt-5 flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" /> {s.duration} min
+                </span>
+                <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary" />
               </div>
             </Link>
           ))}
+          {services.length === 0 && (
+            <p className="col-span-full text-center text-sm text-muted-foreground">
+              Carregando serviços...
+            </p>
+          )}
         </div>
       </section>
 
-      {/* Barbeiros */}
-      <section className="border-t border-border bg-secondary/40">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="text-2xl font-semibold text-foreground">Nossa equipe</h2>
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* EQUIPE */}
+      <section id="equipe" className="border-y border-border bg-card/40">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <div className="mb-8 text-center">
+            <span className="text-xs font-medium uppercase tracking-widest text-primary">Equipe</span>
+            <h2 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">
+              Nossos barbeiros
+            </h2>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3">
             {barbers.map((b) => (
-              <div key={b.id} className="rounded-xl border border-border bg-card p-5">
+              <div
+                key={b.id}
+                className="w-64 shrink-0 rounded-2xl border border-border bg-card p-5 sm:w-auto"
+              >
                 <div className="flex items-center gap-4">
                   {b.photo_url ? (
                     <img
                       src={b.photo_url}
                       alt={b.name}
-                      className="h-16 w-16 rounded-full object-cover"
+                      className="h-16 w-16 rounded-full object-cover ring-2 ring-primary/30"
                     />
                   ) : (
-                    <div className="grid h-16 w-16 place-items-center rounded-full bg-primary/10 text-primary font-semibold">
-                      {b.name[0]}
+                    <div className="grid h-16 w-16 place-items-center rounded-full bg-primary/15 font-heading text-xl font-semibold text-primary">
+                      {b.name?.[0]}
                     </div>
                   )}
-                  <div>
-                    <h3 className="font-medium text-foreground">{b.name}</h3>
-                    <p className="text-sm text-muted-foreground">{b.specialty}</p>
-                    <div className="mt-1 flex items-center gap-1 text-xs text-amber-600">
-                      <Star className="h-3 w-3 fill-current" /> {b.rating ?? 5.0}
+                  <div className="min-w-0">
+                    <h3 className="font-heading text-base font-semibold text-foreground">{b.name}</h3>
+                    <p className="truncate text-sm text-muted-foreground">{b.specialty}</p>
+                    <div className="mt-1 flex items-center gap-1 text-xs text-primary">
+                      <Star className="h-3 w-3 fill-current" /> {b.rating ?? "5.0"}
                     </div>
                   </div>
                 </div>
-                {b.bio && <p className="mt-3 text-sm text-muted-foreground">{b.bio}</p>}
+                {b.bio && (
+                  <p className="mt-4 text-sm text-muted-foreground line-clamp-3">{b.bio}</p>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Info */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <div className="flex items-start gap-3">
-            <MapPin className="h-5 w-5 text-primary" />
-            <div>
-              <div className="text-sm font-medium text-foreground">Endereço</div>
-              <div className="text-sm text-muted-foreground">{shop?.address ?? "—"}</div>
+      {/* GALERIA */}
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mb-8 text-center">
+          <span className="text-xs font-medium uppercase tracking-widest text-primary">Galeria</span>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">
+            Trabalhos recentes
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {GALLERY.map((src, i) => (
+            <div
+              key={i}
+              className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-card"
+            >
+              <img
+                src={src}
+                alt={`Trabalho ${i + 1}`}
+                loading="lazy"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-primary/0 transition group-hover:bg-primary/15" />
             </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <Phone className="h-5 w-5 text-primary" />
-            <div>
-              <div className="text-sm font-medium text-foreground">Contato</div>
-              <div className="text-sm text-muted-foreground">{shop?.phone ?? "—"}</div>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTATO */}
+      <section className="border-t border-border bg-card/40">
+        <div className="mx-auto max-w-6xl px-4 py-16">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <MapPin className="h-5 w-5 text-primary" />
+              <div className="mt-3 font-heading text-base font-semibold text-foreground">Endereço</div>
+              <div className="mt-1 text-sm text-muted-foreground">{shop?.address ?? "—"}</div>
             </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <Instagram className="h-5 w-5 text-primary" />
-            <div>
-              <div className="text-sm font-medium text-foreground">Instagram</div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <Phone className="h-5 w-5 text-primary" />
+              <div className="mt-3 font-heading text-base font-semibold text-foreground">Contato</div>
+              <div className="mt-1 text-sm text-muted-foreground">{phone || "—"}</div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <Instagram className="h-5 w-5 text-primary" />
+              <div className="mt-3 font-heading text-base font-semibold text-foreground">Instagram</div>
               {shop?.instagram ? (
                 <a
-                  className="text-sm text-primary hover:underline"
+                  className="mt-1 block text-sm text-primary hover:underline"
                   href={`https://instagram.com/${shop.instagram}`}
                   target="_blank"
                   rel="noreferrer"
@@ -165,21 +264,52 @@ function Home() {
                   @{shop.instagram}
                 </a>
               ) : (
-                <div className="text-sm text-muted-foreground">—</div>
+                <div className="mt-1 text-sm text-muted-foreground">—</div>
               )}
             </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            {wa && (
+              <a
+                href={`https://wa.me/55${wa}`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-emerald-500/20 transition hover:brightness-110"
+              >
+                WhatsApp
+              </a>
+            )}
+            {shop?.instagram && (
+              <a
+                href={`https://instagram.com/${shop.instagram}`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg bg-gradient-to-r from-pink-500 to-orange-400 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-pink-500/20 transition hover:brightness-110"
+              >
+                Instagram
+              </a>
+            )}
           </div>
         </div>
       </section>
 
       <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} {shopName}</span>
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row">
+          <span>© {new Date().getFullYear()} {shopName}. Todos os direitos reservados.</span>
           <Link to="/auth" className="hover:text-foreground">
             Área da equipe
           </Link>
         </div>
       </footer>
+
+      {/* CTA fixo mobile */}
+      <Link
+        to="/agendar"
+        className="fixed inset-x-4 bottom-4 z-30 rounded-full bg-primary py-3.5 text-center text-sm font-semibold text-primary-foreground shadow-2xl shadow-primary/40 sm:hidden"
+      >
+        Agendar agora
+      </Link>
     </div>
   );
 }
