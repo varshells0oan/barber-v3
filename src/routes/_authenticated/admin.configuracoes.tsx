@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
 
 export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
   component: Config,
@@ -23,7 +24,7 @@ function Config() {
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
-  const [blockedDates, setBlockedDates] = useState<string>("");
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
 
   useEffect(() => {
     supabase
@@ -36,7 +37,7 @@ function Config() {
         setS(data ?? {});
         setHours((data?.work_hours as Hours) ?? {});
         setGallery(((data?.gallery as string[]) ?? []).join("\n"));
-        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).join("\n"));
+        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).slice().sort());
       });
   }, []);
 
@@ -70,10 +71,7 @@ function Config() {
         .split(/\n+/)
         .map((x) => x.trim())
         .filter(Boolean),
-      blocked_dates: blockedDates
-        .split(/\n+/)
-        .map((x) => x.trim())
-        .filter(Boolean),
+      blocked_dates: blockedDates.map((x) => x.trim()).filter(Boolean),
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
@@ -182,16 +180,10 @@ function Config() {
         </p>
       </Section>
 
-      <Section title="Datas bloqueadas / feriados (uma data por linha, YYYY-MM-DD)">
-        <textarea
-          value={blockedDates}
-          onChange={(e) => setBlockedDates(e.target.value)}
-          rows={4}
-          placeholder="2026-12-25"
-          className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
-        />
+      <Section title="Folgas e feriados">
+        <BlockedDatesPicker value={blockedDates} onChange={setBlockedDates} />
         <p className="text-xs text-muted-foreground">
-          Nenhum barbeiro terá horário disponível nessas datas, mesmo que trabalhem no dia da semana.
+          Selecione dias no calendário ou toque nos feriados sugeridos. Nenhum barbeiro terá horário disponível nas datas marcadas.
         </p>
       </Section>
 
