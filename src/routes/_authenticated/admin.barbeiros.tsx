@@ -166,7 +166,7 @@ function BarbersPage() {
           onClick={() => setEditing(null)}
         >
           <div
-            className="w-full max-w-md rounded-xl bg-card p-5 shadow-lg"
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl bg-card p-5 shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold">
