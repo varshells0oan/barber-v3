@@ -24,7 +24,7 @@ function Config() {
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
-  const [blockedDates, setBlockedDates] = useState<string>("");
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
 
   useEffect(() => {
     supabase
