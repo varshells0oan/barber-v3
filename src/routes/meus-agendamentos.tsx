@@ -44,7 +44,7 @@ function ClientArea() {
   const history = appts.filter((a) => a.status === "atendido");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dark min-h-screen bg-background text-foreground">
       <PublicHeader />
       <div className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="text-2xl font-semibold text-foreground">Meus agendamentos</h1>

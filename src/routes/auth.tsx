@@ -61,7 +61,7 @@ function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dark min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-md px-4 py-16">
         <Link to="/" className="mb-8 flex items-center gap-2 text-foreground">
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">

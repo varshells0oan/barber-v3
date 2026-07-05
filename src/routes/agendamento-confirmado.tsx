@@ -8,7 +8,7 @@ export const Route = createFileRoute("/agendamento-confirmado")({
 
 function Confirmed() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dark min-h-screen bg-background text-foreground">
       <PublicHeader />
       <div className="mx-auto max-w-md px-4 py-16 text-center">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-emerald-600">
