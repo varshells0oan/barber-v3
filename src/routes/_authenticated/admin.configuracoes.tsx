@@ -23,6 +23,7 @@ function Config() {
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
+  const [blockedDates, setBlockedDates] = useState<string>("");
 
   useEffect(() => {
     supabase
@@ -35,6 +36,7 @@ function Config() {
         setS(data ?? {});
         setHours((data?.work_hours as Hours) ?? {});
         setGallery(((data?.gallery as string[]) ?? []).join("\n"));
+        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).join("\n"));
       });
   }, []);
 
