@@ -34,6 +34,7 @@ function Booking() {
   const [step, setStep] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [barbers, setBarbers] = useState<any[]>([]);
+  const [shop, setShop] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedBarber, setSelectedBarber] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState("");
@@ -46,12 +47,14 @@ function Booking() {
 
   useEffect(() => {
     (async () => {
-      const [s, b] = await Promise.all([
+      const [s, b, sh] = await Promise.all([
         supabase.from("services").select("*").eq("active", true).order("price"),
         supabase.from("barbers").select("*").eq("active", true),
+        supabase.from("shop_settings").select("*").order("created_at", { ascending: false }).limit(1).maybeSingle(),
       ]);
       setServices(s.data ?? []);
       setBarbers(b.data ?? []);
+      setShop(sh.data);
       if (initialServiceId && s.data) {
         const found = s.data.find((x: any) => x.id === initialServiceId);
         if (found) {
