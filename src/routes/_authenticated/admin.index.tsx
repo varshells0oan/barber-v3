@@ -331,13 +331,12 @@ function Dashboard() {
         </section>
 
         <section className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Serviços mais pedidos</h2>
-              <p className="text-xs text-muted-foreground">No mês</p>
-            </div>
-            <Scissors className="h-4 w-4 text-muted-foreground" />
-          </div>
+          <SectionHeader
+            icon={Scissors}
+            title="Serviços mais pedidos"
+            subtitle="No mês"
+            tint="indigo"
+          />
           <div className="mt-4 space-y-3">
             {topServices.length === 0 && (
               <p className="text-sm text-muted-foreground">Nenhum serviço atendido ainda.</p>
