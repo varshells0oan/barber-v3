@@ -68,7 +68,7 @@ function Home() {
   const igHref = instagram ? `https://instagram.com/${instagram.replace(/^@/, "")}` : "#top";
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
+    <div id="top" className="dark min-h-screen bg-background text-foreground">
       <PublicHeader shopName={shopName} />
 
       {/* HERO */}
