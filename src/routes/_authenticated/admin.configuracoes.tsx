@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
 
 export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
   component: Config,
