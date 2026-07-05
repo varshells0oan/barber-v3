@@ -453,3 +453,41 @@ function StatusRow({
     </div>
   );
 }
+
+function SectionHeader({
+  icon: Icon,
+  title,
+  subtitle,
+  tint,
+  right,
+}: {
+  icon: any;
+  title: string;
+  subtitle?: string;
+  tint: "primary" | "sky" | "emerald" | "amber" | "indigo";
+  right?: React.ReactNode;
+}) {
+  const tints: Record<string, string> = {
+    primary: "bg-primary/15 text-primary ring-primary/25",
+    sky: "bg-sky-500/15 text-sky-300 ring-sky-500/25",
+    emerald: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/25",
+    amber: "bg-amber-500/15 text-amber-300 ring-amber-500/25",
+    indigo: "bg-indigo-500/15 text-indigo-300 ring-indigo-500/25",
+  };
+  return (
+    <div className="-mx-5 -mt-5 mb-4 border-b border-border/60 px-5 py-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className={`grid h-9 w-9 place-items-center rounded-lg ring-1 ring-inset ${tints[tint]}`}>
+            <Icon className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="font-heading text-base leading-tight">{title}</h2>
+            {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+          </div>
+        </div>
+        {right}
+      </div>
+    </div>
+  );
+}
