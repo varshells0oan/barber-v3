@@ -23,6 +23,7 @@ function Config() {
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
+  const [blockedDates, setBlockedDates] = useState<string>("");
 
   useEffect(() => {
     supabase
@@ -35,6 +36,7 @@ function Config() {
         setS(data ?? {});
         setHours((data?.work_hours as Hours) ?? {});
         setGallery(((data?.gallery as string[]) ?? []).join("\n"));
+        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).join("\n"));
       });
   }, []);
 
@@ -68,6 +70,11 @@ function Config() {
         .split(/\n+/)
         .map((x) => x.trim())
         .filter(Boolean),
+      blocked_dates: blockedDates
+        .split(/\n+/)
+        .map((x) => x.trim())
+        .filter(Boolean),
+      slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
     };
@@ -173,6 +180,29 @@ function Config() {
         <p className="mt-2 text-xs text-muted-foreground">
           Dias fechados desabilitam o calendário do cliente automaticamente.
         </p>
+      </Section>
+
+      <Section title="Datas bloqueadas / feriados (uma data por linha, YYYY-MM-DD)">
+        <textarea
+          value={blockedDates}
+          onChange={(e) => setBlockedDates(e.target.value)}
+          rows={4}
+          placeholder="2026-12-25"
+          className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
+        />
+        <p className="text-xs text-muted-foreground">
+          Nenhum barbeiro terá horário disponível nessas datas, mesmo que trabalhem no dia da semana.
+        </p>
+      </Section>
+
+      <Section title="Intervalo entre atendimentos">
+        <Row label="Minutos de intervalo após cada atendimento (padrão 0)">
+          <Input
+            type="number"
+            value={s.slot_buffer_min ?? 0}
+            onChange={(v) => setS({ ...s, slot_buffer_min: v })}
+          />
+        </Row>
       </Section>
 
       <Section title="Galeria (uma URL por linha)">

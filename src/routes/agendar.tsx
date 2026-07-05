@@ -66,63 +66,66 @@ function Booking() {
   }, [initialServiceId]);
 
   // Load available slots when date changes
-  useEffect(() => {
+  const loadSlots = async () => {
     if (!selectedDate || !selectedBarber || !selectedService) return;
-    (async () => {
-      const { data: appts } = await supabase
-        .from("appointments")
-        .select("time,end_time,status")
-        .eq("barber_id", selectedBarber.id)
-        .eq("date", selectedDate);
-      const active = (appts ?? []).filter((a) => a.status !== "cancelado");
-      const dow = String(new Date(selectedDate + "T00:00:00").getDay());
-      const bh = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
-      const sh = (shop?.work_hours ?? {})[dow];
-      // If shop has hours configured, intersect; otherwise use barber hours alone
-      let hours = bh;
-      if (sh && bh) {
-        const start = Math.max(timeToMin(bh.start), timeToMin(sh.start));
-        const end = Math.min(timeToMin(bh.end), timeToMin(sh.end));
-        hours = end > start ? { start: minToTime(start), end: minToTime(end) } : null;
-      } else if (shop?.work_hours && !sh) {
-        // shop configured this day as closed
-        hours = null;
-      }
-      if (!hours) {
-        setSlots([]);
-        return;
-      }
-      const start = timeToMin(hours.start);
-      const end = timeToMin(hours.end);
-      const dur = selectedService.duration;
-      const blocked: string[] = selectedBarber.blocked_dates ?? [];
-      if (blocked.includes(selectedDate)) {
-        setSlots([]);
-        return;
-      }
-      const generated: string[] = [];
-      for (let m = start; m + dur <= end; m += 30) {
-        const slotStart = m;
-        const slotEnd = m + dur;
-        const conflict = active.some((a) => {
-          const aStart = timeToMin(a.time);
-          const aEnd = timeToMin(a.end_time);
-          return slotStart < aEnd && slotEnd > aStart;
-        });
-        if (!conflict) generated.push(minToTime(slotStart));
-      }
-      // Filter out past times if today
-      if (selectedDate === todayISO()) {
-        const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
-        setSlots(generated.filter((t) => timeToMin(t) > nowMin));
-      } else {
-        setSlots(generated);
-      }
-    })();
+    const { data: appts } = await supabase
+      .from("appointments")
+      .select("time,end_time,status")
+      .eq("barber_id", selectedBarber.id)
+      .eq("date", selectedDate);
+    const active = (appts ?? []).filter((a) => a.status !== "cancelado");
+    const dow = String(new Date(selectedDate + "T00:00:00").getDay());
+    const bh = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
+    const sh = (shop?.work_hours ?? {})[dow];
+    let hours = bh;
+    if (sh && bh) {
+      const start = Math.max(timeToMin(bh.start), timeToMin(sh.start));
+      const end = Math.min(timeToMin(bh.end), timeToMin(sh.end));
+      hours = end > start ? { start: minToTime(start), end: minToTime(end) } : null;
+    } else if (shop?.work_hours && !sh) {
+      hours = null;
+    }
+    if (!hours) {
+      setSlots([]);
+      return;
+    }
+    const start = timeToMin(hours.start);
+    const end = timeToMin(hours.end);
+    const dur = selectedService.duration;
+    const buffer = Number(shop?.slot_buffer_min) || 0;
+    const shopBlocked: string[] = (shop?.blocked_dates as string[]) ?? [];
+    const barberBlocked: string[] = selectedBarber.blocked_dates ?? [];
+    if (shopBlocked.includes(selectedDate) || barberBlocked.includes(selectedDate)) {
+      setSlots([]);
+      return;
+    }
+    const generated: string[] = [];
+    for (let m = start; m + dur <= end; m += 30) {
+      const slotStart = m;
+      const slotEnd = m + dur + buffer;
+      const conflict = active.some((a) => {
+        const aStart = timeToMin(a.time);
+        const aEnd = timeToMin(a.end_time) + buffer;
+        return slotStart < aEnd && slotEnd > aStart;
+      });
+      if (!conflict) generated.push(minToTime(slotStart));
+    }
+    if (selectedDate === todayISO()) {
+      const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+      setSlots(generated.filter((t) => timeToMin(t) > nowMin));
+    } else {
+      setSlots(generated);
+    }
+  };
+
+  useEffect(() => {
+    loadSlots();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate, selectedBarber, selectedService, shop]);
 
   const workHours = selectedBarber?.work_hours ?? DEFAULT_HOURS;
   const shopHours = shop?.work_hours ?? null;
+  const shopBlocked: string[] = (shop?.blocked_dates as string[]) ?? [];
   const blockedDates: string[] = selectedBarber?.blocked_dates ?? [];
   const isDayDisabled = (d: Date) => {
     const today = new Date();
@@ -130,6 +133,7 @@ function Booking() {
     if (d < today) return true;
     const iso = format(d, "yyyy-MM-dd");
     if (blockedDates.includes(iso)) return true;
+    if (shopBlocked.includes(iso)) return true;
     const dow = String(d.getDay());
     if (!workHours[dow]) return true;
     if (shopHours && !shopHours[dow]) return true;
@@ -186,7 +190,15 @@ function Booking() {
       if (apptErr) throw apptErr;
       navigate({ to: "/agendamento-confirmado" });
     } catch (e: any) {
-      toast.error(e.message ?? "Erro ao agendar");
+      const msg = String(e?.message ?? "");
+      if (msg.includes("SLOT_TAKEN") || e?.code === "23505") {
+        toast.error("Esse horário acabou de ser reservado. Escolha outro.");
+        setSelectedTime("");
+        await loadSlots();
+        setStep(2);
+      } else {
+        toast.error(msg || "Erro ao agendar");
+      }
     } finally {
       setSubmitting(false);
     }

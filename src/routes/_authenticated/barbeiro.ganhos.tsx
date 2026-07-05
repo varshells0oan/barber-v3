@@ -9,15 +9,32 @@ export const Route = createFileRoute("/_authenticated/barbeiro/ganhos")({
 
 function Earnings() {
   const [items, setItems] = useState<any[]>([]);
+  const [commission, setCommission] = useState<number>(50);
 
   useEffect(() => {
-    supabase
-      .from("appointments")
-      .select("*")
-      .eq("status", "atendido")
-      .order("date", { ascending: false })
-      .limit(200)
-      .then(({ data }) => setItems(data ?? []));
+    (async () => {
+      const { data: userData } = await supabase.auth.getUser();
+      const uid = userData.user?.id;
+      if (!uid) return;
+      const { data: barber } = await supabase
+        .from("barbers")
+        .select("id, commission_percent")
+        .eq("user_id", uid)
+        .maybeSingle();
+      if (!barber) {
+        setItems([]);
+        return;
+      }
+      setCommission(Number(barber.commission_percent) || 0);
+      const { data: appts } = await supabase
+        .from("appointments")
+        .select("*")
+        .eq("status", "atendido")
+        .eq("barber_id", barber.id)
+        .order("date", { ascending: false })
+        .limit(200);
+      setItems(appts ?? []);
+    })();
   }, []);
 
   const today = todayISO();
@@ -30,6 +47,7 @@ function Earnings() {
   const todayRev = sum(items.filter((a) => a.date === today));
   const weekRev = sum(items.filter((a) => new Date(a.date + "T00:00:00") >= weekAgo));
   const monthRev = sum(items.filter((a) => a.date.startsWith(month)));
+  const rate = commission / 100;
 
   const last7: { day: string; val: number }[] = [];
   for (let i = 6; i >= 0; i--) {
@@ -37,7 +55,7 @@ function Earnings() {
     d.setDate(now.getDate() - i);
     const iso = d.toISOString().slice(0, 10);
     last7.push({
-      day: ["D", "S", "T", "Q", "Q", "S", "S"][d.getDay()],
+      day: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"][d.getDay()],
       val: sum(items.filter((a) => a.date === iso)),
     });
   }
@@ -54,9 +72,9 @@ function Earnings() {
       </div>
 
       <div className="mt-6 rounded-xl border border-border bg-card p-4">
-        <div className="text-sm font-medium">Comissão (50%)</div>
+        <div className="text-sm font-medium">Comissão ({commission}%)</div>
         <div className="mt-1 text-xs text-muted-foreground">
-          Hoje: {brl(todayRev * 0.5)} · Mês: {brl(monthRev * 0.5)}
+          Hoje: {brl(todayRev * rate)} · Semana: {brl(weekRev * rate)} · Mês: {brl(monthRev * rate)}
         </div>
       </div>
 
