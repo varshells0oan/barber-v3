@@ -184,17 +184,22 @@ function Dashboard() {
         {stats.map((s) => (
           <div
             key={s.label}
-            className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br ${s.accent} p-4`}
+            className={`group relative overflow-hidden rounded-2xl border bg-gradient-to-br ${s.accent} p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+            <div className="relative flex items-start justify-between">
+              <span className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
                 {s.label}
               </span>
-              <s.icon className="h-4 w-4" />
+              <div className="grid h-8 w-8 place-items-center rounded-lg bg-background/40 ring-1 ring-inset ring-white/10">
+                <s.icon className="h-4 w-4" />
+              </div>
             </div>
-            <div className="mt-3 text-2xl font-semibold text-foreground">{s.value}</div>
+            <div className="relative mt-4 text-2xl font-semibold tracking-tight text-foreground">
+              {s.value}
+            </div>
             {s.hint && (
-              <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="relative mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
                 {s.hint}
               </div>
