@@ -235,6 +235,7 @@ export type Database = {
         Row: {
           address: string | null
           banner_url: string | null
+          blocked_dates: Json
           created_at: string
           description: string | null
           differentials: Json
@@ -246,6 +247,7 @@ export type Database = {
           loyalty_target: number
           name: string
           phone: string | null
+          slot_buffer_min: number
           updated_at: string
           whatsapp: string | null
           work_hours: Json
@@ -253,6 +255,7 @@ export type Database = {
         Insert: {
           address?: string | null
           banner_url?: string | null
+          blocked_dates?: Json
           created_at?: string
           description?: string | null
           differentials?: Json
@@ -264,6 +267,7 @@ export type Database = {
           loyalty_target?: number
           name?: string
           phone?: string | null
+          slot_buffer_min?: number
           updated_at?: string
           whatsapp?: string | null
           work_hours?: Json
@@ -271,6 +275,7 @@ export type Database = {
         Update: {
           address?: string | null
           banner_url?: string | null
+          blocked_dates?: Json
           created_at?: string
           description?: string | null
           differentials?: Json
@@ -282,6 +287,7 @@ export type Database = {
           loyalty_target?: number
           name?: string
           phone?: string | null
+          slot_buffer_min?: number
           updated_at?: string
           whatsapp?: string | null
           work_hours?: Json
