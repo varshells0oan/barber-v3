@@ -182,6 +182,29 @@ function Config() {
         </p>
       </Section>
 
+      <Section title="Datas bloqueadas / feriados (uma data por linha, YYYY-MM-DD)">
+        <textarea
+          value={blockedDates}
+          onChange={(e) => setBlockedDates(e.target.value)}
+          rows={4}
+          placeholder="2026-12-25"
+          className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
+        />
+        <p className="text-xs text-muted-foreground">
+          Nenhum barbeiro terá horário disponível nessas datas, mesmo que trabalhem no dia da semana.
+        </p>
+      </Section>
+
+      <Section title="Intervalo entre atendimentos">
+        <Row label="Minutos de intervalo após cada atendimento (padrão 0)">
+          <Input
+            type="number"
+            value={s.slot_buffer_min ?? 0}
+            onChange={(v) => setS({ ...s, slot_buffer_min: v })}
+          />
+        </Row>
+      </Section>
+
       <Section title="Galeria (uma URL por linha)">
         <textarea
           value={gallery}
