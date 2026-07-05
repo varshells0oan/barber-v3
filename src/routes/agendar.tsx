@@ -1,10 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PublicHeader } from "@/components/PublicHeader";
 import { brl, cleanPhone, timeToMin, minToTime, todayISO } from "@/lib/format";
-import { Check, ChevronLeft, Clock, Star } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Check, ChevronLeft, Clock, Star, CalendarDays, Sun, Sunset } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 
 const searchSchema = z.object({
@@ -104,20 +107,23 @@ function Booking() {
     })();
   }, [selectedDate, selectedBarber, selectedService]);
 
-  const monthDays = useMemo(() => {
-    const days: { iso: string; label: number; dow: number; disabled: boolean }[] = [];
+  const workHours = selectedBarber?.work_hours ?? DEFAULT_HOURS;
+  const blockedDates: string[] = selectedBarber?.blocked_dates ?? [];
+  const isDayDisabled = (d: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    for (let i = 0; i < 21; i++) {
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      const iso = d.toISOString().slice(0, 10);
-      const dow = d.getDay();
-      const hours = (selectedBarber?.work_hours ?? DEFAULT_HOURS)[String(dow)];
-      days.push({ iso, label: d.getDate(), dow, disabled: !hours });
-    }
-    return days;
-  }, [selectedBarber]);
+    if (d < today) return true;
+    const iso = format(d, "yyyy-MM-dd");
+    if (blockedDates.includes(iso)) return true;
+    const dow = String(d.getDay());
+    return !workHours[dow];
+  };
+
+  const groupedSlots = {
+    manha: slots.filter((t) => timeToMin(t) < 12 * 60),
+    tarde: slots.filter((t) => timeToMin(t) >= 12 * 60 && timeToMin(t) < 18 * 60),
+    noite: slots.filter((t) => timeToMin(t) >= 18 * 60),
+  };
 
   const handleSubmit = async () => {
     if (!name.trim() || !phone.trim()) {
