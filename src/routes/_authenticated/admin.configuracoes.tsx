@@ -37,7 +37,7 @@ function Config() {
         setS(data ?? {});
         setHours((data?.work_hours as Hours) ?? {});
         setGallery(((data?.gallery as string[]) ?? []).join("\n"));
-        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).join("\n"));
+        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).slice().sort());
       });
   }, []);
 
