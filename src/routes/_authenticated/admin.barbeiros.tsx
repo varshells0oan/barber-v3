@@ -227,6 +227,90 @@ function BarbersPage() {
                 />
                 Ativo
               </label>
+
+              <div className="mt-2 rounded-md border border-border p-3">
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Horário de trabalho
+                </div>
+                <div className="grid gap-1.5">
+                  {DAYS.map((d) => {
+                    const v = editing.work_hours?.[d.key];
+                    const closed = !v;
+                    return (
+                      <div key={d.key} className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="w-10 font-medium">{d.label}</span>
+                        <label className="flex items-center gap-1 text-muted-foreground">
+                          <input
+                            type="checkbox"
+                            checked={!closed}
+                            onChange={(e) =>
+                              setEditing({
+                                ...editing,
+                                work_hours: {
+                                  ...editing.work_hours,
+                                  [d.key]: e.target.checked
+                                    ? { start: "09:00", end: "18:00" }
+                                    : null,
+                                },
+                              })
+                            }
+                          />
+                          Trabalha
+                        </label>
+                        <input
+                          type="time"
+                          disabled={closed}
+                          value={v?.start ?? ""}
+                          onChange={(e) =>
+                            setEditing({
+                              ...editing,
+                              work_hours: {
+                                ...editing.work_hours,
+                                [d.key]: { ...(v ?? { end: "18:00", start: "09:00" }), start: e.target.value },
+                              },
+                            })
+                          }
+                          className="rounded border border-input bg-background px-2 py-1 disabled:opacity-50"
+                        />
+                        <span className="text-muted-foreground">até</span>
+                        <input
+                          type="time"
+                          disabled={closed}
+                          value={v?.end ?? ""}
+                          onChange={(e) =>
+                            setEditing({
+                              ...editing,
+                              work_hours: {
+                                ...editing.work_hours,
+                                [d.key]: { ...(v ?? { start: "09:00", end: "18:00" }), end: e.target.value },
+                              },
+                            })
+                          }
+                          className="rounded border border-input bg-background px-2 py-1 disabled:opacity-50"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <Field label="Datas bloqueadas (folgas / férias — YYYY-MM-DD, uma por linha)">
+                <textarea
+                  value={editing.blocked_dates.join("\n")}
+                  onChange={(e) =>
+                    setEditing({
+                      ...editing,
+                      blocked_dates: e.target.value
+                        .split(/\n+/)
+                        .map((x) => x.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  rows={3}
+                  placeholder="2026-07-10"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
+                />
+              </Field>
             </div>
             <div className="mt-5 flex justify-end gap-2">
               <button
