@@ -296,15 +296,17 @@ function Dashboard() {
       {/* Barbers + services */}
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-heading text-lg">Top barbeiros</h2>
-              <p className="text-xs text-muted-foreground">Faturamento no mês</p>
-            </div>
-            <Link to="/admin/financeiro" className="flex items-center gap-1 text-xs text-primary hover:underline">
-              Financeiro <ArrowUpRight className="h-3 w-3" />
-            </Link>
-          </div>
+          <SectionHeader
+            icon={Trophy}
+            title="Top barbeiros"
+            subtitle="Faturamento no mês"
+            tint="amber"
+            right={
+              <Link to="/admin/financeiro" className="flex items-center gap-1 text-xs text-primary hover:underline">
+                Financeiro <ArrowUpRight className="h-3 w-3" />
+              </Link>
+            }
+          />
           <div className="mt-4 space-y-3">
             {topBarbers.length === 0 && (
               <p className="text-sm text-muted-foreground">Sem atendimentos neste mês ainda.</p>
