@@ -9,38 +9,286 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MeusAgendamentosRouteImport } from './routes/meus-agendamentos'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AgendarRouteImport } from './routes/agendar'
+import { Route as AgendamentoConfirmadoRouteImport } from './routes/agendamento-confirmado'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedBarbeiroRouteImport } from './routes/_authenticated/barbeiro'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedBarbeiroIndexRouteImport } from './routes/_authenticated/barbeiro.index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedBarbeiroHistoricoRouteImport } from './routes/_authenticated/barbeiro.historico'
+import { Route as AuthenticatedBarbeiroGanhosRouteImport } from './routes/_authenticated/barbeiro.ganhos'
+import { Route as AuthenticatedAdminServicosRouteImport } from './routes/_authenticated/admin.servicos'
+import { Route as AuthenticatedAdminFinanceiroRouteImport } from './routes/_authenticated/admin.financeiro'
+import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin.configuracoes'
+import { Route as AuthenticatedAdminClientesRouteImport } from './routes/_authenticated/admin.clientes'
+import { Route as AuthenticatedAdminBarbeirosRouteImport } from './routes/_authenticated/admin.barbeiros'
+import { Route as AuthenticatedAdminAgendamentosRouteImport } from './routes/_authenticated/admin.agendamentos'
 
+const MeusAgendamentosRoute = MeusAgendamentosRouteImport.update({
+  id: '/meus-agendamentos',
+  path: '/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendarRoute = AgendarRouteImport.update({
+  id: '/agendar',
+  path: '/agendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendamentoConfirmadoRoute = AgendamentoConfirmadoRouteImport.update({
+  id: '/agendamento-confirmado',
+  path: '/agendamento-confirmado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedBarbeiroRoute = AuthenticatedBarbeiroRouteImport.update({
+  id: '/barbeiro',
+  path: '/barbeiro',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBarbeiroIndexRoute =
+  AuthenticatedBarbeiroIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedBarbeiroRoute,
+  } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedBarbeiroHistoricoRoute =
+  AuthenticatedBarbeiroHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedBarbeiroRoute,
+  } as any)
+const AuthenticatedBarbeiroGanhosRoute =
+  AuthenticatedBarbeiroGanhosRouteImport.update({
+    id: '/ganhos',
+    path: '/ganhos',
+    getParentRoute: () => AuthenticatedBarbeiroRoute,
+  } as any)
+const AuthenticatedAdminServicosRoute =
+  AuthenticatedAdminServicosRouteImport.update({
+    id: '/servicos',
+    path: '/servicos',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminFinanceiroRoute =
+  AuthenticatedAdminFinanceiroRouteImport.update({
+    id: '/financeiro',
+    path: '/financeiro',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminConfiguracoesRoute =
+  AuthenticatedAdminConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminClientesRoute =
+  AuthenticatedAdminClientesRouteImport.update({
+    id: '/clientes',
+    path: '/clientes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBarbeirosRoute =
+  AuthenticatedAdminBarbeirosRouteImport.update({
+    id: '/barbeiros',
+    path: '/barbeiros',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAgendamentosRoute =
+  AuthenticatedAdminAgendamentosRouteImport.update({
+    id: '/agendamentos',
+    path: '/agendamentos',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
+  '/agendar': typeof AgendarRoute
+  '/auth': typeof AuthRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
+  '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
+  '/admin/clientes': typeof AuthenticatedAdminClientesRoute
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
+  '/admin/servicos': typeof AuthenticatedAdminServicosRoute
+  '/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
+  '/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/barbeiro/': typeof AuthenticatedBarbeiroIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
+  '/agendar': typeof AgendarRoute
+  '/auth': typeof AuthRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
+  '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
+  '/admin/clientes': typeof AuthenticatedAdminClientesRoute
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
+  '/admin/servicos': typeof AuthenticatedAdminServicosRoute
+  '/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
+  '/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/barbeiro': typeof AuthenticatedBarbeiroIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
+  '/agendar': typeof AgendarRoute
+  '/auth': typeof AuthRoute
+  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/_authenticated/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
+  '/_authenticated/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
+  '/_authenticated/admin/clientes': typeof AuthenticatedAdminClientesRoute
+  '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
+  '/_authenticated/admin/servicos': typeof AuthenticatedAdminServicosRoute
+  '/_authenticated/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
+  '/_authenticated/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/barbeiro/': typeof AuthenticatedBarbeiroIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/agendamento-confirmado'
+    | '/agendar'
+    | '/auth'
+    | '/meus-agendamentos'
+    | '/admin'
+    | '/barbeiro'
+    | '/admin/agendamentos'
+    | '/admin/barbeiros'
+    | '/admin/clientes'
+    | '/admin/configuracoes'
+    | '/admin/financeiro'
+    | '/admin/servicos'
+    | '/barbeiro/ganhos'
+    | '/barbeiro/historico'
+    | '/admin/'
+    | '/barbeiro/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/agendamento-confirmado'
+    | '/agendar'
+    | '/auth'
+    | '/meus-agendamentos'
+    | '/admin/agendamentos'
+    | '/admin/barbeiros'
+    | '/admin/clientes'
+    | '/admin/configuracoes'
+    | '/admin/financeiro'
+    | '/admin/servicos'
+    | '/barbeiro/ganhos'
+    | '/barbeiro/historico'
+    | '/admin'
+    | '/barbeiro'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/agendamento-confirmado'
+    | '/agendar'
+    | '/auth'
+    | '/meus-agendamentos'
+    | '/_authenticated/admin'
+    | '/_authenticated/barbeiro'
+    | '/_authenticated/admin/agendamentos'
+    | '/_authenticated/admin/barbeiros'
+    | '/_authenticated/admin/clientes'
+    | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/admin/financeiro'
+    | '/_authenticated/admin/servicos'
+    | '/_authenticated/barbeiro/ganhos'
+    | '/_authenticated/barbeiro/historico'
+    | '/_authenticated/admin/'
+    | '/_authenticated/barbeiro/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AgendamentoConfirmadoRoute: typeof AgendamentoConfirmadoRoute
+  AgendarRoute: typeof AgendarRoute
+  AuthRoute: typeof AuthRoute
+  MeusAgendamentosRoute: typeof MeusAgendamentosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/meus-agendamentos': {
+      id: '/meus-agendamentos'
+      path: '/meus-agendamentos'
+      fullPath: '/meus-agendamentos'
+      preLoaderRoute: typeof MeusAgendamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendar': {
+      id: '/agendar'
+      path: '/agendar'
+      fullPath: '/agendar'
+      preLoaderRoute: typeof AgendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agendamento-confirmado': {
+      id: '/agendamento-confirmado'
+      path: '/agendamento-confirmado'
+      fullPath: '/agendamento-confirmado'
+      preLoaderRoute: typeof AgendamentoConfirmadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +296,154 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/barbeiro': {
+      id: '/_authenticated/barbeiro'
+      path: '/barbeiro'
+      fullPath: '/barbeiro'
+      preLoaderRoute: typeof AuthenticatedBarbeiroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/barbeiro/': {
+      id: '/_authenticated/barbeiro/'
+      path: '/'
+      fullPath: '/barbeiro/'
+      preLoaderRoute: typeof AuthenticatedBarbeiroIndexRouteImport
+      parentRoute: typeof AuthenticatedBarbeiroRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/barbeiro/historico': {
+      id: '/_authenticated/barbeiro/historico'
+      path: '/historico'
+      fullPath: '/barbeiro/historico'
+      preLoaderRoute: typeof AuthenticatedBarbeiroHistoricoRouteImport
+      parentRoute: typeof AuthenticatedBarbeiroRoute
+    }
+    '/_authenticated/barbeiro/ganhos': {
+      id: '/_authenticated/barbeiro/ganhos'
+      path: '/ganhos'
+      fullPath: '/barbeiro/ganhos'
+      preLoaderRoute: typeof AuthenticatedBarbeiroGanhosRouteImport
+      parentRoute: typeof AuthenticatedBarbeiroRoute
+    }
+    '/_authenticated/admin/servicos': {
+      id: '/_authenticated/admin/servicos'
+      path: '/servicos'
+      fullPath: '/admin/servicos'
+      preLoaderRoute: typeof AuthenticatedAdminServicosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/financeiro': {
+      id: '/_authenticated/admin/financeiro'
+      path: '/financeiro'
+      fullPath: '/admin/financeiro'
+      preLoaderRoute: typeof AuthenticatedAdminFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/configuracoes': {
+      id: '/_authenticated/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/clientes': {
+      id: '/_authenticated/admin/clientes'
+      path: '/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AuthenticatedAdminClientesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/barbeiros': {
+      id: '/_authenticated/admin/barbeiros'
+      path: '/barbeiros'
+      fullPath: '/admin/barbeiros'
+      preLoaderRoute: typeof AuthenticatedAdminBarbeirosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/agendamentos': {
+      id: '/_authenticated/admin/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/admin/agendamentos'
+      preLoaderRoute: typeof AuthenticatedAdminAgendamentosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAgendamentosRoute: typeof AuthenticatedAdminAgendamentosRoute
+  AuthenticatedAdminBarbeirosRoute: typeof AuthenticatedAdminBarbeirosRoute
+  AuthenticatedAdminClientesRoute: typeof AuthenticatedAdminClientesRoute
+  AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminFinanceiroRoute: typeof AuthenticatedAdminFinanceiroRoute
+  AuthenticatedAdminServicosRoute: typeof AuthenticatedAdminServicosRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAgendamentosRoute: AuthenticatedAdminAgendamentosRoute,
+  AuthenticatedAdminBarbeirosRoute: AuthenticatedAdminBarbeirosRoute,
+  AuthenticatedAdminClientesRoute: AuthenticatedAdminClientesRoute,
+  AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+  AuthenticatedAdminFinanceiroRoute: AuthenticatedAdminFinanceiroRoute,
+  AuthenticatedAdminServicosRoute: AuthenticatedAdminServicosRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedBarbeiroRouteChildren {
+  AuthenticatedBarbeiroGanhosRoute: typeof AuthenticatedBarbeiroGanhosRoute
+  AuthenticatedBarbeiroHistoricoRoute: typeof AuthenticatedBarbeiroHistoricoRoute
+  AuthenticatedBarbeiroIndexRoute: typeof AuthenticatedBarbeiroIndexRoute
+}
+
+const AuthenticatedBarbeiroRouteChildren: AuthenticatedBarbeiroRouteChildren = {
+  AuthenticatedBarbeiroGanhosRoute: AuthenticatedBarbeiroGanhosRoute,
+  AuthenticatedBarbeiroHistoricoRoute: AuthenticatedBarbeiroHistoricoRoute,
+  AuthenticatedBarbeiroIndexRoute: AuthenticatedBarbeiroIndexRoute,
+}
+
+const AuthenticatedBarbeiroRouteWithChildren =
+  AuthenticatedBarbeiroRoute._addFileChildren(
+    AuthenticatedBarbeiroRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedBarbeiroRoute: typeof AuthenticatedBarbeiroRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedBarbeiroRoute: AuthenticatedBarbeiroRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AgendamentoConfirmadoRoute: AgendamentoConfirmadoRoute,
+  AgendarRoute: AgendarRoute,
+  AuthRoute: AuthRoute,
+  MeusAgendamentosRoute: MeusAgendamentosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
