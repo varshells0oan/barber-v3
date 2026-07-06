@@ -68,12 +68,12 @@ function Booking() {
   // Load available slots when date changes
   const loadSlots = async () => {
     if (!selectedDate || !selectedBarber || !selectedService) return;
-    const { data: appts } = await supabase
-      .from("appointments")
-      .select("time,end_time,status")
-      .eq("barber_id", selectedBarber.id)
-      .eq("date", selectedDate);
-    const active = (appts ?? []).filter((a) => a.status !== "cancelado");
+    const { data: appts } = await supabase.rpc("public_get_taken_slots", {
+      _barber_id: selectedBarber.id,
+      _date: selectedDate,
+    });
+    const active = (appts ?? []) as Array<{ time: string; end_time: string }>;
+
     const dow = String(new Date(selectedDate + "T00:00:00").getDay());
     const bh = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
     const sh = (shop?.work_hours ?? {})[dow];
@@ -156,22 +156,13 @@ function Booking() {
     try {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
       const barbershopId = await getDefaultBarbershopId();
-      // Find or create client
-      const { data: existing } = await supabase
-        .from("clients")
-        .select("id")
-        .eq("phone", cp)
-        .maybeSingle();
-      let clientId = existing?.id;
-      if (!clientId) {
-        const { data: created, error } = await supabase
-          .from("clients")
-          .insert({ name, phone: cp, barbershop_id: barbershopId })
-          .select("id")
-          .single();
-        if (error) throw error;
-        clientId = created.id;
-      }
+      // Find or create client via RPC (não expõe tabela clients)
+      const { data: clientId, error: cliErr } = await supabase.rpc(
+        "public_upsert_client",
+        { _barbershop_id: barbershopId, _name: name, _phone: cp },
+      );
+      if (cliErr) throw cliErr;
+
       const endTime = minToTime(timeToMin(selectedTime) + selectedService.duration);
       const { error: apptErr } = await supabase.from("appointments").insert({
         barbershop_id: barbershopId,

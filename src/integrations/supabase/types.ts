@@ -474,6 +474,42 @@ export type Database = {
         Returns: boolean
       }
       is_superadmin: { Args: { _user_id: string }; Returns: boolean }
+      public_cancel_my_appointment: {
+        Args: { _id: string; _phone: string }
+        Returns: boolean
+      }
+      public_get_client_loyalty: {
+        Args: { _barbershop_id: string; _phone: string }
+        Returns: {
+          loyalty_points: number
+          name: string
+        }[]
+      }
+      public_get_my_appointments: {
+        Args: { _barbershop_id: string; _phone: string }
+        Returns: {
+          barber_name: string
+          date: string
+          duration: number
+          end_time: string
+          id: string
+          price: number
+          service_name: string
+          status: string
+          time: string
+        }[]
+      }
+      public_get_taken_slots: {
+        Args: { _barber_id: string; _date: string }
+        Returns: {
+          end_time: string
+          time: string
+        }[]
+      }
+      public_upsert_client: {
+        Args: { _barbershop_id: string; _name: string; _phone: string }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "barber" | "superadmin"
