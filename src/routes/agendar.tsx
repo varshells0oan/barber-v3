@@ -68,12 +68,12 @@ function Booking() {
   // Load available slots when date changes
   const loadSlots = async () => {
     if (!selectedDate || !selectedBarber || !selectedService) return;
-    const { data: appts } = await supabase
-      .from("appointments")
-      .select("time,end_time,status")
-      .eq("barber_id", selectedBarber.id)
-      .eq("date", selectedDate);
-    const active = (appts ?? []).filter((a) => a.status !== "cancelado");
+    const { data: appts } = await supabase.rpc("public_get_taken_slots", {
+      _barber_id: selectedBarber.id,
+      _date: selectedDate,
+    });
+    const active = (appts ?? []) as Array<{ time: string; end_time: string }>;
+
     const dow = String(new Date(selectedDate + "T00:00:00").getDay());
     const bh = (selectedBarber.work_hours ?? {})[dow] ?? DEFAULT_HOURS[dow];
     const sh = (shop?.work_hours ?? {})[dow];
