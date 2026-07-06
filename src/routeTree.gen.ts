@@ -15,6 +15,7 @@ import { Route as AgendarRouteImport } from './routes/agendar'
 import { Route as AgendamentoConfirmadoRouteImport } from './routes/agendamento-confirmado'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as AuthenticatedBarbeiroRouteImport } from './routes/_authenticated/barbeiro'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedBarbeiroIndexRouteImport } from './routes/_authenticated/barbeiro.index'
@@ -56,6 +57,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
+  id: '/superadmin',
+  path: '/superadmin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBarbeiroRoute = AuthenticatedBarbeiroRouteImport.update({
   id: '/barbeiro',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/meus-agendamentos': typeof MeusAgendamentosRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/superadmin': typeof AuthenticatedSuperadminRoute
   '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
   '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
   '/admin/clientes': typeof AuthenticatedAdminClientesRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/agendar': typeof AgendarRoute
   '/auth': typeof AuthRoute
   '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/superadmin': typeof AuthenticatedSuperadminRoute
   '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
   '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
   '/admin/clientes': typeof AuthenticatedAdminClientesRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/meus-agendamentos': typeof MeusAgendamentosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
   '/_authenticated/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
   '/_authenticated/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
   '/_authenticated/admin/clientes': typeof AuthenticatedAdminClientesRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/meus-agendamentos'
     | '/admin'
     | '/barbeiro'
+    | '/superadmin'
     | '/admin/agendamentos'
     | '/admin/barbeiros'
     | '/admin/clientes'
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/agendar'
     | '/auth'
     | '/meus-agendamentos'
+    | '/superadmin'
     | '/admin/agendamentos'
     | '/admin/barbeiros'
     | '/admin/clientes'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/meus-agendamentos'
     | '/_authenticated/admin'
     | '/_authenticated/barbeiro'
+    | '/_authenticated/superadmin'
     | '/_authenticated/admin/agendamentos'
     | '/_authenticated/admin/barbeiros'
     | '/_authenticated/admin/clientes'
@@ -295,6 +307,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/superadmin': {
+      id: '/_authenticated/superadmin'
+      path: '/superadmin'
+      fullPath: '/superadmin'
+      preLoaderRoute: typeof AuthenticatedSuperadminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/barbeiro': {
       id: '/_authenticated/barbeiro'
@@ -426,11 +445,13 @@ const AuthenticatedBarbeiroRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedBarbeiroRoute: typeof AuthenticatedBarbeiroRouteWithChildren
+  AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedBarbeiroRoute: AuthenticatedBarbeiroRouteWithChildren,
+  AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
