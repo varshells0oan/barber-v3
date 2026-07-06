@@ -20,25 +20,31 @@ function ClientArea() {
   const search = async () => {
     setLoading(true);
     const cp = cleanPhone(phone);
-    const { data: c } = await supabase.from("clients").select("*").eq("phone", cp).maybeSingle();
-    const { data: a } = await supabase
-      .from("appointments")
-      .select("*")
-      .eq("client_phone", cp)
-      .order("date", { ascending: false })
-      .limit(50);
-    const { data: sh } = await supabase
-      .from("shop_settings")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    setClient(c);
-    setAppts(a ?? []);
+    const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+    const barbershopId = await getDefaultBarbershopId();
+    const [{ data: a }, { data: c }, { data: sh }] = await Promise.all([
+      supabase.rpc("public_get_my_appointments", {
+        _barbershop_id: barbershopId,
+        _phone: cp,
+      }),
+      supabase.rpc("public_get_client_loyalty", {
+        _barbershop_id: barbershopId,
+        _phone: cp,
+      }),
+      supabase
+        .from("shop_settings")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]);
+    setClient((c && (c as any[])[0]) ?? null);
+    setAppts((a as any[]) ?? []);
     setShop(sh);
     setSearched(true);
     setLoading(false);
   };
+
 
   const upcoming = appts.filter((a) => ["pendente", "confirmado"].includes(a.status));
   const history = appts.filter((a) => a.status === "atendido");
