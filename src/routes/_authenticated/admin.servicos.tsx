@@ -47,12 +47,17 @@ function ServicesPage() {
 
   const save = async () => {
     if (!editing) return;
-    const payload = { ...editing };
+    const payload: any = { ...editing };
     const id = payload.id;
     delete payload.id;
-    const q = id
-      ? supabase.from("services").update(payload).eq("id", id)
-      : supabase.from("services").insert(payload);
+    let q;
+    if (id) {
+      q = supabase.from("services").update(payload).eq("id", id);
+    } else {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      payload.barbershop_id = await getDefaultBarbershopId();
+      q = supabase.from("services").insert(payload);
+    }
     const { error } = await q;
     if (error) return toast.error(error.message);
     toast.success("Salvo");

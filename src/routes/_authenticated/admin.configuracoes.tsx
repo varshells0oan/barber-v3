@@ -76,9 +76,13 @@ function Config() {
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
     };
-    const q = s.id
-      ? supabase.from("shop_settings").update(payload).eq("id", s.id)
-      : supabase.from("shop_settings").insert(payload);
+    let q;
+    if (s.id) {
+      q = supabase.from("shop_settings").update(payload).eq("id", s.id);
+    } else {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      q = supabase.from("shop_settings").insert({ ...payload, barbershop_id: await getDefaultBarbershopId() });
+    }
     const { error } = await q;
     if (error) return toast.error(error.message);
     toast.success("Configurações salvas");
