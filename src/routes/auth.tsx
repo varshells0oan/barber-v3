@@ -16,11 +16,24 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const routeAfterLogin = async (userId: string) => {
+    const { data: roles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    const list = (roles ?? []).map((r: any) => r.role);
+    if (list.includes("superadmin")) return navigate({ to: "/superadmin" });
+    if (list.includes("barber") && !list.includes("admin"))
+      return navigate({ to: "/barbeiro" });
+    return navigate({ to: "/admin" });
+  };
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (data.session?.user) await routeAfterLogin(data.session.user.id);
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,26 +46,31 @@ function AuthPage() {
           options: { emailRedirectTo: `${window.location.origin}/admin` },
         });
         if (error) throw error;
-        // Try to bootstrap first admin
         if (data.user) {
           await supabase
             .from("user_roles")
             .insert({ user_id: data.user.id, role: "admin" });
         }
         toast.success("Conta criada!");
-        navigate({ to: "/admin" });
+        if (data.user) await routeAfterLogin(data.user.id);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        // Try to bootstrap admin if none exists
         const { data: userRes } = await supabase.auth.getUser();
         if (userRes.user) {
-          await supabase
+          const { data: existingRoles } = await supabase
             .from("user_roles")
-            .insert({ user_id: userRes.user.id, role: "admin" });
+            .select("role")
+            .eq("user_id", userRes.user.id);
+          if (!existingRoles || existingRoles.length === 0) {
+            await supabase
+              .from("user_roles")
+              .insert({ user_id: userRes.user.id, role: "admin" });
+          }
+          await routeAfterLogin(userRes.user.id);
         }
-        navigate({ to: "/admin" });
       }
+
     } catch (e: any) {
       toast.error(e.message ?? "Erro na autenticação");
     } finally {
