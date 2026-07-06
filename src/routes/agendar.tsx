@@ -154,6 +154,8 @@ function Booking() {
     setSubmitting(true);
     const cp = cleanPhone(phone);
     try {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      const barbershopId = await getDefaultBarbershopId();
       // Find or create client
       const { data: existing } = await supabase
         .from("clients")
@@ -164,7 +166,7 @@ function Booking() {
       if (!clientId) {
         const { data: created, error } = await supabase
           .from("clients")
-          .insert({ name, phone: cp })
+          .insert({ name, phone: cp, barbershop_id: barbershopId })
           .select("id")
           .single();
         if (error) throw error;
@@ -172,6 +174,7 @@ function Booking() {
       }
       const endTime = minToTime(timeToMin(selectedTime) + selectedService.duration);
       const { error: apptErr } = await supabase.from("appointments").insert({
+        barbershop_id: barbershopId,
         client_id: clientId,
         client_name: name,
         client_phone: cp,
