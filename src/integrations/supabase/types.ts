@@ -478,6 +478,13 @@ export type Database = {
         Args: { _id: string; _phone: string }
         Returns: boolean
       }
+      public_get_client_loyalty: {
+        Args: { _barbershop_id: string; _phone: string }
+        Returns: {
+          loyalty_points: number
+          name: string
+        }[]
+      }
       public_get_my_appointments: {
         Args: { _barbershop_id: string; _phone: string }
         Returns: {
