@@ -17,11 +17,19 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
 
   const routeAfterLogin = async (userId: string) => {
+    // Se for o email do superadmin e ainda não tiver a role, faz o claim.
+    const { data: userRes } = await supabase.auth.getUser();
+    const email = userRes.user?.email?.toLowerCase();
+    if (email === "superadmin@icloud.com") {
+      await supabase.rpc("claim_superadmin").catch(() => {});
+    }
+
     const { data: roles } = await supabase
       .from("user_roles")
       .select("role, barbershop_id")
       .eq("user_id", userId);
     const list = (roles ?? []) as Array<{ role: string; barbershop_id: string | null }>;
+
 
     if (list.some((r) => r.role === "superadmin")) {
       return navigate({ to: "/superadmin" });
