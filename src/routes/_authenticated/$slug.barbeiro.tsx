@@ -6,13 +6,8 @@ export const Route = createFileRoute("/_authenticated/$slug/barbeiro")({
   component: BarberLayout,
 });
 
-const nav = [
-  { to: "/barbeiro", label: "Agenda", icon: Calendar },
-  { to: "/barbeiro/historico", label: "Histórico", icon: History },
-  { to: "/barbeiro/ganhos", label: "Ganhos", icon: DollarSign },
-];
-
 function BarberLayout() {
+  const { slug } = Route.useParams();
   const loc = useLocation();
   const navigate = useNavigate();
   const signOut = async () => {
@@ -20,12 +15,19 @@ function BarberLayout() {
     navigate({ to: "/auth" });
   };
 
+  const base = `/${slug}/barbeiro`;
+  const nav = [
+    { to: base, label: "Agenda", icon: Calendar },
+    { to: `${base}/historico`, label: "Histórico", icon: History },
+    { to: `${base}/ganhos`, label: "Ganhos", icon: DollarSign },
+  ];
+
   return (
     <div className="dark min-h-screen bg-background text-foreground pb-20">
       <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border/60 bg-card/60 px-4 backdrop-blur">
         <span className="font-heading text-lg">Painel do Barbeiro</span>
         <div className="ml-auto flex items-center gap-2 text-sm">
-          <Link to="/admin" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+          <Link to={`/${slug}/admin`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <Shield className="h-4 w-4" /> Admin
           </Link>
           <button onClick={signOut} className="text-muted-foreground hover:text-foreground">

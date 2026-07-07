@@ -182,7 +182,7 @@ function Booking() {
         notes: notes || null,
       });
       if (apptErr) throw apptErr;
-      navigate({ to: "/agendamento-confirmado" });
+      navigate({ to: "/$slug/agendamento-confirmado", params: { slug } });
     } catch (e: any) {
       const msg = String(e?.message ?? "");
       if (msg.includes("SLOT_TAKEN") || e?.code === "23505") {
