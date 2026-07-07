@@ -482,10 +482,15 @@ export type Database = {
       }
     }
     Functions: {
+      assign_barbershop_admin: {
+        Args: { _barbershop_id: string; _email: string }
+        Returns: string
+      }
       barber_user_owns_appt: {
         Args: { _barber_id: string; _barbershop_id: string; _user_id: string }
         Returns: boolean
       }
+      claim_superadmin: { Args: never; Returns: boolean }
       create_public_appointment: {
         Args: {
           _barber_id: string
@@ -550,6 +555,10 @@ export type Database = {
       public_upsert_client: {
         Args: { _barbershop_id: string; _name: string; _phone: string }
         Returns: string
+      }
+      update_barbershop_basic: {
+        Args: { _id: string; _name: string; _slug: string; _status: string }
+        Returns: boolean
       }
     }
     Enums: {
