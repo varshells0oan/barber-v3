@@ -51,7 +51,7 @@ function Booking() {
       const [s, b, sh] = await Promise.all([
         supabase.from("services").select("*").eq("active", true).order("price"),
         supabase.from("barbers").select("*").eq("active", true),
-        supabase.from("shop_settings").select("*").order("created_at", { ascending: false }).limit(1).maybeSingle(),
+        supabase.from("public_shop_settings" as any).select("*").limit(1).maybeSingle(),
       ]);
       setServices(s.data ?? []);
       setBarbers(b.data ?? []);
