@@ -451,12 +451,54 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_shop_settings: {
+        Row: {
+          address: string | null
+          banner_url: string | null
+          barbershop_id: string | null
+          blocked_dates: Json | null
+          description: string | null
+          differentials: Json | null
+          gallery: Json | null
+          id: string | null
+          instagram: string | null
+          logo_url: string | null
+          loyalty_reward: string | null
+          loyalty_target: number | null
+          name: string | null
+          phone: string | null
+          slot_buffer_min: number | null
+          whatsapp: string | null
+          work_hours: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_settings_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       barber_user_owns_appt: {
         Args: { _barber_id: string; _barbershop_id: string; _user_id: string }
         Returns: boolean
+      }
+      create_public_appointment: {
+        Args: {
+          _barber_id: string
+          _barbershop_id: string
+          _client_name: string
+          _client_phone: string
+          _date: string
+          _notes?: string
+          _service_id: string
+          _time: string
+        }
+        Returns: string
       }
       has_role: {
         Args: {
