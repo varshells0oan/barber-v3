@@ -33,9 +33,8 @@ function ClientArea() {
         _phone: cp,
       }),
       supabase
-        .from("shop_settings")
+        .from("public_shop_settings" as any)
         .select("*")
-        .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle(),
     ]);
