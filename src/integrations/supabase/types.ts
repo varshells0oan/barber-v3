@@ -171,6 +171,59 @@ export type Database = {
           },
         ]
       }
+      barbershop_invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          barbershop_id: string
+          created_at: string
+          created_by: string | null
+          email: string
+          expires_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          status: string
+          token_hash: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          barbershop_id: string
+          created_at?: string
+          created_by?: string | null
+          email: string
+          expires_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          token_hash: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          barbershop_id?: string
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          token_hash?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "barbershop_invites_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       barbershops: {
         Row: {
           address: string | null
@@ -482,6 +535,10 @@ export type Database = {
       }
     }
     Functions: {
+      accept_barbershop_invite: {
+        Args: { _token_hash: string }
+        Returns: string
+      }
       assign_barbershop_admin: {
         Args: { _barbershop_id: string; _email: string }
         Returns: string
@@ -490,7 +547,12 @@ export type Database = {
         Args: { _barber_id: string; _barbershop_id: string; _user_id: string }
         Returns: boolean
       }
+      cancel_barbershop_invite: { Args: { _id: string }; Returns: boolean }
       claim_superadmin: { Args: never; Returns: boolean }
+      create_barbershop_invite: {
+        Args: { _barbershop_id: string; _email: string; _token_hash: string }
+        Returns: string
+      }
       create_public_appointment: {
         Args: {
           _barber_id: string
@@ -503,6 +565,16 @@ export type Database = {
           _time: string
         }
         Returns: string
+      }
+      get_invite_by_hash: {
+        Args: { _token_hash: string }
+        Returns: {
+          barbershop_name: string
+          barbershop_slug: string
+          email: string
+          expires_at: string
+          status: string
+        }[]
       }
       has_role: {
         Args: {
