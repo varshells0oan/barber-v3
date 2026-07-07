@@ -79,16 +79,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Barbearia Azul — Agende seu corte online" },
+      { title: "BarberSaaS — Sistema para barbearias" },
       {
         name: "description",
         content:
           "Barbearia moderna com agendamento online. Cortes, barba e combos com atendimento premium.",
       },
-      { property: "og:title", content: "Barbearia Azul" },
-      { property: "og:description", content: "Agende seu corte online em poucos toques." },
+      { property: "og:title", content: "BarberSaaS — Sistema para barbearias" },
+      { property: "og:description", content: "Plataforma completa para barbearias: agenda online, gestão de barbeiros, financeiro e fidelidade." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BarberSaaS — Sistema para barbearias" },
+      { name: "description", content: "Plataforma completa para barbearias: agenda online, gestão de barbeiros, financeiro e fidelidade." },
+      { name: "twitter:description", content: "Plataforma completa para barbearias: agenda online, gestão de barbeiros, financeiro e fidelidade." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c42b24a-2ad5-4dda-b492-f85d6b41057e/id-preview-b84829e7--1186a258-e12f-4507-b222-f25ad2a2627b.lovable.app-1783440127546.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c42b24a-2ad5-4dda-b492-f85d6b41057e/id-preview-b84829e7--1186a258-e12f-4507-b222-f25ad2a2627b.lovable.app-1783440127546.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
