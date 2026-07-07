@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/barbeiros")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/barbeiros")({
   component: BarbersPage,
 });
 
@@ -55,6 +55,7 @@ const empty: BarberForm = {
 };
 
 function BarbersPage() {
+  const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<BarberForm | null>(null);
 
@@ -79,7 +80,7 @@ function BarbersPage() {
       q = supabase.from("barbers").update(payload).eq("id", id);
     } else {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      payload.barbershop_id = await getDefaultBarbershopId();
+      payload.barbershop_id = await getDefaultBarbershopId(slug);
       q = supabase.from("barbers").insert(payload);
     }
     const { error } = await q;

@@ -14,7 +14,7 @@ const searchSchema = z.object({
   service: z.string().optional(),
 });
 
-export const Route = createFileRoute("/agendar")({
+export const Route = createFileRoute("/$slug/")({
   validateSearch: (s) => searchSchema.parse(s),
   component: Booking,
 });
@@ -30,6 +30,7 @@ const DEFAULT_HOURS: Record<string, { start: string; end: string }> = {
 
 function Booking() {
   const { service: initialServiceId } = Route.useSearch();
+  const { slug } = Route.useParams();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [services, setServices] = useState<any[]>([]);
@@ -155,7 +156,7 @@ function Booking() {
     const cp = cleanPhone(phone);
     try {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      const barbershopId = await getDefaultBarbershopId();
+      const barbershopId = await getDefaultBarbershopId(slug);
       // Find or create client via RPC (não expõe tabela clients)
       const { data: clientId, error: cliErr } = await supabase.rpc(
         "public_upsert_client",
@@ -182,7 +183,7 @@ function Booking() {
         notes: notes || null,
       });
       if (apptErr) throw apptErr;
-      navigate({ to: "/agendamento-confirmado" });
+      navigate({ to: "/$slug/agendamento-confirmado", params: { slug } });
     } catch (e: any) {
       const msg = String(e?.message ?? "");
       if (msg.includes("SLOT_TAKEN") || e?.code === "23505") {
@@ -200,7 +201,7 @@ function Booking() {
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
-      <PublicHeader />
+      <PublicHeader slug={slug} />
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           {step > 0 && (

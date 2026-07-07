@@ -19,13 +19,33 @@ function AuthPage() {
   const routeAfterLogin = async (userId: string) => {
     const { data: roles } = await supabase
       .from("user_roles")
-      .select("role")
+      .select("role, barbershop_id")
       .eq("user_id", userId);
-    const list = (roles ?? []).map((r: any) => r.role);
-    if (list.includes("superadmin")) return navigate({ to: "/superadmin" });
-    if (list.includes("barber") && !list.includes("admin"))
-      return navigate({ to: "/barbeiro" });
-    return navigate({ to: "/admin" });
+    const list = (roles ?? []) as Array<{ role: string; barbershop_id: string | null }>;
+
+    if (list.some((r) => r.role === "superadmin")) {
+      return navigate({ to: "/superadmin" });
+    }
+
+    const barberRow = list.find((r) => r.role === "barber" && r.barbershop_id);
+    const adminRow = list.find((r) => r.role === "admin" && r.barbershop_id);
+    const target = adminRow ?? barberRow;
+
+    if (!target?.barbershop_id) {
+      return navigate({ to: "/" });
+    }
+
+    const { data: shop } = await supabase
+      .from("barbershops")
+      .select("slug")
+      .eq("id", target.barbershop_id)
+      .maybeSingle();
+    if (!shop?.slug) return navigate({ to: "/" });
+
+    if (adminRow) {
+      return navigate({ to: "/$slug/admin", params: { slug: shop.slug } });
+    }
+    return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug } });
   };
 
   useEffect(() => {
@@ -43,32 +63,16 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}/auth` },
         });
         if (error) throw error;
-        if (data.user) {
-          await supabase
-            .from("user_roles")
-            .insert({ user_id: data.user.id, role: "admin" });
-        }
-        toast.success("Conta criada!");
+        toast.success("Conta criada! O superadmin precisa vincular sua conta a uma barbearia.");
         if (data.user) await routeAfterLogin(data.user.id);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         const { data: userRes } = await supabase.auth.getUser();
-        if (userRes.user) {
-          const { data: existingRoles } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", userRes.user.id);
-          if (!existingRoles || existingRoles.length === 0) {
-            await supabase
-              .from("user_roles")
-              .insert({ user_id: userRes.user.id, role: "admin" });
-          }
-          await routeAfterLogin(userRes.user.id);
-        }
+        if (userRes.user) await routeAfterLogin(userRes.user.id);
       }
 
     } catch (e: any) {

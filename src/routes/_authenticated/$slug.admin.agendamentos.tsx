@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { brl, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/agendamentos")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/agendamentos")({
   component: Appointments,
 });
 

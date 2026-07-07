@@ -14,39 +14,41 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute("/_authenticated/$slug/admin")({
   component: AdminLayout,
 });
 
-const navGroups = [
-  {
-    label: "Visão Geral",
-    items: [
-      { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
-      { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
-    ],
-  },
-  {
-    label: "Cadastro",
-    items: [
-      { to: "/admin/barbeiros", label: "Barbeiros", icon: UserCog },
-      { to: "/admin/servicos", label: "Serviços", icon: Scissors },
-      { to: "/admin/clientes", label: "Clientes", icon: Users },
-    ],
-  },
-  {
-    label: "Gestão",
-    items: [
-      { to: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
-      { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
-    ],
-  },
-] as const;
-
 function AdminLayout() {
+  const { slug } = Route.useParams();
   const loc = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  const base = `/${slug}/admin`;
+  const navGroups = [
+    {
+      label: "Visão Geral",
+      items: [
+        { to: base, exact: true, label: "Dashboard", icon: LayoutDashboard },
+        { to: `${base}/agendamentos`, label: "Agendamentos", icon: Calendar },
+      ],
+    },
+    {
+      label: "Cadastro",
+      items: [
+        { to: `${base}/barbeiros`, label: "Barbeiros", icon: UserCog },
+        { to: `${base}/servicos`, label: "Serviços", icon: Scissors },
+        { to: `${base}/clientes`, label: "Clientes", icon: Users },
+      ],
+    },
+    {
+      label: "Gestão",
+      items: [
+        { to: `${base}/financeiro`, label: "Financeiro", icon: DollarSign },
+        { to: `${base}/configuracoes`, label: "Configurações", icon: Settings },
+      ],
+    },
+  ];
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -62,9 +64,7 @@ function AdminLayout() {
           </div>
           <div className="space-y-1">
             {group.items.map((n) => {
-              const active =
-                loc.pathname === n.to ||
-                (n.to !== "/admin" && loc.pathname.startsWith(n.to));
+              const active = n.exact ? loc.pathname === n.to : loc.pathname.startsWith(n.to);
               return (
                 <Link
                   key={n.to}
@@ -86,10 +86,9 @@ function AdminLayout() {
     </nav>
   );
 
-
   const Brand = () => (
     <div className="border-b border-border/60 p-4">
-      <Link to="/admin" className="flex items-center gap-2 font-heading text-lg text-foreground">
+      <Link to={base} className="flex items-center gap-2 font-heading text-lg text-foreground">
         <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
           <Scissors className="h-4 w-4" />
         </div>
@@ -101,7 +100,7 @@ function AdminLayout() {
   const Footer = ({ onNavigate }: { onNavigate?: () => void }) => (
     <div className="border-t border-border/60 p-3">
       <Link
-        to="/barbeiro"
+        to={`/${slug}/barbeiro`}
         onClick={onNavigate}
         className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent/40 hover:text-foreground"
       >
@@ -118,14 +117,12 @@ function AdminLayout() {
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
-      {/* Sidebar desktop */}
       <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border/60 bg-card/40 backdrop-blur lg:flex">
         <Brand />
         <NavList />
         <Footer />
       </aside>
 
-      {/* Mobile top bar */}
       <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border/60 bg-card/60 px-4 backdrop-blur lg:hidden">
         <button
           onClick={() => setOpen(true)}
@@ -140,20 +137,12 @@ function AdminLayout() {
         </button>
       </header>
 
-      {/* Mobile side drawer */}
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
           <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r border-border/60 bg-card shadow-2xl">
             <div className="flex items-center justify-between border-b border-border/60 p-4">
-              <Link
-                to="/admin"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 font-heading text-lg"
-              >
+              <Link to={base} onClick={() => setOpen(false)} className="flex items-center gap-2 font-heading text-lg">
                 <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
                   <Scissors className="h-4 w-4" />
                 </div>

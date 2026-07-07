@@ -5,11 +5,12 @@ import { PublicHeader } from "@/components/PublicHeader";
 import { brl, cleanPhone, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { Search } from "lucide-react";
 
-export const Route = createFileRoute("/meus-agendamentos")({
+export const Route = createFileRoute("/$slug/meus-agendamentos")({
   component: ClientArea,
 });
 
 function ClientArea() {
+  const { slug } = Route.useParams();
   const [phone, setPhone] = useState("");
   const [searched, setSearched] = useState(false);
   const [appts, setAppts] = useState<any[]>([]);
@@ -21,7 +22,7 @@ function ClientArea() {
     setLoading(true);
     const cp = cleanPhone(phone);
     const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-    const barbershopId = await getDefaultBarbershopId();
+    const barbershopId = await getDefaultBarbershopId(slug);
     const [{ data: a }, { data: c }, { data: sh }] = await Promise.all([
       supabase.rpc("public_get_my_appointments", {
         _barbershop_id: barbershopId,
@@ -51,7 +52,7 @@ function ClientArea() {
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
-      <PublicHeader />
+      <PublicHeader slug={slug} />
       <div className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="text-2xl font-semibold text-foreground">Meus agendamentos</h1>
         <p className="mt-1 text-sm text-muted-foreground">

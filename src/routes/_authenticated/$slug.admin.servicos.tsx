@@ -5,7 +5,7 @@ import { brl } from "@/lib/format";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/servicos")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/servicos")({
   component: ServicesPage,
 });
 
@@ -31,6 +31,7 @@ const empty: Form = {
 };
 
 function ServicesPage() {
+  const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<Form | null>(null);
 
@@ -55,7 +56,7 @@ function ServicesPage() {
       q = supabase.from("services").update(payload).eq("id", id);
     } else {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      payload.barbershop_id = await getDefaultBarbershopId();
+      payload.barbershop_id = await getDefaultBarbershopId(slug);
       q = supabase.from("services").insert(payload);
     }
     const { error } = await q;

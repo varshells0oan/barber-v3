@@ -9,44 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MeusAgendamentosRouteImport } from './routes/meus-agendamentos'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AgendarRouteImport } from './routes/agendar'
-import { Route as AgendamentoConfirmadoRouteImport } from './routes/agendamento-confirmado'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlugIndexRouteImport } from './routes/$slug.index'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
-import { Route as AuthenticatedBarbeiroRouteImport } from './routes/_authenticated/barbeiro'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedBarbeiroIndexRouteImport } from './routes/_authenticated/barbeiro.index'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as AuthenticatedBarbeiroHistoricoRouteImport } from './routes/_authenticated/barbeiro.historico'
-import { Route as AuthenticatedBarbeiroGanhosRouteImport } from './routes/_authenticated/barbeiro.ganhos'
-import { Route as AuthenticatedAdminServicosRouteImport } from './routes/_authenticated/admin.servicos'
-import { Route as AuthenticatedAdminFinanceiroRouteImport } from './routes/_authenticated/admin.financeiro'
-import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin.configuracoes'
-import { Route as AuthenticatedAdminClientesRouteImport } from './routes/_authenticated/admin.clientes'
-import { Route as AuthenticatedAdminBarbeirosRouteImport } from './routes/_authenticated/admin.barbeiros'
-import { Route as AuthenticatedAdminAgendamentosRouteImport } from './routes/_authenticated/admin.agendamentos'
+import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
+import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
+import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
+import { Route as AuthenticatedSlugAdminRouteImport } from './routes/_authenticated/$slug.admin'
+import { Route as AuthenticatedSlugBarbeiroIndexRouteImport } from './routes/_authenticated/$slug.barbeiro.index'
+import { Route as AuthenticatedSlugAdminIndexRouteImport } from './routes/_authenticated/$slug.admin.index'
+import { Route as AuthenticatedSlugBarbeiroHistoricoRouteImport } from './routes/_authenticated/$slug.barbeiro.historico'
+import { Route as AuthenticatedSlugBarbeiroGanhosRouteImport } from './routes/_authenticated/$slug.barbeiro.ganhos'
+import { Route as AuthenticatedSlugAdminServicosRouteImport } from './routes/_authenticated/$slug.admin.servicos'
+import { Route as AuthenticatedSlugAdminFinanceiroRouteImport } from './routes/_authenticated/$slug.admin.financeiro'
+import { Route as AuthenticatedSlugAdminConfiguracoesRouteImport } from './routes/_authenticated/$slug.admin.configuracoes'
+import { Route as AuthenticatedSlugAdminClientesRouteImport } from './routes/_authenticated/$slug.admin.clientes'
+import { Route as AuthenticatedSlugAdminBarbeirosRouteImport } from './routes/_authenticated/$slug.admin.barbeiros'
+import { Route as AuthenticatedSlugAdminAgendamentosRouteImport } from './routes/_authenticated/$slug.admin.agendamentos'
 
-const MeusAgendamentosRoute = MeusAgendamentosRouteImport.update({
-  id: '/meus-agendamentos',
-  path: '/meus-agendamentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendarRoute = AgendarRouteImport.update({
-  id: '/agendar',
-  path: '/agendar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendamentoConfirmadoRoute = AgendamentoConfirmadoRouteImport.update({
-  id: '/agendamento-confirmado',
-  path: '/agendamento-confirmado',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -58,240 +43,237 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugIndexRoute = SlugIndexRouteImport.update({
+  id: '/$slug/',
+  path: '/$slug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
   id: '/superadmin',
   path: '/superadmin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedBarbeiroRoute = AuthenticatedBarbeiroRouteImport.update({
-  id: '/barbeiro',
-  path: '/barbeiro',
+const SlugMeusAgendamentosRoute = SlugMeusAgendamentosRouteImport.update({
+  id: '/$slug/meus-agendamentos',
+  path: '/$slug/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugAgendamentoConfirmadoRoute =
+  SlugAgendamentoConfirmadoRouteImport.update({
+    id: '/$slug/agendamento-confirmado',
+    path: '/$slug/agendamento-confirmado',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedSlugBarbeiroRoute =
+  AuthenticatedSlugBarbeiroRouteImport.update({
+    id: '/$slug/barbeiro',
+    path: '/$slug/barbeiro',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSlugAdminRoute = AuthenticatedSlugAdminRouteImport.update({
+  id: '/$slug/admin',
+  path: '/$slug/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedBarbeiroIndexRoute =
-  AuthenticatedBarbeiroIndexRouteImport.update({
+const AuthenticatedSlugBarbeiroIndexRoute =
+  AuthenticatedSlugBarbeiroIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedBarbeiroRoute,
+    getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedBarbeiroHistoricoRoute =
-  AuthenticatedBarbeiroHistoricoRouteImport.update({
+const AuthenticatedSlugAdminIndexRoute =
+  AuthenticatedSlugAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugBarbeiroHistoricoRoute =
+  AuthenticatedSlugBarbeiroHistoricoRouteImport.update({
     id: '/historico',
     path: '/historico',
-    getParentRoute: () => AuthenticatedBarbeiroRoute,
+    getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
-const AuthenticatedBarbeiroGanhosRoute =
-  AuthenticatedBarbeiroGanhosRouteImport.update({
+const AuthenticatedSlugBarbeiroGanhosRoute =
+  AuthenticatedSlugBarbeiroGanhosRouteImport.update({
     id: '/ganhos',
     path: '/ganhos',
-    getParentRoute: () => AuthenticatedBarbeiroRoute,
+    getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
-const AuthenticatedAdminServicosRoute =
-  AuthenticatedAdminServicosRouteImport.update({
+const AuthenticatedSlugAdminServicosRoute =
+  AuthenticatedSlugAdminServicosRouteImport.update({
     id: '/servicos',
     path: '/servicos',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedAdminFinanceiroRoute =
-  AuthenticatedAdminFinanceiroRouteImport.update({
+const AuthenticatedSlugAdminFinanceiroRoute =
+  AuthenticatedSlugAdminFinanceiroRouteImport.update({
     id: '/financeiro',
     path: '/financeiro',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedAdminConfiguracoesRoute =
-  AuthenticatedAdminConfiguracoesRouteImport.update({
+const AuthenticatedSlugAdminConfiguracoesRoute =
+  AuthenticatedSlugAdminConfiguracoesRouteImport.update({
     id: '/configuracoes',
     path: '/configuracoes',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedAdminClientesRoute =
-  AuthenticatedAdminClientesRouteImport.update({
+const AuthenticatedSlugAdminClientesRoute =
+  AuthenticatedSlugAdminClientesRouteImport.update({
     id: '/clientes',
     path: '/clientes',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedAdminBarbeirosRoute =
-  AuthenticatedAdminBarbeirosRouteImport.update({
+const AuthenticatedSlugAdminBarbeirosRoute =
+  AuthenticatedSlugAdminBarbeirosRouteImport.update({
     id: '/barbeiros',
     path: '/barbeiros',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedAdminAgendamentosRoute =
-  AuthenticatedAdminAgendamentosRouteImport.update({
+const AuthenticatedSlugAdminAgendamentosRoute =
+  AuthenticatedSlugAdminAgendamentosRouteImport.update({
     id: '/agendamentos',
     path: '/agendamentos',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
-  '/agendar': typeof AgendarRoute
   '/auth': typeof AuthRoute
-  '/meus-agendamentos': typeof MeusAgendamentosRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
-  '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
-  '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
-  '/admin/clientes': typeof AuthenticatedAdminClientesRoute
-  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
-  '/admin/servicos': typeof AuthenticatedAdminServicosRoute
-  '/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
-  '/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
-  '/barbeiro/': typeof AuthenticatedBarbeiroIndexRoute
+  '/$slug/': typeof SlugIndexRoute
+  '/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
+  '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
+  '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
+  '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
+  '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
+  '/$slug/admin/configuracoes': typeof AuthenticatedSlugAdminConfiguracoesRoute
+  '/$slug/admin/financeiro': typeof AuthenticatedSlugAdminFinanceiroRoute
+  '/$slug/admin/servicos': typeof AuthenticatedSlugAdminServicosRoute
+  '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
+  '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/$slug/admin/': typeof AuthenticatedSlugAdminIndexRoute
+  '/$slug/barbeiro/': typeof AuthenticatedSlugBarbeiroIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
-  '/agendar': typeof AgendarRoute
   '/auth': typeof AuthRoute
-  '/meus-agendamentos': typeof MeusAgendamentosRoute
+  '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
-  '/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
-  '/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
-  '/admin/clientes': typeof AuthenticatedAdminClientesRoute
-  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
-  '/admin/servicos': typeof AuthenticatedAdminServicosRoute
-  '/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
-  '/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
-  '/barbeiro': typeof AuthenticatedBarbeiroIndexRoute
+  '/$slug': typeof SlugIndexRoute
+  '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
+  '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
+  '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
+  '/$slug/admin/configuracoes': typeof AuthenticatedSlugAdminConfiguracoesRoute
+  '/$slug/admin/financeiro': typeof AuthenticatedSlugAdminFinanceiroRoute
+  '/$slug/admin/servicos': typeof AuthenticatedSlugAdminServicosRoute
+  '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
+  '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/$slug/admin': typeof AuthenticatedSlugAdminIndexRoute
+  '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/agendamento-confirmado': typeof AgendamentoConfirmadoRoute
-  '/agendar': typeof AgendarRoute
   '/auth': typeof AuthRoute
-  '/meus-agendamentos': typeof MeusAgendamentosRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/barbeiro': typeof AuthenticatedBarbeiroRouteWithChildren
+  '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
-  '/_authenticated/admin/agendamentos': typeof AuthenticatedAdminAgendamentosRoute
-  '/_authenticated/admin/barbeiros': typeof AuthenticatedAdminBarbeirosRoute
-  '/_authenticated/admin/clientes': typeof AuthenticatedAdminClientesRoute
-  '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/_authenticated/admin/financeiro': typeof AuthenticatedAdminFinanceiroRoute
-  '/_authenticated/admin/servicos': typeof AuthenticatedAdminServicosRoute
-  '/_authenticated/barbeiro/ganhos': typeof AuthenticatedBarbeiroGanhosRoute
-  '/_authenticated/barbeiro/historico': typeof AuthenticatedBarbeiroHistoricoRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
-  '/_authenticated/barbeiro/': typeof AuthenticatedBarbeiroIndexRoute
+  '/$slug/': typeof SlugIndexRoute
+  '/_authenticated/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
+  '/_authenticated/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
+  '/_authenticated/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
+  '/_authenticated/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
+  '/_authenticated/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
+  '/_authenticated/$slug/admin/configuracoes': typeof AuthenticatedSlugAdminConfiguracoesRoute
+  '/_authenticated/$slug/admin/financeiro': typeof AuthenticatedSlugAdminFinanceiroRoute
+  '/_authenticated/$slug/admin/servicos': typeof AuthenticatedSlugAdminServicosRoute
+  '/_authenticated/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
+  '/_authenticated/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/_authenticated/$slug/admin/': typeof AuthenticatedSlugAdminIndexRoute
+  '/_authenticated/$slug/barbeiro/': typeof AuthenticatedSlugBarbeiroIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agendamento-confirmado'
-    | '/agendar'
     | '/auth'
-    | '/meus-agendamentos'
-    | '/admin'
-    | '/barbeiro'
+    | '/$slug/agendamento-confirmado'
+    | '/$slug/meus-agendamentos'
     | '/superadmin'
-    | '/admin/agendamentos'
-    | '/admin/barbeiros'
-    | '/admin/clientes'
-    | '/admin/configuracoes'
-    | '/admin/financeiro'
-    | '/admin/servicos'
-    | '/barbeiro/ganhos'
-    | '/barbeiro/historico'
-    | '/admin/'
-    | '/barbeiro/'
+    | '/$slug/'
+    | '/$slug/admin'
+    | '/$slug/barbeiro'
+    | '/$slug/admin/agendamentos'
+    | '/$slug/admin/barbeiros'
+    | '/$slug/admin/clientes'
+    | '/$slug/admin/configuracoes'
+    | '/$slug/admin/financeiro'
+    | '/$slug/admin/servicos'
+    | '/$slug/barbeiro/ganhos'
+    | '/$slug/barbeiro/historico'
+    | '/$slug/admin/'
+    | '/$slug/barbeiro/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agendamento-confirmado'
-    | '/agendar'
     | '/auth'
-    | '/meus-agendamentos'
+    | '/$slug/agendamento-confirmado'
+    | '/$slug/meus-agendamentos'
     | '/superadmin'
-    | '/admin/agendamentos'
-    | '/admin/barbeiros'
-    | '/admin/clientes'
-    | '/admin/configuracoes'
-    | '/admin/financeiro'
-    | '/admin/servicos'
-    | '/barbeiro/ganhos'
-    | '/barbeiro/historico'
-    | '/admin'
-    | '/barbeiro'
+    | '/$slug'
+    | '/$slug/admin/agendamentos'
+    | '/$slug/admin/barbeiros'
+    | '/$slug/admin/clientes'
+    | '/$slug/admin/configuracoes'
+    | '/$slug/admin/financeiro'
+    | '/$slug/admin/servicos'
+    | '/$slug/barbeiro/ganhos'
+    | '/$slug/barbeiro/historico'
+    | '/$slug/admin'
+    | '/$slug/barbeiro'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/agendamento-confirmado'
-    | '/agendar'
     | '/auth'
-    | '/meus-agendamentos'
-    | '/_authenticated/admin'
-    | '/_authenticated/barbeiro'
+    | '/$slug/agendamento-confirmado'
+    | '/$slug/meus-agendamentos'
     | '/_authenticated/superadmin'
-    | '/_authenticated/admin/agendamentos'
-    | '/_authenticated/admin/barbeiros'
-    | '/_authenticated/admin/clientes'
-    | '/_authenticated/admin/configuracoes'
-    | '/_authenticated/admin/financeiro'
-    | '/_authenticated/admin/servicos'
-    | '/_authenticated/barbeiro/ganhos'
-    | '/_authenticated/barbeiro/historico'
-    | '/_authenticated/admin/'
-    | '/_authenticated/barbeiro/'
+    | '/$slug/'
+    | '/_authenticated/$slug/admin'
+    | '/_authenticated/$slug/barbeiro'
+    | '/_authenticated/$slug/admin/agendamentos'
+    | '/_authenticated/$slug/admin/barbeiros'
+    | '/_authenticated/$slug/admin/clientes'
+    | '/_authenticated/$slug/admin/configuracoes'
+    | '/_authenticated/$slug/admin/financeiro'
+    | '/_authenticated/$slug/admin/servicos'
+    | '/_authenticated/$slug/barbeiro/ganhos'
+    | '/_authenticated/$slug/barbeiro/historico'
+    | '/_authenticated/$slug/admin/'
+    | '/_authenticated/$slug/barbeiro/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AgendamentoConfirmadoRoute: typeof AgendamentoConfirmadoRoute
-  AgendarRoute: typeof AgendarRoute
   AuthRoute: typeof AuthRoute
-  MeusAgendamentosRoute: typeof MeusAgendamentosRoute
+  SlugAgendamentoConfirmadoRoute: typeof SlugAgendamentoConfirmadoRoute
+  SlugMeusAgendamentosRoute: typeof SlugMeusAgendamentosRoute
+  SlugIndexRoute: typeof SlugIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/meus-agendamentos': {
-      id: '/meus-agendamentos'
-      path: '/meus-agendamentos'
-      fullPath: '/meus-agendamentos'
-      preLoaderRoute: typeof MeusAgendamentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agendar': {
-      id: '/agendar'
-      path: '/agendar'
-      fullPath: '/agendar'
-      preLoaderRoute: typeof AgendarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agendamento-confirmado': {
-      id: '/agendamento-confirmado'
-      path: '/agendamento-confirmado'
-      fullPath: '/agendamento-confirmado'
-      preLoaderRoute: typeof AgendamentoConfirmadoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -308,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$slug/': {
+      id: '/$slug/'
+      path: '/$slug'
+      fullPath: '/$slug/'
+      preLoaderRoute: typeof SlugIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/superadmin': {
       id: '/_authenticated/superadmin'
       path: '/superadmin'
@@ -315,143 +304,165 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperadminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/barbeiro': {
-      id: '/_authenticated/barbeiro'
-      path: '/barbeiro'
-      fullPath: '/barbeiro'
-      preLoaderRoute: typeof AuthenticatedBarbeiroRouteImport
+    '/$slug/meus-agendamentos': {
+      id: '/$slug/meus-agendamentos'
+      path: '/$slug/meus-agendamentos'
+      fullPath: '/$slug/meus-agendamentos'
+      preLoaderRoute: typeof SlugMeusAgendamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$slug/agendamento-confirmado': {
+      id: '/$slug/agendamento-confirmado'
+      path: '/$slug/agendamento-confirmado'
+      fullPath: '/$slug/agendamento-confirmado'
+      preLoaderRoute: typeof SlugAgendamentoConfirmadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/$slug/barbeiro': {
+      id: '/_authenticated/$slug/barbeiro'
+      path: '/$slug/barbeiro'
+      fullPath: '/$slug/barbeiro'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/$slug/admin': {
+      id: '/_authenticated/$slug/admin'
+      path: '/$slug/admin'
+      fullPath: '/$slug/admin'
+      preLoaderRoute: typeof AuthenticatedSlugAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/barbeiro/': {
-      id: '/_authenticated/barbeiro/'
+    '/_authenticated/$slug/barbeiro/': {
+      id: '/_authenticated/$slug/barbeiro/'
       path: '/'
-      fullPath: '/barbeiro/'
-      preLoaderRoute: typeof AuthenticatedBarbeiroIndexRouteImport
-      parentRoute: typeof AuthenticatedBarbeiroRoute
+      fullPath: '/$slug/barbeiro/'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroIndexRouteImport
+      parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
+    '/_authenticated/$slug/admin/': {
+      id: '/_authenticated/$slug/admin/'
       path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/'
+      preLoaderRoute: typeof AuthenticatedSlugAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/barbeiro/historico': {
-      id: '/_authenticated/barbeiro/historico'
+    '/_authenticated/$slug/barbeiro/historico': {
+      id: '/_authenticated/$slug/barbeiro/historico'
       path: '/historico'
-      fullPath: '/barbeiro/historico'
-      preLoaderRoute: typeof AuthenticatedBarbeiroHistoricoRouteImport
-      parentRoute: typeof AuthenticatedBarbeiroRoute
+      fullPath: '/$slug/barbeiro/historico'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroHistoricoRouteImport
+      parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
-    '/_authenticated/barbeiro/ganhos': {
-      id: '/_authenticated/barbeiro/ganhos'
+    '/_authenticated/$slug/barbeiro/ganhos': {
+      id: '/_authenticated/$slug/barbeiro/ganhos'
       path: '/ganhos'
-      fullPath: '/barbeiro/ganhos'
-      preLoaderRoute: typeof AuthenticatedBarbeiroGanhosRouteImport
-      parentRoute: typeof AuthenticatedBarbeiroRoute
+      fullPath: '/$slug/barbeiro/ganhos'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroGanhosRouteImport
+      parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
-    '/_authenticated/admin/servicos': {
-      id: '/_authenticated/admin/servicos'
+    '/_authenticated/$slug/admin/servicos': {
+      id: '/_authenticated/$slug/admin/servicos'
       path: '/servicos'
-      fullPath: '/admin/servicos'
-      preLoaderRoute: typeof AuthenticatedAdminServicosRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/servicos'
+      preLoaderRoute: typeof AuthenticatedSlugAdminServicosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/admin/financeiro': {
-      id: '/_authenticated/admin/financeiro'
+    '/_authenticated/$slug/admin/financeiro': {
+      id: '/_authenticated/$slug/admin/financeiro'
       path: '/financeiro'
-      fullPath: '/admin/financeiro'
-      preLoaderRoute: typeof AuthenticatedAdminFinanceiroRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/financeiro'
+      preLoaderRoute: typeof AuthenticatedSlugAdminFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/admin/configuracoes': {
-      id: '/_authenticated/admin/configuracoes'
+    '/_authenticated/$slug/admin/configuracoes': {
+      id: '/_authenticated/$slug/admin/configuracoes'
       path: '/configuracoes'
-      fullPath: '/admin/configuracoes'
-      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedSlugAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/admin/clientes': {
-      id: '/_authenticated/admin/clientes'
+    '/_authenticated/$slug/admin/clientes': {
+      id: '/_authenticated/$slug/admin/clientes'
       path: '/clientes'
-      fullPath: '/admin/clientes'
-      preLoaderRoute: typeof AuthenticatedAdminClientesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/clientes'
+      preLoaderRoute: typeof AuthenticatedSlugAdminClientesRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/admin/barbeiros': {
-      id: '/_authenticated/admin/barbeiros'
+    '/_authenticated/$slug/admin/barbeiros': {
+      id: '/_authenticated/$slug/admin/barbeiros'
       path: '/barbeiros'
-      fullPath: '/admin/barbeiros'
-      preLoaderRoute: typeof AuthenticatedAdminBarbeirosRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/barbeiros'
+      preLoaderRoute: typeof AuthenticatedSlugAdminBarbeirosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/admin/agendamentos': {
-      id: '/_authenticated/admin/agendamentos'
+    '/_authenticated/$slug/admin/agendamentos': {
+      id: '/_authenticated/$slug/admin/agendamentos'
       path: '/agendamentos'
-      fullPath: '/admin/agendamentos'
-      preLoaderRoute: typeof AuthenticatedAdminAgendamentosRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/$slug/admin/agendamentos'
+      preLoaderRoute: typeof AuthenticatedSlugAdminAgendamentosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminAgendamentosRoute: typeof AuthenticatedAdminAgendamentosRoute
-  AuthenticatedAdminBarbeirosRoute: typeof AuthenticatedAdminBarbeirosRoute
-  AuthenticatedAdminClientesRoute: typeof AuthenticatedAdminClientesRoute
-  AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
-  AuthenticatedAdminFinanceiroRoute: typeof AuthenticatedAdminFinanceiroRoute
-  AuthenticatedAdminServicosRoute: typeof AuthenticatedAdminServicosRoute
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+interface AuthenticatedSlugAdminRouteChildren {
+  AuthenticatedSlugAdminAgendamentosRoute: typeof AuthenticatedSlugAdminAgendamentosRoute
+  AuthenticatedSlugAdminBarbeirosRoute: typeof AuthenticatedSlugAdminBarbeirosRoute
+  AuthenticatedSlugAdminClientesRoute: typeof AuthenticatedSlugAdminClientesRoute
+  AuthenticatedSlugAdminConfiguracoesRoute: typeof AuthenticatedSlugAdminConfiguracoesRoute
+  AuthenticatedSlugAdminFinanceiroRoute: typeof AuthenticatedSlugAdminFinanceiroRoute
+  AuthenticatedSlugAdminServicosRoute: typeof AuthenticatedSlugAdminServicosRoute
+  AuthenticatedSlugAdminIndexRoute: typeof AuthenticatedSlugAdminIndexRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminAgendamentosRoute: AuthenticatedAdminAgendamentosRoute,
-  AuthenticatedAdminBarbeirosRoute: AuthenticatedAdminBarbeirosRoute,
-  AuthenticatedAdminClientesRoute: AuthenticatedAdminClientesRoute,
-  AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
-  AuthenticatedAdminFinanceiroRoute: AuthenticatedAdminFinanceiroRoute,
-  AuthenticatedAdminServicosRoute: AuthenticatedAdminServicosRoute,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+const AuthenticatedSlugAdminRouteChildren: AuthenticatedSlugAdminRouteChildren =
+  {
+    AuthenticatedSlugAdminAgendamentosRoute:
+      AuthenticatedSlugAdminAgendamentosRoute,
+    AuthenticatedSlugAdminBarbeirosRoute: AuthenticatedSlugAdminBarbeirosRoute,
+    AuthenticatedSlugAdminClientesRoute: AuthenticatedSlugAdminClientesRoute,
+    AuthenticatedSlugAdminConfiguracoesRoute:
+      AuthenticatedSlugAdminConfiguracoesRoute,
+    AuthenticatedSlugAdminFinanceiroRoute:
+      AuthenticatedSlugAdminFinanceiroRoute,
+    AuthenticatedSlugAdminServicosRoute: AuthenticatedSlugAdminServicosRoute,
+    AuthenticatedSlugAdminIndexRoute: AuthenticatedSlugAdminIndexRoute,
+  }
+
+const AuthenticatedSlugAdminRouteWithChildren =
+  AuthenticatedSlugAdminRoute._addFileChildren(
+    AuthenticatedSlugAdminRouteChildren,
+  )
+
+interface AuthenticatedSlugBarbeiroRouteChildren {
+  AuthenticatedSlugBarbeiroGanhosRoute: typeof AuthenticatedSlugBarbeiroGanhosRoute
+  AuthenticatedSlugBarbeiroHistoricoRoute: typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  AuthenticatedSlugBarbeiroIndexRoute: typeof AuthenticatedSlugBarbeiroIndexRoute
 }
 
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+const AuthenticatedSlugBarbeiroRouteChildren: AuthenticatedSlugBarbeiroRouteChildren =
+  {
+    AuthenticatedSlugBarbeiroGanhosRoute: AuthenticatedSlugBarbeiroGanhosRoute,
+    AuthenticatedSlugBarbeiroHistoricoRoute:
+      AuthenticatedSlugBarbeiroHistoricoRoute,
+    AuthenticatedSlugBarbeiroIndexRoute: AuthenticatedSlugBarbeiroIndexRoute,
+  }
 
-interface AuthenticatedBarbeiroRouteChildren {
-  AuthenticatedBarbeiroGanhosRoute: typeof AuthenticatedBarbeiroGanhosRoute
-  AuthenticatedBarbeiroHistoricoRoute: typeof AuthenticatedBarbeiroHistoricoRoute
-  AuthenticatedBarbeiroIndexRoute: typeof AuthenticatedBarbeiroIndexRoute
-}
-
-const AuthenticatedBarbeiroRouteChildren: AuthenticatedBarbeiroRouteChildren = {
-  AuthenticatedBarbeiroGanhosRoute: AuthenticatedBarbeiroGanhosRoute,
-  AuthenticatedBarbeiroHistoricoRoute: AuthenticatedBarbeiroHistoricoRoute,
-  AuthenticatedBarbeiroIndexRoute: AuthenticatedBarbeiroIndexRoute,
-}
-
-const AuthenticatedBarbeiroRouteWithChildren =
-  AuthenticatedBarbeiroRoute._addFileChildren(
-    AuthenticatedBarbeiroRouteChildren,
+const AuthenticatedSlugBarbeiroRouteWithChildren =
+  AuthenticatedSlugBarbeiroRoute._addFileChildren(
+    AuthenticatedSlugBarbeiroRouteChildren,
   )
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-  AuthenticatedBarbeiroRoute: typeof AuthenticatedBarbeiroRouteWithChildren
   AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
+  AuthenticatedSlugAdminRoute: typeof AuthenticatedSlugAdminRouteWithChildren
+  AuthenticatedSlugBarbeiroRoute: typeof AuthenticatedSlugBarbeiroRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
-  AuthenticatedBarbeiroRoute: AuthenticatedBarbeiroRouteWithChildren,
   AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
+  AuthenticatedSlugAdminRoute: AuthenticatedSlugAdminRouteWithChildren,
+  AuthenticatedSlugBarbeiroRoute: AuthenticatedSlugBarbeiroRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -460,10 +471,10 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AgendamentoConfirmadoRoute: AgendamentoConfirmadoRoute,
-  AgendarRoute: AgendarRoute,
   AuthRoute: AuthRoute,
-  MeusAgendamentosRoute: MeusAgendamentosRoute,
+  SlugAgendamentoConfirmadoRoute: SlugAgendamentoConfirmadoRoute,
+  SlugMeusAgendamentosRoute: SlugMeusAgendamentosRoute,
+  SlugIndexRoute: SlugIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

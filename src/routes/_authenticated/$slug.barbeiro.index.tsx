@@ -5,7 +5,7 @@ import { brl, todayISO, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/barbeiro/")({
+export const Route = createFileRoute("/_authenticated/$slug/barbeiro/")({
   component: Agenda,
 });
 

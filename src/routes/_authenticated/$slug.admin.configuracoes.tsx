@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
 
-export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/configuracoes")({
   component: Config,
 });
 
@@ -21,6 +21,7 @@ const DAYS = [
 type Hours = Record<string, { start: string; end: string } | null>;
 
 function Config() {
+  const { slug } = Route.useParams();
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
@@ -81,7 +82,7 @@ function Config() {
       q = supabase.from("shop_settings").update(payload).eq("id", s.id);
     } else {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      q = supabase.from("shop_settings").insert({ ...payload, barbershop_id: await getDefaultBarbershopId() });
+      q = supabase.from("shop_settings").insert({ ...payload, barbershop_id: await getDefaultBarbershopId(slug) });
     }
     const { error } = await q;
     if (error) return toast.error(error.message);
