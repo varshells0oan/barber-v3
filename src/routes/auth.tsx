@@ -63,32 +63,16 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}/auth` },
         });
         if (error) throw error;
-        if (data.user) {
-          await supabase
-            .from("user_roles")
-            .insert({ user_id: data.user.id, role: "admin" });
-        }
-        toast.success("Conta criada!");
+        toast.success("Conta criada! O superadmin precisa vincular sua conta a uma barbearia.");
         if (data.user) await routeAfterLogin(data.user.id);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         const { data: userRes } = await supabase.auth.getUser();
-        if (userRes.user) {
-          const { data: existingRoles } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", userRes.user.id);
-          if (!existingRoles || existingRoles.length === 0) {
-            await supabase
-              .from("user_roles")
-              .insert({ user_id: userRes.user.id, role: "admin" });
-          }
-          await routeAfterLogin(userRes.user.id);
-        }
+        if (userRes.user) await routeAfterLogin(userRes.user.id);
       }
 
     } catch (e: any) {
