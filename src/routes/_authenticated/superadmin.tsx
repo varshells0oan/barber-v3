@@ -200,6 +200,10 @@ function SuperAdminPage() {
                   <div className="font-medium">{b.name}</div>
                   <div className="text-xs text-muted-foreground">/{b.slug}</div>
                 </div>
+                <Link to="/superadmin_/$id" params={{ id: b.id }}
+                  className="inline-flex items-center gap-1 rounded-md bg-primary/15 px-2 py-1 text-xs font-medium text-primary hover:bg-primary/25">
+                  <Settings2 className="h-3 w-3" /> Preparar
+                </Link>
                 <button onClick={() => toggleStatus(b)}
                   className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
                     b.status === "active" ? "bg-emerald-500/15 text-emerald-500" : "bg-muted text-muted-foreground"}`}>
