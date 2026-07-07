@@ -14,7 +14,7 @@ const searchSchema = z.object({
   service: z.string().optional(),
 });
 
-export const Route = createFileRoute("/agendar")({
+export const Route = createFileRoute("/$slug/")({
   validateSearch: (s) => searchSchema.parse(s),
   component: Booking,
 });

@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tansta
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, History, DollarSign, LogOut, Shield } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/barbeiro")({
+export const Route = createFileRoute("/_authenticated/$slug/barbeiro")({
   component: BarberLayout,
 });
 

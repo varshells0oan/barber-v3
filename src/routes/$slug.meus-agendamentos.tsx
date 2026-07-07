@@ -5,7 +5,7 @@ import { PublicHeader } from "@/components/PublicHeader";
 import { brl, cleanPhone, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { Search } from "lucide-react";
 
-export const Route = createFileRoute("/meus-agendamentos")({
+export const Route = createFileRoute("/$slug/meus-agendamentos")({
   component: ClientArea,
 });
 

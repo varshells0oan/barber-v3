@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/barbeiros")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/barbeiros")({
   component: BarbersPage,
 });
 

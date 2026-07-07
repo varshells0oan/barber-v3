@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicHeader } from "@/components/PublicHeader";
 import { CheckCircle2 } from "lucide-react";
 
-export const Route = createFileRoute("/agendamento-confirmado")({
+export const Route = createFileRoute("/$slug/agendamento-confirmado")({
   component: Confirmed,
 });
 

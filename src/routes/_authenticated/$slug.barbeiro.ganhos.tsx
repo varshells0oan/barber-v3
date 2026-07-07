@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, todayISO } from "@/lib/format";
 
-export const Route = createFileRoute("/_authenticated/barbeiro/ganhos")({
+export const Route = createFileRoute("/_authenticated/$slug/barbeiro/ganhos")({
   component: Earnings,
 });
 

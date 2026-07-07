@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
 
-export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/configuracoes")({
   component: Config,
 });
 

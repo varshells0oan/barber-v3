@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { brl, cleanPhone, formatPhone } from "@/lib/format";
 import { MessageCircle } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/admin/clientes")({
+export const Route = createFileRoute("/_authenticated/$slug/admin/clientes")({
   component: ClientsPage,
 });
 
