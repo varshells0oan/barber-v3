@@ -17,6 +17,7 @@ import { Route as SlugIndexRouteImport } from './routes/$slug.index'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
 import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
+import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
 import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
 import { Route as AuthenticatedSlugAdminRouteImport } from './routes/_authenticated/$slug.admin'
 import { Route as AuthenticatedSlugBarbeiroIndexRouteImport } from './routes/_authenticated/$slug.barbeiro.index'
@@ -69,6 +70,12 @@ const SlugAgendamentoConfirmadoRoute =
     id: '/$slug/agendamento-confirmado',
     path: '/$slug/agendamento-confirmado',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedSuperadminIdRoute =
+  AuthenticatedSuperadminIdRouteImport.update({
+    id: '/superadmin_/$id',
+    path: '/superadmin/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSlugBarbeiroRoute =
   AuthenticatedSlugBarbeiroRouteImport.update({
@@ -152,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/$slug/': typeof SlugIndexRoute
   '/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
   '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
+  '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -171,6 +179,7 @@ export interface FileRoutesByTo {
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug': typeof SlugIndexRoute
+  '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -194,6 +203,7 @@ export interface FileRoutesById {
   '/$slug/': typeof SlugIndexRoute
   '/_authenticated/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
   '/_authenticated/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
+  '/_authenticated/superadmin_/$id': typeof AuthenticatedSuperadminIdRoute
   '/_authenticated/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/_authenticated/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/_authenticated/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/$slug/'
     | '/$slug/admin'
     | '/$slug/barbeiro'
+    | '/superadmin/$id'
     | '/$slug/admin/agendamentos'
     | '/$slug/admin/barbeiros'
     | '/$slug/admin/clientes'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/$slug/meus-agendamentos'
     | '/superadmin'
     | '/$slug'
+    | '/superadmin/$id'
     | '/$slug/admin/agendamentos'
     | '/$slug/admin/barbeiros'
     | '/$slug/admin/clientes'
@@ -258,6 +270,7 @@ export interface FileRouteTypes {
     | '/$slug/'
     | '/_authenticated/$slug/admin'
     | '/_authenticated/$slug/barbeiro'
+    | '/_authenticated/superadmin_/$id'
     | '/_authenticated/$slug/admin/agendamentos'
     | '/_authenticated/$slug/admin/barbeiros'
     | '/_authenticated/$slug/admin/clientes'
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$slug/agendamento-confirmado'
       preLoaderRoute: typeof SlugAgendamentoConfirmadoRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/superadmin_/$id': {
+      id: '/_authenticated/superadmin_/$id'
+      path: '/superadmin/$id'
+      fullPath: '/superadmin/$id'
+      preLoaderRoute: typeof AuthenticatedSuperadminIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/$slug/barbeiro': {
       id: '/_authenticated/$slug/barbeiro'
@@ -477,12 +497,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
   AuthenticatedSlugAdminRoute: typeof AuthenticatedSlugAdminRouteWithChildren
   AuthenticatedSlugBarbeiroRoute: typeof AuthenticatedSlugBarbeiroRouteWithChildren
+  AuthenticatedSuperadminIdRoute: typeof AuthenticatedSuperadminIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
   AuthenticatedSlugAdminRoute: AuthenticatedSlugAdminRouteWithChildren,
   AuthenticatedSlugBarbeiroRoute: AuthenticatedSlugBarbeiroRouteWithChildren,
+  AuthenticatedSuperadminIdRoute: AuthenticatedSuperadminIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -1,8 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Building2, Plus, LogOut, Shield, Mail, Copy, RefreshCw, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Building2, Plus, LogOut, Shield, Mail, Copy, RefreshCw, X, ChevronDown, ChevronUp, Settings2 } from "lucide-react";
 import { buildInviteUrl, generateInviteToken, hashInviteToken } from "@/lib/invite-token";
 
 export const Route = createFileRoute("/_authenticated/superadmin")({
