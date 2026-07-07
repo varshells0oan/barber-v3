@@ -31,6 +31,7 @@ const empty: Form = {
 };
 
 function ServicesPage() {
+  const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<Form | null>(null);
 

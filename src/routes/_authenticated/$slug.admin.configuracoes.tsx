@@ -21,6 +21,7 @@ const DAYS = [
 type Hours = Record<string, { start: string; end: string } | null>;
 
 function Config() {
+  const { slug } = Route.useParams();
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");

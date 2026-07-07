@@ -55,6 +55,7 @@ const empty: BarberForm = {
 };
 
 function BarbersPage() {
+  const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<BarberForm | null>(null);
 
