@@ -30,6 +30,7 @@ const DEFAULT_HOURS: Record<string, { start: string; end: string }> = {
 
 function Booking() {
   const { service: initialServiceId } = Route.useSearch();
+  const { slug } = Route.useParams();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [services, setServices] = useState<any[]>([]);
@@ -155,7 +156,7 @@ function Booking() {
     const cp = cleanPhone(phone);
     try {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      const barbershopId = await getDefaultBarbershopId();
+      const barbershopId = await getDefaultBarbershopId(slug);
       // Find or create client via RPC (não expõe tabela clients)
       const { data: clientId, error: cliErr } = await supabase.rpc(
         "public_upsert_client",
