@@ -84,6 +84,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "appointments_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "public_barbers"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "appointments_barbershop_id_fkey"
             columns: ["barbershop_id"]
             isOneToOne: false
@@ -504,6 +511,56 @@ export type Database = {
       }
     }
     Views: {
+      public_barbers: {
+        Row: {
+          active: boolean | null
+          barbershop_id: string | null
+          bio: string | null
+          blocked_dates: Json | null
+          id: string | null
+          name: string | null
+          photo_url: string | null
+          rating: number | null
+          services: Json | null
+          specialty: string | null
+          work_hours: Json | null
+        }
+        Insert: {
+          active?: boolean | null
+          barbershop_id?: string | null
+          bio?: string | null
+          blocked_dates?: Json | null
+          id?: string | null
+          name?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          services?: Json | null
+          specialty?: string | null
+          work_hours?: Json | null
+        }
+        Update: {
+          active?: boolean | null
+          barbershop_id?: string | null
+          bio?: string | null
+          blocked_dates?: Json | null
+          id?: string | null
+          name?: string | null
+          photo_url?: string | null
+          rating?: number | null
+          services?: Json | null
+          specialty?: string | null
+          work_hours?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "barbers_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       public_shop_settings: {
         Row: {
           address: string | null
