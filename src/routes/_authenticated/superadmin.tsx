@@ -80,20 +80,25 @@ function SuperAdminPage() {
       if (error) throw error;
 
       if (adminEmail.trim()) {
-        // Tenta vincular admin se o usuário já existe
-        const { data: existing } = await supabase
-          .from("user_roles")
-          .select("user_id")
-          .limit(1);
-        // Não temos acesso a auth.users pelo client; instruímos manual se necessário.
-        // Placeholder: apenas informa que o email deve se cadastrar antes.
-        void existing;
-        toast.message(
-          `Barbearia criada. Peça para ${adminEmail} se cadastrar em /auth; depois atribua o papel admin.`,
-        );
+        const { error: assignErr } = await supabase.rpc("assign_barbershop_admin", {
+          _barbershop_id: shop.id,
+          _email: adminEmail.trim(),
+        });
+        if (assignErr) {
+          if (assignErr.message.includes("USER_NOT_FOUND")) {
+            toast.message(
+              `Barbearia criada. Peça para ${adminEmail} se cadastrar em /auth e tente vincular novamente.`,
+            );
+          } else {
+            toast.error(`Barbearia criada, mas falhou ao vincular admin: ${assignErr.message}`);
+          }
+        } else {
+          toast.success("Barbearia criada e admin vinculado");
+        }
       } else {
         toast.success("Barbearia criada");
       }
+
 
       setName("");
       setSlug("");
