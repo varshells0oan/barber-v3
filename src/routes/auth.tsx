@@ -19,13 +19,33 @@ function AuthPage() {
   const routeAfterLogin = async (userId: string) => {
     const { data: roles } = await supabase
       .from("user_roles")
-      .select("role")
+      .select("role, barbershop_id")
       .eq("user_id", userId);
-    const list = (roles ?? []).map((r: any) => r.role);
-    if (list.includes("superadmin")) return navigate({ to: "/superadmin" });
-    if (list.includes("barber") && !list.includes("admin"))
-      return navigate({ to: "/barbeiro" });
-    return navigate({ to: "/admin" });
+    const list = (roles ?? []) as Array<{ role: string; barbershop_id: string | null }>;
+
+    if (list.some((r) => r.role === "superadmin")) {
+      return navigate({ to: "/superadmin" });
+    }
+
+    const barberRow = list.find((r) => r.role === "barber" && r.barbershop_id);
+    const adminRow = list.find((r) => r.role === "admin" && r.barbershop_id);
+    const target = adminRow ?? barberRow;
+
+    if (!target?.barbershop_id) {
+      return navigate({ to: "/" });
+    }
+
+    const { data: shop } = await supabase
+      .from("barbershops")
+      .select("slug")
+      .eq("id", target.barbershop_id)
+      .maybeSingle();
+    if (!shop?.slug) return navigate({ to: "/" });
+
+    if (adminRow) {
+      return navigate({ to: "/$slug/admin", params: { slug: shop.slug } });
+    }
+    return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug } });
   };
 
   useEffect(() => {
