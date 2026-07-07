@@ -38,6 +38,7 @@ const STATUS_STYLE: Record<string, string> = {
 };
 
 function Dashboard() {
+  const { slug } = Route.useParams();
   const [appts, setAppts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -302,7 +303,7 @@ function Dashboard() {
             subtitle="Faturamento no mês"
             tint="amber"
             right={
-              <Link to="/admin/financeiro" className="flex items-center gap-1 text-xs text-primary hover:underline">
+              <Link to={`/${slug}/admin/financeiro`} className="flex items-center gap-1 text-xs text-primary hover:underline">
                 Financeiro <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
@@ -368,7 +369,7 @@ function Dashboard() {
           subtitle={upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
           tint="emerald"
           right={
-            <Link to="/admin/agendamentos" className="flex items-center gap-1 text-xs text-primary hover:underline">
+            <Link to={`/${slug}/admin/agendamentos`} className="flex items-center gap-1 text-xs text-primary hover:underline">
               Ver todos <ArrowUpRight className="h-3 w-3" />
             </Link>
           }
