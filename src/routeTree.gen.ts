@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugIndexRouteImport } from './routes/$slug.index'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
+import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
 import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
 import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
 import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
@@ -63,6 +64,11 @@ const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
 const SlugMeusAgendamentosRoute = SlugMeusAgendamentosRouteImport.update({
   id: '/$slug/meus-agendamentos',
   path: '/$slug/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugAgendarRoute = SlugAgendarRouteImport.update({
+  id: '/$slug/agendar',
+  path: '/$slug/agendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugAgendamentoConfirmadoRoute =
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/agendar': typeof SlugAgendarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug/': typeof SlugIndexRoute
@@ -176,6 +183,7 @@ export interface FileRoutesByTo {
   '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/agendar': typeof SlugAgendarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug': typeof SlugIndexRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
+  '/$slug/agendar': typeof SlugAgendarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug/': typeof SlugIndexRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
+    | '/$slug/agendar'
     | '/$slug/meus-agendamentos'
     | '/superadmin'
     | '/$slug/'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
+    | '/$slug/agendar'
     | '/$slug/meus-agendamentos'
     | '/superadmin'
     | '/$slug'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
+    | '/$slug/agendar'
     | '/$slug/meus-agendamentos'
     | '/_authenticated/superadmin'
     | '/$slug/'
@@ -289,6 +301,7 @@ export interface RootRouteChildren {
   AceitarConviteRoute: typeof AceitarConviteRoute
   AuthRoute: typeof AuthRoute
   SlugAgendamentoConfirmadoRoute: typeof SlugAgendamentoConfirmadoRoute
+  SlugAgendarRoute: typeof SlugAgendarRoute
   SlugMeusAgendamentosRoute: typeof SlugMeusAgendamentosRoute
   SlugIndexRoute: typeof SlugIndexRoute
 }
@@ -342,6 +355,13 @@ declare module '@tanstack/react-router' {
       path: '/$slug/meus-agendamentos'
       fullPath: '/$slug/meus-agendamentos'
       preLoaderRoute: typeof SlugMeusAgendamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$slug/agendar': {
+      id: '/$slug/agendar'
+      path: '/$slug/agendar'
+      fullPath: '/$slug/agendar'
+      preLoaderRoute: typeof SlugAgendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/agendamento-confirmado': {
@@ -516,6 +536,7 @@ const rootRouteChildren: RootRouteChildren = {
   AceitarConviteRoute: AceitarConviteRoute,
   AuthRoute: AuthRoute,
   SlugAgendamentoConfirmadoRoute: SlugAgendamentoConfirmadoRoute,
+  SlugAgendarRoute: SlugAgendarRoute,
   SlugMeusAgendamentosRoute: SlugMeusAgendamentosRoute,
   SlugIndexRoute: SlugIndexRoute,
 }
