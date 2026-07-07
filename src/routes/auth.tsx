@@ -21,7 +21,7 @@ function AuthPage() {
     const { data: userRes } = await supabase.auth.getUser();
     const email = userRes.user?.email?.toLowerCase();
     if (email === "superadmin@icloud.com") {
-      await supabase.rpc("claim_superadmin").catch(() => {});
+      try { await supabase.rpc("claim_superadmin"); } catch {}
     }
 
     const { data: roles } = await supabase
