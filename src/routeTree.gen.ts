@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AceitarConviteRouteImport } from './routes/aceitar-convite'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugIndexRouteImport } from './routes/$slug.index'
@@ -32,6 +33,11 @@ import { Route as AuthenticatedSlugAdminAgendamentosRouteImport } from './routes
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AceitarConviteRoute = AceitarConviteRouteImport.update({
+  id: '/aceitar-convite',
+  path: '/aceitar-convite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -138,6 +144,7 @@ const AuthenticatedSlugAdminAgendamentosRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/aceitar-convite': typeof AceitarConviteRoute
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/meus-agendamentos'
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/meus-agendamentos'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/aceitar-convite'
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/meus-agendamentos'
@@ -261,6 +273,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AceitarConviteRoute: typeof AceitarConviteRoute
   AuthRoute: typeof AuthRoute
   SlugAgendamentoConfirmadoRoute: typeof SlugAgendamentoConfirmadoRoute
   SlugMeusAgendamentosRoute: typeof SlugMeusAgendamentosRoute
@@ -274,6 +287,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aceitar-convite': {
+      id: '/aceitar-convite'
+      path: '/aceitar-convite'
+      fullPath: '/aceitar-convite'
+      preLoaderRoute: typeof AceitarConviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -471,6 +491,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AceitarConviteRoute: AceitarConviteRoute,
   AuthRoute: AuthRoute,
   SlugAgendamentoConfirmadoRoute: SlugAgendamentoConfirmadoRoute,
   SlugMeusAgendamentosRoute: SlugMeusAgendamentosRoute,
