@@ -201,7 +201,7 @@ function Booking() {
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
-      <PublicHeader />
+      <PublicHeader slug={slug} />
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           {step > 0 && (

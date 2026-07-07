@@ -10,7 +10,7 @@ function Confirmed() {
   const { slug } = Route.useParams();
   return (
     <div className="dark min-h-screen bg-background text-foreground">
-      <PublicHeader />
+      <PublicHeader slug={slug} />
       <div className="mx-auto max-w-md px-4 py-16 text-center">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-emerald-600">
           <CheckCircle2 className="h-8 w-8" />
