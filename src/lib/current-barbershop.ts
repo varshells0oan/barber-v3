@@ -1,19 +1,21 @@
 import { supabase } from "@/integrations/supabase/client";
 
-let cached: string | null = null;
+const cache = new Map<string, string>();
 
 /**
- * Retorna o id da barbearia default ("principal").
- * Helper temporário até que a Fase 3 traga o contexto de barbearia por URL.
+ * Retorna o id de uma barbearia a partir do slug (URL).
+ * Se slug não for passado, cai no fallback "principal" (compat retro).
  */
-export async function getDefaultBarbershopId(): Promise<string> {
+export async function getDefaultBarbershopId(slug?: string): Promise<string> {
+  const key = slug ?? "principal";
+  const cached = cache.get(key);
   if (cached) return cached;
   const { data, error } = await supabase
     .from("barbershops")
     .select("id")
-    .eq("slug", "principal")
+    .eq("slug", key)
     .maybeSingle();
-  if (error || !data) throw new Error("Barbearia principal não encontrada");
-  cached = data.id;
-  return cached;
+  if (error || !data) throw new Error(`Barbearia "${key}" não encontrada`);
+  cache.set(key, data.id);
+  return data.id;
 }
