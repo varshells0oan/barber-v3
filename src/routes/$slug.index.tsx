@@ -157,30 +157,15 @@ function Booking() {
     try {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
       const barbershopId = await getDefaultBarbershopId(slug);
-      // Find or create client via RPC (não expõe tabela clients)
-      const { data: clientId, error: cliErr } = await supabase.rpc(
-        "public_upsert_client",
-        { _barbershop_id: barbershopId, _name: name, _phone: cp },
-      );
-      if (cliErr) throw cliErr;
-
-      const endTime = minToTime(timeToMin(selectedTime) + selectedService.duration);
-      const { error: apptErr } = await supabase.from("appointments").insert({
-        barbershop_id: barbershopId,
-        client_id: clientId,
-        client_name: name,
-        client_phone: cp,
-        barber_id: selectedBarber.id,
-        barber_name: selectedBarber.name,
-        service_id: selectedService.id,
-        service_name: selectedService.name,
-        date: selectedDate,
-        time: selectedTime,
-        end_time: endTime,
-        duration: selectedService.duration,
-        price: selectedService.price,
-        status: "pendente",
-        notes: notes || null,
+      const { error: apptErr } = await supabase.rpc("create_public_appointment" as any, {
+        _barbershop_id: barbershopId,
+        _barber_id: selectedBarber.id,
+        _service_id: selectedService.id,
+        _date: selectedDate,
+        _time: selectedTime,
+        _client_name: name,
+        _client_phone: cp,
+        _notes: notes || null,
       });
       if (apptErr) throw apptErr;
       navigate({ to: "/$slug/agendamento-confirmado", params: { slug } });
