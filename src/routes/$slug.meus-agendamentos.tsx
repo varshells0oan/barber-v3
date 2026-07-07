@@ -10,6 +10,7 @@ export const Route = createFileRoute("/$slug/meus-agendamentos")({
 });
 
 function ClientArea() {
+  const { slug } = Route.useParams();
   const [phone, setPhone] = useState("");
   const [searched, setSearched] = useState(false);
   const [appts, setAppts] = useState<any[]>([]);
@@ -21,7 +22,7 @@ function ClientArea() {
     setLoading(true);
     const cp = cleanPhone(phone);
     const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-    const barbershopId = await getDefaultBarbershopId();
+    const barbershopId = await getDefaultBarbershopId(slug);
     const [{ data: a }, { data: c }, { data: sh }] = await Promise.all([
       supabase.rpc("public_get_my_appointments", {
         _barbershop_id: barbershopId,
