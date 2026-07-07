@@ -79,7 +79,7 @@ function BarbersPage() {
       q = supabase.from("barbers").update(payload).eq("id", id);
     } else {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      payload.barbershop_id = await getDefaultBarbershopId();
+      payload.barbershop_id = await getDefaultBarbershopId(slug);
       q = supabase.from("barbers").insert(payload);
     }
     const { error } = await q;

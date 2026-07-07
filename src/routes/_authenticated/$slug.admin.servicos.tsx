@@ -55,7 +55,7 @@ function ServicesPage() {
       q = supabase.from("services").update(payload).eq("id", id);
     } else {
       const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      payload.barbershop_id = await getDefaultBarbershopId();
+      payload.barbershop_id = await getDefaultBarbershopId(slug);
       q = supabase.from("services").insert(payload);
     }
     const { error } = await q;
