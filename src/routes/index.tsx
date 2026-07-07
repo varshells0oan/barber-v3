@@ -25,7 +25,7 @@ function LandingSaaS() {
     supabase
       .from("barbershops")
       .select("slug,name,logo_url")
-      .eq("is_active", true)
+      .eq("status", "active")
       .order("name")
       .then(({ data }) => setShops((data ?? []) as Shop[]));
 
