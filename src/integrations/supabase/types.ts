@@ -460,7 +460,6 @@ export type Database = {
           description: string | null
           differentials: Json | null
           gallery: Json | null
-          id: string | null
           instagram: string | null
           logo_url: string | null
           loyalty_reward: string | null
