@@ -15,6 +15,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState<string | null>(null);
 
   const routeAfterLogin = async (userId: string) => {
     // Se for o email do superadmin e ainda não tiver a role, faz o claim.
