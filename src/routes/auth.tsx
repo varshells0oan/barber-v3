@@ -40,7 +40,8 @@ function AuthPage() {
     const target = adminRow ?? barberRow;
 
     if (!target?.barbershop_id) {
-      return navigate({ to: "/" });
+      // Sem role/barbearia: fica em /auth para permitir novo login ou logout.
+      return;
     }
 
     const { data: shop } = await supabase
@@ -48,7 +49,7 @@ function AuthPage() {
       .select("slug")
       .eq("id", target.barbershop_id)
       .maybeSingle();
-    if (!shop?.slug) return navigate({ to: "/" });
+    if (!shop?.slug) return;
 
     if (adminRow) {
       return navigate({ to: "/$slug/admin", params: { slug: shop.slug } });
