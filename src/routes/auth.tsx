@@ -15,6 +15,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState<string | null>(null);
 
   const routeAfterLogin = async (userId: string) => {
     // Se for o email do superadmin e ainda não tiver a role, faz o claim.
@@ -40,7 +41,8 @@ function AuthPage() {
     const target = adminRow ?? barberRow;
 
     if (!target?.barbershop_id) {
-      return navigate({ to: "/" });
+      // Sem role/barbearia: fica em /auth para permitir novo login ou logout.
+      return;
     }
 
     const { data: shop } = await supabase
@@ -48,7 +50,7 @@ function AuthPage() {
       .select("slug")
       .eq("id", target.barbershop_id)
       .maybeSingle();
-    if (!shop?.slug) return navigate({ to: "/" });
+    if (!shop?.slug) return;
 
     if (adminRow) {
       return navigate({ to: "/$slug/admin", params: { slug: shop.slug } });
@@ -58,10 +60,18 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
-      if (data.session?.user) await routeAfterLogin(data.session.user.id);
+      if (data.session?.user) {
+        setCurrentEmail(data.session.user.email ?? null);
+        await routeAfterLogin(data.session.user.id);
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setCurrentEmail(null);
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,6 +115,12 @@ function AuthPage() {
         <p className="mt-1 text-sm text-muted-foreground">
           Acesso da equipe (admin/barbeiro)
         </p>
+        {currentEmail && (
+          <div className="mt-4 flex items-center justify-between rounded-md border border-border bg-card/40 px-3 py-2 text-xs">
+            <span className="truncate text-muted-foreground">Logado como {currentEmail} (sem acesso)</span>
+            <button onClick={signOut} className="rounded border border-border px-2 py-1 hover:bg-accent/40">Sair</button>
+          </div>
+        )}
         <form onSubmit={submit} className="mt-6 space-y-3">
           <input
             type="email"
