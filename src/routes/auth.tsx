@@ -22,18 +22,20 @@ function AuthPage() {
     const { data: userRes } = await supabase.auth.getUser();
     const email = userRes.user?.email?.toLowerCase();
     if (email === "superadmin@icloud.com") {
-      try { await supabase.rpc("claim_superadmin"); } catch {}
+      const { error: claimError } = await supabase.rpc("claim_superadmin");
+      if (claimError) throw claimError;
     }
 
-    const { data: roles } = await supabase
+    const { data: roles, error: rolesError } = await supabase
       .from("user_roles")
       .select("role, barbershop_id")
       .eq("user_id", userId);
+    if (rolesError) throw rolesError;
     const list = (roles ?? []) as Array<{ role: string; barbershop_id: string | null }>;
 
 
     if (list.some((r) => r.role === "superadmin")) {
-      return navigate({ to: "/superadmin" });
+      return navigate({ to: "/superadmin", replace: true });
     }
 
     const barberRow = list.find((r) => r.role === "barber" && r.barbershop_id);
@@ -53,9 +55,9 @@ function AuthPage() {
     if (!shop?.slug) return;
 
     if (adminRow) {
-      return navigate({ to: "/$slug/admin", params: { slug: shop.slug } });
+      return navigate({ to: "/$slug/admin", params: { slug: shop.slug }, replace: true });
     }
-    return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug } });
+    return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug }, replace: true });
   };
 
   useEffect(() => {
