@@ -60,10 +60,18 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
-      if (data.session?.user) await routeAfterLogin(data.session.user.id);
+      if (data.session?.user) {
+        setCurrentEmail(data.session.user.email ?? null);
+        await routeAfterLogin(data.session.user.id);
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setCurrentEmail(null);
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
