@@ -45,15 +45,15 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
     (data: { barbershopId: string; username: string; password: string }) => {
-      const username = String(data.username ?? "").trim().toLowerCase();
+      const usernameNorm = normalizeUsername(data.username);
       const password = String(data.password ?? "");
       const barbershopId = String(data.barbershopId ?? "");
-      if (!/^[a-z0-9_.-]{2,32}$/.test(username)) {
-        throw new Error("Usuário inválido (use 2-32 caracteres: a-z, 0-9, _ . -)");
+      if (usernameNorm.length < 2 || usernameNorm.length > 40) {
+        throw new Error("Usuário deve ter entre 2 e 40 caracteres");
       }
       if (password.length < 1) throw new Error("Senha obrigatória");
       if (!barbershopId) throw new Error("Barbearia inválida");
-      return { barbershopId, username, password };
+      return { barbershopId, username: usernameNorm, password };
     },
   )
   .handler(async ({ data, context }) => {
