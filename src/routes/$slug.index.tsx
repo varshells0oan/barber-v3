@@ -102,6 +102,8 @@ function Booking() {
       setSlots([]);
       return;
     }
+    const breaks: Array<{ start: string; end: string }> =
+      (selectedBarber.breaks as Record<string, Array<{ start: string; end: string }>>)?.[dow] ?? [];
     const generated: string[] = [];
     for (let m = start; m + dur <= end; m += 30) {
       const slotStart = m;
@@ -111,7 +113,12 @@ function Booking() {
         const aEnd = timeToMin(a.end_time) + buffer;
         return slotStart < aEnd && slotEnd > aStart;
       });
-      if (!conflict) generated.push(minToTime(slotStart));
+      const breakConflict = breaks.some((br) => {
+        const bStart = timeToMin(br.start);
+        const bEnd = timeToMin(br.end);
+        return slotStart < bEnd && (m + dur) > bStart;
+      });
+      if (!conflict && !breakConflict) generated.push(minToTime(slotStart));
     }
     if (selectedDate === todayISO()) {
       const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
