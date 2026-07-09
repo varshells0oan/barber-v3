@@ -9,6 +9,8 @@ export const Route = createFileRoute("/_authenticated/$slug/admin/barbeiros")({
 });
 
 type Hours = Record<string, { start: string; end: string } | null>;
+type Break = { start: string; end: string };
+type Breaks = Record<string, Break[]>;
 
 type BarberForm = {
   id?: string;
@@ -21,6 +23,7 @@ type BarberForm = {
   active: boolean;
   work_hours: Hours;
   blocked_dates: string[];
+  breaks: Breaks;
 };
 
 const DEFAULT_HOURS: Hours = {
@@ -52,6 +55,7 @@ const empty: BarberForm = {
   active: true,
   work_hours: DEFAULT_HOURS,
   blocked_dates: [],
+  breaks: {},
 };
 
 function BarbersPage() {

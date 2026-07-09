@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugIndexRouteImport } from './routes/$slug.index'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
+import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
 import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
 import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
 import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
@@ -64,6 +65,11 @@ const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
 const SlugMeusAgendamentosRoute = SlugMeusAgendamentosRouteImport.update({
   id: '/$slug/meus-agendamentos',
   path: '/$slug/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugEntrarRoute = SlugEntrarRouteImport.update({
+  id: '/$slug/entrar',
+  path: '/$slug/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugAgendarRoute = SlugAgendarRouteImport.update({
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/agendar': typeof SlugAgendarRoute
+  '/$slug/entrar': typeof SlugEntrarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug/': typeof SlugIndexRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/agendar': typeof SlugAgendarRoute
+  '/$slug/entrar': typeof SlugEntrarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug': typeof SlugIndexRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/$slug/agendamento-confirmado': typeof SlugAgendamentoConfirmadoRoute
   '/$slug/agendar': typeof SlugAgendarRoute
+  '/$slug/entrar': typeof SlugEntrarRoute
   '/$slug/meus-agendamentos': typeof SlugMeusAgendamentosRoute
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug/': typeof SlugIndexRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/agendar'
+    | '/$slug/entrar'
     | '/$slug/meus-agendamentos'
     | '/superadmin'
     | '/$slug/'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/agendar'
+    | '/$slug/entrar'
     | '/$slug/meus-agendamentos'
     | '/superadmin'
     | '/$slug'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/$slug/agendamento-confirmado'
     | '/$slug/agendar'
+    | '/$slug/entrar'
     | '/$slug/meus-agendamentos'
     | '/_authenticated/superadmin'
     | '/$slug/'
@@ -302,6 +314,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   SlugAgendamentoConfirmadoRoute: typeof SlugAgendamentoConfirmadoRoute
   SlugAgendarRoute: typeof SlugAgendarRoute
+  SlugEntrarRoute: typeof SlugEntrarRoute
   SlugMeusAgendamentosRoute: typeof SlugMeusAgendamentosRoute
   SlugIndexRoute: typeof SlugIndexRoute
 }
@@ -355,6 +368,13 @@ declare module '@tanstack/react-router' {
       path: '/$slug/meus-agendamentos'
       fullPath: '/$slug/meus-agendamentos'
       preLoaderRoute: typeof SlugMeusAgendamentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$slug/entrar': {
+      id: '/$slug/entrar'
+      path: '/$slug/entrar'
+      fullPath: '/$slug/entrar'
+      preLoaderRoute: typeof SlugEntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/agendar': {
@@ -537,19 +557,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   SlugAgendamentoConfirmadoRoute: SlugAgendamentoConfirmadoRoute,
   SlugAgendarRoute: SlugAgendarRoute,
+  SlugEntrarRoute: SlugEntrarRoute,
   SlugMeusAgendamentosRoute: SlugMeusAgendamentosRoute,
   SlugIndexRoute: SlugIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
