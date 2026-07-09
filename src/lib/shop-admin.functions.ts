@@ -122,13 +122,11 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
 export const resolveShopLogin = createServerFn({ method: "POST" })
   .inputValidator((data: { slug: string; username: string }) => {
     const slug = String(data.slug ?? "").trim().toLowerCase();
-    const username = String(data.username ?? "").trim().toLowerCase();
+    const username = normalizeUsername(data.username);
     if (!slug || !username) throw new Error("Dados inválidos");
     return { slug, username };
   })
   .handler(async ({ data }) => {
-    // Só valida que o username corresponde ao dono daquela barbearia.
-    // O signIn efetivo acontece no cliente com o email sintético.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: shop, error } = await supabaseAdmin
       .from("barbershops")
