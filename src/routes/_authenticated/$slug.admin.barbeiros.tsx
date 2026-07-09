@@ -58,17 +58,23 @@ function BarbersPage() {
   const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<BarberForm | null>(null);
+  const [barbershopId, setBarbershopId] = useState<string | null>(null);
 
-  const load = () =>
-    supabase
+  const load = async () => {
+    const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+    const id = await getDefaultBarbershopId(slug);
+    setBarbershopId(id);
+    const { data } = await supabase
       .from("barbers")
       .select("*")
-      .order("created_at")
-      .then(({ data }) => setItems(data ?? []));
+      .eq("barbershop_id", id)
+      .order("created_at");
+    setItems(data ?? []);
+  };
 
   useEffect(() => {
     load();
-  }, []);
+  }, [slug]);
 
   const save = async () => {
     if (!editing) return;

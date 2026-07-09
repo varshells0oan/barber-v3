@@ -10,20 +10,25 @@ export const Route = createFileRoute("/_authenticated/$slug/barbeiro/")({
 });
 
 function Agenda() {
+  const { slug } = Route.useParams();
   const [date, setDate] = useState(todayISO());
   const [items, setItems] = useState<any[]>([]);
 
-  const load = () =>
-    supabase
+  const load = async () => {
+    const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+    const id = await getDefaultBarbershopId(slug);
+    const { data } = await supabase
       .from("appointments")
       .select("*")
+      .eq("barbershop_id", id)
       .eq("date", date)
-      .order("time")
-      .then(({ data }) => setItems(data ?? []));
+      .order("time");
+    setItems(data ?? []);
+  };
 
   useEffect(() => {
     load();
-  }, [date]);
+  }, [date, slug]);
 
   const days = useMemo(() => {
     const now = new Date();

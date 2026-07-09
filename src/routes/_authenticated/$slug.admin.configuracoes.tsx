@@ -28,19 +28,20 @@ function Config() {
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("shop_settings")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => {
-        setS(data ?? {});
-        setHours((data?.work_hours as Hours) ?? {});
-        setGallery(((data?.gallery as string[]) ?? []).join("\n"));
-        setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).slice().sort());
-      });
-  }, []);
+    (async () => {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      const id = await getDefaultBarbershopId(slug);
+      const { data } = await supabase
+        .from("shop_settings")
+        .select("*")
+        .eq("barbershop_id", id)
+        .maybeSingle();
+      setS(data ?? { barbershop_id: id });
+      setHours((data?.work_hours as Hours) ?? {});
+      setGallery(((data?.gallery as string[]) ?? []).join("\n"));
+      setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).slice().sort());
+    })();
+  }, [slug]);
 
   const setDay = (k: string, patch: Partial<{ start: string; end: string }> | null) => {
     if (patch === null) {
