@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { toast } from "sonner";
+import { useBarbershopId } from "@/hooks/useBarbershopId";
 
 export const Route = createFileRoute("/_authenticated/$slug/admin/agendamentos")({
   component: Appointments,
@@ -11,21 +12,26 @@ export const Route = createFileRoute("/_authenticated/$slug/admin/agendamentos")
 const STATUSES = ["todos", "pendente", "confirmado", "atendido", "cancelado", "nao_compareceu"];
 
 function Appointments() {
+  const { slug } = Route.useParams();
+  const barbershopId = useBarbershopId(slug);
   const [items, setItems] = useState<any[]>([]);
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("todos");
 
-  const load = () =>
+  const load = () => {
+    if (!barbershopId) return;
     supabase
       .from("appointments")
       .select("*")
+      .eq("barbershop_id", barbershopId)
       .order("date", { ascending: false })
       .limit(100)
       .then(({ data }) => setItems(data ?? []));
+  };
 
   useEffect(() => {
     load();
-  }, []);
+  }, [barbershopId]);
 
   const update = async (id: string, s: string) => {
     const { error } = await supabase.from("appointments").update({ status: s }).eq("id", id);

@@ -43,16 +43,19 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("appointments")
-      .select("*")
-      .order("date", { ascending: false })
-      .limit(500)
-      .then(({ data }) => {
-        setAppts(data ?? []);
-        setLoading(false);
-      });
-  }, []);
+    (async () => {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      const id = await getDefaultBarbershopId(slug);
+      const { data } = await supabase
+        .from("appointments")
+        .select("*")
+        .eq("barbershop_id", id)
+        .order("date", { ascending: false })
+        .limit(500);
+      setAppts(data ?? []);
+      setLoading(false);
+    })();
+  }, [slug]);
 
   const today = todayISO();
   const now = new Date();

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, cleanPhone, formatPhone } from "@/lib/format";
 import { MessageCircle } from "lucide-react";
+import { useBarbershopId } from "@/hooks/useBarbershopId";
 
 export const Route = createFileRoute("/_authenticated/$slug/admin/clientes")({
   component: ClientsPage,
@@ -16,18 +17,22 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 function ClientsPage() {
+  const { slug } = Route.useParams();
+  const barbershopId = useBarbershopId(slug);
   const [items, setItems] = useState<any[]>([]);
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("todos");
 
   useEffect(() => {
+    if (!barbershopId) return;
     supabase
       .from("clients")
       .select("*")
+      .eq("barbershop_id", barbershopId)
       .order("created_at", { ascending: false })
       .limit(200)
       .then(({ data }) => setItems(data ?? []));
-  }, []);
+  }, [barbershopId]);
 
   const filtered = items.filter((c) => {
     if (status !== "todos" && c.status !== status) return false;

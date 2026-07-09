@@ -35,16 +35,20 @@ function ServicesPage() {
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<Form | null>(null);
 
-  const load = () =>
-    supabase
+  const load = async () => {
+    const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+    const id = await getDefaultBarbershopId(slug);
+    const { data } = await supabase
       .from("services")
       .select("*")
-      .order("price")
-      .then(({ data }) => setItems(data ?? []));
+      .eq("barbershop_id", id)
+      .order("price");
+    setItems(data ?? []);
+  };
 
   useEffect(() => {
     load();
-  }, []);
+  }, [slug]);
 
   const save = async () => {
     if (!editing) return;

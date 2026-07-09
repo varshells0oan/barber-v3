@@ -2,24 +2,28 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, todayISO } from "@/lib/format";
+import { useBarbershopId } from "@/hooks/useBarbershopId";
 
 export const Route = createFileRoute("/_authenticated/$slug/admin/financeiro")({
   component: Financial,
 });
 
 function Financial() {
+  const { slug } = Route.useParams();
+  const barbershopId = useBarbershopId(slug);
   const [appts, setAppts] = useState<any[]>([]);
   const [barbers, setBarbers] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!barbershopId) return;
     Promise.all([
-      supabase.from("appointments").select("*").limit(500),
-      supabase.from("barbers").select("*"),
+      supabase.from("appointments").select("*").eq("barbershop_id", barbershopId).limit(500),
+      supabase.from("barbers").select("*").eq("barbershop_id", barbershopId),
     ]).then(([a, b]) => {
       setAppts(a.data ?? []);
       setBarbers(b.data ?? []);
     });
-  }, []);
+  }, [barbershopId]);
 
   const done = appts.filter((a) => a.status === "atendido");
   const today = todayISO();
