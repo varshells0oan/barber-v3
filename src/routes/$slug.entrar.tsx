@@ -27,7 +27,7 @@ function ShopLoginPage() {
       // sign out qualquer sessão antiga
       await supabase.auth.signOut();
       const { email } = await resolve({ data: { slug, username: username.trim() } });
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password: wrapPassword(password) });
       if (error) throw new Error("Usuário ou senha inválidos");
       toast.success("Bem-vindo!");
       navigate({ to: "/$slug/admin", params: { slug } });
