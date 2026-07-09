@@ -158,6 +158,7 @@ function BarbersPage() {
                       active: b.active,
                       work_hours: (b.work_hours as Hours) ?? DEFAULT_HOURS,
                       blocked_dates: (b.blocked_dates as string[]) ?? [],
+                      breaks: (b.breaks as Breaks) ?? {},
                     })
                   }
                   className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
