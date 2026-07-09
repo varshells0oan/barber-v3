@@ -8,18 +8,24 @@ export const Route = createFileRoute("/_authenticated/$slug/barbeiro/historico")
 });
 
 function History() {
+  const { slug } = Route.useParams();
   const [items, setItems] = useState<any[]>([]);
   const [q, setQ] = useState("");
 
   useEffect(() => {
-    supabase
-      .from("appointments")
-      .select("*")
-      .eq("status", "atendido")
-      .order("date", { ascending: false })
-      .limit(100)
-      .then(({ data }) => setItems(data ?? []));
-  }, []);
+    (async () => {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      const id = await getDefaultBarbershopId(slug);
+      const { data } = await supabase
+        .from("appointments")
+        .select("*")
+        .eq("barbershop_id", id)
+        .eq("status", "atendido")
+        .order("date", { ascending: false })
+        .limit(100);
+      setItems(data ?? []);
+    })();
+  }, [slug]);
 
   const filtered = items.filter((a) =>
     !q || a.client_name.toLowerCase().includes(q.toLowerCase()),
