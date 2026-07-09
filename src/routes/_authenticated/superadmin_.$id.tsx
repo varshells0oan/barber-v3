@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Shield, Building2, Copy, ExternalLink, Save,
   Scissors, UserCog, Settings, Mail, RefreshCw, X, CheckCircle2, AlertCircle,
+  LinkIcon, CalendarDays, User, KeyRound,
 } from "lucide-react";
 import { buildInviteUrl, generateInviteToken, hashInviteToken } from "@/lib/invite-token";
 
@@ -19,7 +20,7 @@ type Invite = {
   status: "pending" | "accepted" | "cancelled";
   expires_at: string; created_at: string;
 };
-type Tab = "resumo" | "servicos" | "barbeiros" | "config" | "acesso";
+type Tab = "resumo" | "links" | "servicos" | "barbeiros" | "config" | "acesso";
 
 async function createInviteFor(barbershopId: string, email: string): Promise<string> {
   const token = generateInviteToken();
@@ -78,6 +79,7 @@ function SuperAdminDetail() {
 
   const tabs: { id: Tab; label: string; icon: any }[] = [
     { id: "resumo", label: "Resumo", icon: Building2 },
+    { id: "links", label: "Links", icon: LinkIcon },
     { id: "servicos", label: "Serviços", icon: Scissors },
     { id: "barbeiros", label: "Barbeiros", icon: UserCog },
     { id: "config", label: "Configurações", icon: Settings },
@@ -112,6 +114,7 @@ function SuperAdminDetail() {
         </div>
 
         {tab === "resumo" && <ResumoTab shop={shop} onSaved={load} counts={counts} />}
+        {tab === "links" && <LinksTab shop={shop} />}
         {tab === "servicos" && (
           <QuickTab
             title="Serviços"
@@ -221,6 +224,56 @@ function QuickTab({ title, description, href, hint }: { title: string; descripti
       <p className="mt-2 text-[10px] text-muted-foreground">
         Abre o painel do admin da barbearia — como superadmin, você tem acesso total.
       </p>
+    </div>
+  );
+}
+
+function LinksTab({ shop }: { shop: Barbershop }) {
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const groups = useMemo(() => ([
+    {
+      title: "Cliente (público)",
+      icon: CalendarDays,
+      hint: "Compartilhe com os clientes finais para verem a barbearia e agendarem.",
+      links: [
+        { label: "Página da barbearia", url: `${origin}/${shop.slug}` },
+        { label: "Agendar horário", url: `${origin}/${shop.slug}/agendar` },
+        { label: "Meus agendamentos", url: `${origin}/${shop.slug}/meus-agendamentos` },
+      ],
+    },
+    {
+      title: "Dono da barbearia (admin)",
+      icon: User,
+      hint: "Entregue esses links + as credenciais (usuário/senha) ao dono.",
+      links: [
+        { label: "Login do dono", url: `${origin}/${shop.slug}/entrar` },
+        { label: "Painel admin (após login)", url: `${origin}/${shop.slug}/admin` },
+      ],
+    },
+    {
+      title: "Barbeiro",
+      icon: KeyRound,
+      hint: "Se o barbeiro tiver credenciais, ele entra pela tela de login; caso contrário, o painel é aberto.",
+      links: [
+        { label: "Painel do barbeiro", url: `${origin}/${shop.slug}/barbeiro` },
+      ],
+    },
+  ]), [origin, shop.slug]);
+
+  return (
+    <div className="grid gap-4">
+      {groups.map((g) => (
+        <div key={g.title} className="rounded-xl border border-border bg-card p-4">
+          <div className="flex items-center gap-2">
+            <g.icon className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-medium">{g.title}</h2>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{g.hint}</p>
+          <div className="mt-3 grid gap-2">
+            {g.links.map((l) => <LinkRow key={l.label} label={l.label} url={l.url} />)}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
