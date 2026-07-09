@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Shield, Building2, Copy, ExternalLink, Save,
   Scissors, UserCog, Settings, Mail, RefreshCw, X, CheckCircle2, AlertCircle,
+  LinkIcon, CalendarDays, User, KeyRound,
 } from "lucide-react";
 import { buildInviteUrl, generateInviteToken, hashInviteToken } from "@/lib/invite-token";
 
