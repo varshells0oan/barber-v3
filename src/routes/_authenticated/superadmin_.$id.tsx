@@ -20,7 +20,7 @@ type Invite = {
   status: "pending" | "accepted" | "cancelled";
   expires_at: string; created_at: string;
 };
-type Tab = "resumo" | "servicos" | "barbeiros" | "config" | "acesso";
+type Tab = "resumo" | "links" | "servicos" | "barbeiros" | "config" | "acesso";
 
 async function createInviteFor(barbershopId: string, email: string): Promise<string> {
   const token = generateInviteToken();
