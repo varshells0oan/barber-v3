@@ -1,49 +1,40 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Building2, Plus, LogOut, Shield, Mail, Copy, RefreshCw, X, ChevronDown, ChevronUp, Settings2 } from "lucide-react";
-import { buildInviteUrl, generateInviteToken, hashInviteToken } from "@/lib/invite-token";
+import { Building2, Plus, LogOut, Shield, Settings2, KeyRound, User, Lock } from "lucide-react";
+import { setShopAdminCredentials } from "@/lib/shop-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/superadmin")({
   ssr: false,
   component: SuperAdminPage,
 });
 
-type Barbershop = { id: string; name: string; slug: string; status: string; created_at: string };
-type Invite = {
+type Barbershop = {
   id: string;
-  email: string;
-  status: "pending" | "accepted" | "cancelled";
-  expires_at: string;
+  name: string;
+  slug: string;
+  status: string;
+  admin_username: string | null;
   created_at: string;
 };
 
-async function createInviteFor(barbershopId: string, email: string): Promise<string> {
-  const token = generateInviteToken();
-  const token_hash = await hashInviteToken(token);
-  const { error } = await supabase.rpc("create_barbershop_invite", {
-    _barbershop_id: barbershopId,
-    _email: email,
-    _token_hash: token_hash,
-  });
-  if (error) throw error;
-  return buildInviteUrl(token);
-}
-
 function SuperAdminPage() {
   const navigate = useNavigate();
+  const setCreds = useServerFn(setShopAdminCredentials);
   const [checking, setChecking] = useState(true);
   const [allowed, setAllowed] = useState(false);
   const [items, setItems] = useState<Barbershop[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [credsFor, setCredsFor] = useState<Barbershop | null>(null);
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [adminEmail, setAdminEmail] = useState("");
+  const [adminUsername, setAdminUsername] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
   const [status, setStatus] = useState<"active" | "inactive">("active");
 
   useEffect(() => {
@@ -63,7 +54,7 @@ function SuperAdminPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("barbershops")
-      .select("id,name,slug,status,created_at")
+      .select("id,name,slug,status,admin_username,created_at")
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setItems((data as Barbershop[]) ?? []);
@@ -78,6 +69,7 @@ function SuperAdminPage() {
     e.preventDefault();
     if (!name.trim() || !slug.trim()) return toast.error("Nome e slug obrigatórios");
     if (!/^[a-z0-9-]+$/.test(slug)) return toast.error("Slug inválido (use a-z, 0-9, -)");
+    if (!adminUsername.trim() || !adminPassword) return toast.error("Defina usuário e senha do dono");
     setSaving(true);
     try {
       const { data: shop, error } = await supabase
@@ -86,25 +78,40 @@ function SuperAdminPage() {
         .select("id").single();
       if (error) throw error;
 
-      if (adminEmail.trim()) {
-        try {
-          const url = await createInviteFor(shop.id, adminEmail.trim());
-          await navigator.clipboard.writeText(url).catch(() => {});
-          toast.success("Convite gerado e copiado para a área de transferência");
-        } catch (err: any) {
-          toast.error(`Barbearia criada, mas falhou o convite: ${err.message}`);
-        }
-      } else {
-        toast.success("Barbearia criada");
-      }
+      await setCreds({
+        data: {
+          barbershopId: shop.id,
+          username: adminUsername.trim(),
+          password: adminPassword,
+        },
+      });
 
-      setName(""); setSlug(""); setAdminEmail(""); setStatus("active");
+      toast.success(`Barbearia criada. O dono entra em /${slug}/entrar`);
+      setName(""); setSlug(""); setAdminUsername(""); setAdminPassword(""); setStatus("active");
       setShowForm(false);
       load();
     } catch (err: any) {
       toast.error(err.message ?? "Erro ao criar");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const saveCreds = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!credsFor) return;
+    const form = e.currentTarget as HTMLFormElement;
+    const fd = new FormData(form);
+    const u = String(fd.get("username") ?? "").trim();
+    const p = String(fd.get("password") ?? "");
+    if (!u || !p) return toast.error("Preencha usuário e senha");
+    try {
+      await setCreds({ data: { barbershopId: credsFor.id, username: u, password: p } });
+      toast.success("Credenciais atualizadas");
+      setCredsFor(null);
+      load();
+    } catch (err: any) {
+      toast.error(err.message ?? "Erro");
     }
   };
 
@@ -139,7 +146,7 @@ function SuperAdminPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold">Barbearias</h1>
-            <p className="text-sm text-muted-foreground">Gerencie as barbearias e convites de admin.</p>
+            <p className="text-sm text-muted-foreground">Cadastre barbearias e defina usuário/senha do dono.</p>
           </div>
           <button onClick={() => setShowForm((v) => !v)}
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
@@ -156,26 +163,39 @@ function SuperAdminPage() {
                   className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="Barbearia João" />
               </label>
               <label className="text-sm">
-                <span className="mb-1 block text-muted-foreground">Slug</span>
+                <span className="mb-1 block text-muted-foreground">Slug (URL)</span>
                 <input value={slug} onChange={(e) => setSlug(slugify(e.target.value))}
                   className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="barbearia-joao" />
               </label>
             </div>
-            <div className="grid gap-2 sm:grid-cols-2">
-              <label className="text-sm">
-                <span className="mb-1 block text-muted-foreground">Email do dono (opcional)</span>
-                <input type="email" value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="dono@exemplo.com" />
-              </label>
-              <label className="text-sm">
-                <span className="mb-1 block text-muted-foreground">Status</span>
-                <select value={status} onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2">
-                  <option value="active">Ativa</option>
-                  <option value="inactive">Inativa</option>
-                </select>
-              </label>
+            <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
+              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
+                <KeyRound className="h-3.5 w-3.5" /> Credenciais do dono
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="text-sm">
+                  <span className="mb-1 flex items-center gap-1 text-muted-foreground"><User className="h-3 w-3" /> Usuário</span>
+                  <input value={adminUsername} onChange={(e) => setAdminUsername(e.target.value.toLowerCase())}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="joao" />
+                </label>
+                <label className="text-sm">
+                  <span className="mb-1 flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Senha</span>
+                  <input type="text" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="qualquer senha" />
+                </label>
+              </div>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                O dono vai entrar em <code>/{slug || "seu-slug"}/entrar</code> com esse usuário e senha.
+              </p>
             </div>
+            <label className="text-sm">
+              <span className="mb-1 block text-muted-foreground">Status</span>
+              <select value={status} onChange={(e) => setStatus(e.target.value as any)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 sm:max-w-xs">
+                <option value="active">Ativa</option>
+                <option value="inactive">Inativa</option>
+              </select>
+            </label>
             <div className="flex gap-2">
               <button type="submit" disabled={saving}
                 className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60">
@@ -192,136 +212,72 @@ function SuperAdminPage() {
           {!loading && items.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma barbearia cadastrada.</p>}
           {items.map((b) => (
             <div key={b.id} className="rounded-xl border border-border bg-card">
-              <div className="flex items-center gap-3 p-3">
+              <div className="flex flex-wrap items-center gap-3 p-3">
                 <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/15 text-primary">
                   <Building2 className="h-5 w-5" />
                 </div>
-                <div className="flex-1">
-                  <div className="font-medium">{b.name}</div>
-                  <div className="text-xs text-muted-foreground">/{b.slug}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium truncate">{b.name}</div>
+                  <div className="text-xs text-muted-foreground">
+                    /{b.slug} · usuário: <code>{b.admin_username ?? "—"}</code>
+                  </div>
                 </div>
                 <Link to="/superadmin/$id" params={{ id: b.id }}
                   className="inline-flex items-center gap-1 rounded-md bg-primary/15 px-2 py-1 text-xs font-medium text-primary hover:bg-primary/25">
                   <Settings2 className="h-3 w-3" /> Preparar
                 </Link>
+                <button onClick={() => setCredsFor(b)}
+                  className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:text-foreground">
+                  <KeyRound className="h-3 w-3" /> Credenciais
+                </button>
                 <button onClick={() => toggleStatus(b)}
                   className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
                     b.status === "active" ? "bg-emerald-500/15 text-emerald-500" : "bg-muted text-muted-foreground"}`}>
                   {b.status === "active" ? "Ativa" : "Inativa"}
                 </button>
-                <button onClick={() => setExpanded(expanded === b.id ? null : b.id)}
-                  className="ml-2 inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:text-foreground">
-                  <Mail className="h-3 w-3" /> Convites
-                  {expanded === b.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-                </button>
               </div>
-              {expanded === b.id && <InvitesPanel barbershopId={b.id} />}
             </div>
           ))}
         </div>
       </main>
-    </div>
-  );
-}
 
-function InvitesPanel({ barbershopId }: { barbershopId: string }) {
-  const [list, setList] = useState<Invite[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const load = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("barbershop_invites")
-      .select("id,email,status,expires_at,created_at")
-      .eq("barbershop_id", barbershopId)
-      .order("created_at", { ascending: false });
-    if (error) toast.error(error.message);
-    setList((data as Invite[]) ?? []);
-    setLoading(false);
-  };
-
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [barbershopId]);
-
-  const generate = async (targetEmail: string) => {
-    setBusy(true);
-    try {
-      const url = await createInviteFor(barbershopId, targetEmail);
-      await navigator.clipboard.writeText(url).catch(() => {});
-      toast.success("Link do convite copiado");
-      setEmail("");
-      load();
-    } catch (e: any) { toast.error(e.message ?? "Erro"); }
-    finally { setBusy(false); }
-  };
-
-  const cancel = async (id: string) => {
-    const { error } = await supabase.rpc("cancel_barbershop_invite", { _id: id });
-    if (error) return toast.error(error.message);
-    load();
-  };
-
-  const statusColor = (s: string, exp: string) => {
-    const expired = new Date(exp) < new Date();
-    if (s === "accepted") return "bg-emerald-500/15 text-emerald-500";
-    if (s === "cancelled") return "bg-muted text-muted-foreground";
-    if (s === "pending" && expired) return "bg-amber-500/15 text-amber-500";
-    return "bg-primary/15 text-primary";
-  };
-  const statusLabel = (s: string, exp: string) => {
-    const expired = new Date(exp) < new Date();
-    if (s === "accepted") return "Aceito";
-    if (s === "cancelled") return "Cancelado";
-    if (s === "pending" && expired) return "Expirado";
-    return "Pendente";
-  };
-
-  return (
-    <div className="border-t border-border/60 px-3 py-3">
-      <div className="flex gap-2">
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-          placeholder="email@exemplo.com"
-          className="flex-1 rounded-md border border-input bg-background px-2 py-1.5 text-sm" />
-        <button onClick={() => email && generate(email)} disabled={busy || !email}
-          className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-60">
-          Gerar convite
-        </button>
-      </div>
-      <div className="mt-3 grid gap-1.5">
-        {loading && <p className="text-xs text-muted-foreground">Carregando…</p>}
-        {!loading && list.length === 0 && <p className="text-xs text-muted-foreground">Nenhum convite ainda.</p>}
-        {list.map((inv) => (
-          <div key={inv.id} className="flex items-center gap-2 rounded-md border border-border/60 bg-background/40 px-2 py-1.5 text-xs">
-            <span className="flex-1 truncate">{inv.email}</span>
-            <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColor(inv.status, inv.expires_at)}`}>
-              {statusLabel(inv.status, inv.expires_at)}
-            </span>
-            {inv.status === "pending" && (
-              <>
-                <button title="Gerar novo link (invalida o anterior)"
-                  onClick={() => generate(inv.email)}
-                  className="rounded p-1 text-muted-foreground hover:text-foreground">
-                  <RefreshCw className="h-3.5 w-3.5" />
-                </button>
-                <button title="Cancelar" onClick={() => cancel(inv.id)}
-                  className="rounded p-1 text-muted-foreground hover:text-destructive">
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </>
-            )}
-            {(inv.status !== "pending") && (
-              <button title="Novo convite para este email" onClick={() => generate(inv.email)}
-                className="rounded p-1 text-muted-foreground hover:text-foreground">
-                <Copy className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-      <p className="mt-2 text-[10px] text-muted-foreground">
-        Por segurança, o link do convite só é mostrado no momento em que é gerado. Ele é copiado automaticamente.
-      </p>
+      {credsFor && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" onClick={() => setCredsFor(null)}>
+          <form
+            onSubmit={saveCreds}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-2xl border border-border bg-card p-5 shadow-xl"
+          >
+            <h2 className="text-lg font-semibold">Credenciais — {credsFor.name}</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              O dono entra em <code>/{credsFor.slug}/entrar</code>
+            </p>
+            <label className="mt-4 block text-sm">
+              <span className="mb-1 flex items-center gap-1 text-muted-foreground"><User className="h-3 w-3" /> Usuário</span>
+              <input
+                name="username"
+                defaultValue={credsFor.admin_username ?? ""}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="mt-3 block text-sm">
+              <span className="mb-1 flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Nova senha</span>
+              <input
+                name="password"
+                type="text"
+                placeholder="deixe em branco para gerar erro"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </label>
+            <div className="mt-5 flex justify-end gap-2">
+              <button type="button" onClick={() => setCredsFor(null)}
+                className="rounded-md border border-border px-3 py-2 text-sm">Cancelar</button>
+              <button type="submit"
+                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground">Salvar</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

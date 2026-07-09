@@ -14,6 +14,55 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_sessions: {
+        Row: {
+          barber_id: string | null
+          barbershop_id: string
+          created_at: string
+          expires_at: string
+          kind: string
+          token: string
+        }
+        Insert: {
+          barber_id?: string | null
+          barbershop_id: string
+          created_at?: string
+          expires_at?: string
+          kind: string
+          token?: string
+        }
+        Update: {
+          barber_id?: string | null
+          barbershop_id?: string
+          created_at?: string
+          expires_at?: string
+          kind?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_sessions_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_sessions_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "public_barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_sessions_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           barber_id: string | null
@@ -115,10 +164,13 @@ export type Database = {
       }
       barbers: {
         Row: {
+          access_password_hash: string | null
+          access_username: string | null
           active: boolean
           barbershop_id: string
           bio: string | null
           blocked_dates: Json
+          breaks: Json
           commission_percent: number
           created_at: string
           id: string
@@ -133,10 +185,13 @@ export type Database = {
           work_hours: Json
         }
         Insert: {
+          access_password_hash?: string | null
+          access_username?: string | null
           active?: boolean
           barbershop_id: string
           bio?: string | null
           blocked_dates?: Json
+          breaks?: Json
           commission_percent?: number
           created_at?: string
           id?: string
@@ -151,10 +206,13 @@ export type Database = {
           work_hours?: Json
         }
         Update: {
+          access_password_hash?: string | null
+          access_username?: string | null
           active?: boolean
           barbershop_id?: string
           bio?: string | null
           blocked_dates?: Json
+          breaks?: Json
           commission_percent?: number
           created_at?: string
           id?: string
@@ -234,6 +292,8 @@ export type Database = {
       barbershops: {
         Row: {
           address: string | null
+          admin_password_hash: string | null
+          admin_username: string | null
           banner_url: string | null
           blocked_dates: Json
           created_at: string
@@ -256,6 +316,8 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          admin_password_hash?: string | null
+          admin_username?: string | null
           banner_url?: string | null
           blocked_dates?: Json
           created_at?: string
@@ -278,6 +340,8 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          admin_password_hash?: string | null
+          admin_username?: string | null
           banner_url?: string | null
           blocked_dates?: Json
           created_at?: string
@@ -517,6 +581,7 @@ export type Database = {
           barbershop_id: string | null
           bio: string | null
           blocked_dates: Json | null
+          breaks: Json | null
           id: string | null
           name: string | null
           photo_url: string | null
@@ -530,6 +595,7 @@ export type Database = {
           barbershop_id?: string | null
           bio?: string | null
           blocked_dates?: Json | null
+          breaks?: Json | null
           id?: string | null
           name?: string | null
           photo_url?: string | null
@@ -543,6 +609,7 @@ export type Database = {
           barbershop_id?: string | null
           bio?: string | null
           blocked_dates?: Json | null
+          breaks?: Json | null
           id?: string | null
           name?: string | null
           photo_url?: string | null
@@ -596,6 +663,7 @@ export type Database = {
         Args: { _token_hash: string }
         Returns: string
       }
+      access_logout: { Args: { _token: string }; Returns: boolean }
       assign_barbershop_admin: {
         Args: { _barbershop_id: string; _email: string }
         Returns: string
@@ -649,6 +717,14 @@ export type Database = {
         Returns: boolean
       }
       is_superadmin: { Args: { _user_id: string }; Returns: boolean }
+      login_barber: {
+        Args: { _password: string; _slug: string; _username: string }
+        Returns: string
+      }
+      login_barbershop_admin: {
+        Args: { _password: string; _slug: string; _username: string }
+        Returns: string
+      }
       public_cancel_my_appointment: {
         Args: { _id: string; _phone: string }
         Returns: boolean
@@ -685,9 +761,37 @@ export type Database = {
         Args: { _barbershop_id: string; _name: string; _phone: string }
         Returns: string
       }
+      set_barber_credentials: {
+        Args: {
+          _admin_token: string
+          _barber_id: string
+          _password: string
+          _username: string
+        }
+        Returns: boolean
+      }
+      set_barbershop_admin_credentials: {
+        Args: { _barbershop_id: string; _password: string; _username: string }
+        Returns: boolean
+      }
+      shop_barbers_gate_info: {
+        Args: { _slug: string }
+        Returns: {
+          has_any_barber_gate: boolean
+        }[]
+      }
       update_barbershop_basic: {
         Args: { _id: string; _name: string; _slug: string; _status: string }
         Returns: boolean
+      }
+      verify_access_token: {
+        Args: { _token: string }
+        Returns: {
+          barber_id: string
+          barbershop_id: string
+          barbershop_slug: string
+          kind: string
+        }[]
       }
     }
     Enums: {

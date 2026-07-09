@@ -9,6 +9,8 @@ export const Route = createFileRoute("/_authenticated/$slug/admin/barbeiros")({
 });
 
 type Hours = Record<string, { start: string; end: string } | null>;
+type Break = { start: string; end: string };
+type Breaks = Record<string, Break[]>;
 
 type BarberForm = {
   id?: string;
@@ -21,6 +23,7 @@ type BarberForm = {
   active: boolean;
   work_hours: Hours;
   blocked_dates: string[];
+  breaks: Breaks;
 };
 
 const DEFAULT_HOURS: Hours = {
@@ -52,6 +55,7 @@ const empty: BarberForm = {
   active: true,
   work_hours: DEFAULT_HOURS,
   blocked_dates: [],
+  breaks: {},
 };
 
 function BarbersPage() {
@@ -154,6 +158,7 @@ function BarbersPage() {
                       active: b.active,
                       work_hours: (b.work_hours as Hours) ?? DEFAULT_HOURS,
                       blocked_dates: (b.blocked_dates as string[]) ?? [],
+                      breaks: (b.breaks as Breaks) ?? {},
                     })
                   }
                   className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -305,6 +310,92 @@ function BarbersPage() {
                   })}
                 </div>
               </div>
+
+              <div className="rounded-md border border-border p-3">
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Pausas / Intervalos
+                </div>
+                <p className="mb-2 text-[11px] text-muted-foreground">
+                  Ex.: 12:00–13:00 (almoço). Horários dentro das pausas não aparecem para agendamento.
+                </p>
+                <div className="grid gap-2">
+                  {DAYS.map((d) => {
+                    const list = editing.breaks?.[d.key] ?? [];
+                    return (
+                      <div key={d.key} className="rounded border border-border/60 p-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium">{d.label}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEditing({
+                                ...editing,
+                                breaks: {
+                                  ...editing.breaks,
+                                  [d.key]: [...list, { start: "12:00", end: "13:00" }],
+                                },
+                              })
+                            }
+                            className="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary hover:bg-primary/20"
+                          >
+                            <Plus className="h-2.5 w-2.5" /> Adicionar pausa
+                          </button>
+                        </div>
+                        {list.length > 0 && (
+                          <div className="mt-1.5 grid gap-1">
+                            {list.map((brk, idx) => (
+                              <div key={idx} className="flex items-center gap-1.5 text-xs">
+                                <input
+                                  type="time"
+                                  value={brk.start}
+                                  onChange={(e) => {
+                                    const next = [...list];
+                                    next[idx] = { ...brk, start: e.target.value };
+                                    setEditing({
+                                      ...editing,
+                                      breaks: { ...editing.breaks, [d.key]: next },
+                                    });
+                                  }}
+                                  className="rounded border border-input bg-background px-1.5 py-0.5"
+                                />
+                                <span className="text-muted-foreground">até</span>
+                                <input
+                                  type="time"
+                                  value={brk.end}
+                                  onChange={(e) => {
+                                    const next = [...list];
+                                    next[idx] = { ...brk, end: e.target.value };
+                                    setEditing({
+                                      ...editing,
+                                      breaks: { ...editing.breaks, [d.key]: next },
+                                    });
+                                  }}
+                                  className="rounded border border-input bg-background px-1.5 py-0.5"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const next = list.filter((_, i) => i !== idx);
+                                    setEditing({
+                                      ...editing,
+                                      breaks: { ...editing.breaks, [d.key]: next },
+                                    });
+                                  }}
+                                  className="ml-auto rounded p-1 text-rose-500 hover:bg-rose-500/10"
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+
 
               <Field label="Datas bloqueadas (folgas / férias — YYYY-MM-DD, uma por linha)">
                 <textarea
