@@ -175,13 +175,13 @@ function SuperAdminPage() {
               <div className="grid gap-2 sm:grid-cols-2">
                 <label className="text-sm">
                   <span className="mb-1 flex items-center gap-1 text-muted-foreground"><User className="h-3 w-3" /> Usuário</span>
-                  <input value={adminUsername} onChange={(e) => setAdminUsername(e.target.value.toLowerCase())}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="joao" />
+                  <input value={adminUsername} onChange={(e) => setAdminUsername(e.target.value)}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="Barber Neto" />
                 </label>
                 <label className="text-sm">
                   <span className="mb-1 flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Senha</span>
                   <input type="text" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="qualquer senha" />
+                    className="w-full rounded-md border border-input bg-background px-3 py-2" placeholder="qualquer senha (ex: 123)" />
                 </label>
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">

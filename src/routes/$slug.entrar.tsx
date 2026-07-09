@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { resolveShopLogin } from "@/lib/shop-admin.functions";
+import { resolveShopLogin, wrapPassword } from "@/lib/shop-admin.functions";
 import { Lock, User } from "lucide-react";
 import { toast } from "sonner";
 
@@ -27,7 +27,7 @@ function ShopLoginPage() {
       // sign out qualquer sessão antiga
       await supabase.auth.signOut();
       const { email } = await resolve({ data: { slug, username: username.trim() } });
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password: wrapPassword(password) });
       if (error) throw new Error("Usuário ou senha inválidos");
       toast.success("Bem-vindo!");
       navigate({ to: "/$slug/admin", params: { slug } });

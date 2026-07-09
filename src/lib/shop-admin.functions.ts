@@ -5,8 +5,34 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
  * Converte um username simples em um "email sintético" usado internamente
  * pelo Supabase Auth. O usuário nunca digita esse email — ele digita só o username.
  */
+/**
+ * Normaliza um nome de usuário digitado ("Barber Neto", " João ", etc.)
+ * para uma forma segura pra usar como parte de e-mail: minúsculo, sem acento,
+ * espaços e caracteres estranhos viram "-".
+ */
+function normalizeUsername(raw: string): string {
+  return String(raw ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function usernameToEmail(username: string): string {
-  return `${username.toLowerCase().trim()}@bs.local`;
+  return `${normalizeUsername(username)}@bs.local`;
+}
+
+/**
+ * Supabase Auth exige senha com >= 6 caracteres. Como o dono do SaaS quer
+ * poder definir senhas curtas ("123"), prefixamos internamente com um sal fixo.
+ * O usuário nunca vê nem digita esse prefixo — é aplicado no servidor tanto
+ * no set quanto no login.
+ */
+export const PWD_SALT = "bsx9_";
+export function wrapPassword(pwd: string): string {
+  return `${PWD_SALT}${pwd}`;
 }
 
 /**
@@ -19,15 +45,15 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
     (data: { barbershopId: string; username: string; password: string }) => {
-      const username = String(data.username ?? "").trim().toLowerCase();
+      const usernameNorm = normalizeUsername(data.username);
       const password = String(data.password ?? "");
       const barbershopId = String(data.barbershopId ?? "");
-      if (!/^[a-z0-9_.-]{2,32}$/.test(username)) {
-        throw new Error("Usuário inválido (use 2-32 caracteres: a-z, 0-9, _ . -)");
+      if (usernameNorm.length < 2 || usernameNorm.length > 40) {
+        throw new Error("Usuário deve ter entre 2 e 40 caracteres");
       }
       if (password.length < 1) throw new Error("Senha obrigatória");
       if (!barbershopId) throw new Error("Barbearia inválida");
-      return { barbershopId, username, password };
+      return { barbershopId, username: usernameNorm, password };
     },
   )
   .handler(async ({ data, context }) => {
@@ -54,7 +80,7 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
     let userId: string;
     if (existing) {
       const { error: updErr } = await supabaseAdmin.auth.admin.updateUserById(existing.id, {
-        password: data.password,
+        password: wrapPassword(data.password),
         email_confirm: true,
       });
       if (updErr) throw updErr;
@@ -62,7 +88,7 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
     } else {
       const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
         email,
-        password: data.password,
+        password: wrapPassword(data.password),
         email_confirm: true,
         user_metadata: { source: "shop-admin", username: data.username },
       });
@@ -96,13 +122,11 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
 export const resolveShopLogin = createServerFn({ method: "POST" })
   .inputValidator((data: { slug: string; username: string }) => {
     const slug = String(data.slug ?? "").trim().toLowerCase();
-    const username = String(data.username ?? "").trim().toLowerCase();
+    const username = normalizeUsername(data.username);
     if (!slug || !username) throw new Error("Dados inválidos");
     return { slug, username };
   })
   .handler(async ({ data }) => {
-    // Só valida que o username corresponde ao dono daquela barbearia.
-    // O signIn efetivo acontece no cliente com o email sintético.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: shop, error } = await supabaseAdmin
       .from("barbershops")
