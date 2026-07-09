@@ -79,6 +79,7 @@ function SuperAdminDetail() {
 
   const tabs: { id: Tab; label: string; icon: any }[] = [
     { id: "resumo", label: "Resumo", icon: Building2 },
+    { id: "links", label: "Links", icon: LinkIcon },
     { id: "servicos", label: "Serviços", icon: Scissors },
     { id: "barbeiros", label: "Barbeiros", icon: UserCog },
     { id: "config", label: "Configurações", icon: Settings },
