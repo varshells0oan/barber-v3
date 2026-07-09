@@ -48,10 +48,12 @@ function Booking() {
 
   useEffect(() => {
     (async () => {
+      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+      const bid = await getDefaultBarbershopId(slug);
       const [s, b, sh] = await Promise.all([
-        supabase.from("services").select("*").eq("active", true).order("price"),
-        supabase.from("public_barbers" as any).select("*").eq("active", true),
-        supabase.from("public_shop_settings" as any).select("*").limit(1).maybeSingle(),
+        supabase.from("services").select("*").eq("barbershop_id", bid).eq("active", true).order("price"),
+        supabase.from("public_barbers" as any).select("*").eq("barbershop_id", bid).eq("active", true),
+        supabase.from("public_shop_settings" as any).select("*").eq("barbershop_id", bid).limit(1).maybeSingle(),
       ]);
       setServices(s.data ?? []);
       setBarbers(b.data ?? []);
@@ -64,7 +66,7 @@ function Booking() {
         }
       }
     })();
-  }, [initialServiceId]);
+  }, [initialServiceId, slug]);
 
   // Load available slots when date changes
   const loadSlots = async () => {
