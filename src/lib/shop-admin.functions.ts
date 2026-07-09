@@ -80,7 +80,7 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
     let userId: string;
     if (existing) {
       const { error: updErr } = await supabaseAdmin.auth.admin.updateUserById(existing.id, {
-        password: data.password,
+        password: wrapPassword(data.password),
         email_confirm: true,
       });
       if (updErr) throw updErr;
@@ -88,7 +88,7 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
     } else {
       const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
         email,
-        password: data.password,
+        password: wrapPassword(data.password),
         email_confirm: true,
         user_metadata: { source: "shop-admin", username: data.username },
       });
