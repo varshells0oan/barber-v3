@@ -96,14 +96,20 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
       userId = created.user!.id;
     }
 
-    // Concede role admin escopada à barbearia (idempotente)
-    const { error: roleErr } = await supabaseAdmin
+    // Concede role admin escopada à barbearia (idempotente — sem unique constraint, checamos antes)
+    const { data: existingRole } = await supabaseAdmin
       .from("user_roles")
-      .upsert(
-        { user_id: userId, role: "admin", barbershop_id: data.barbershopId },
-        { onConflict: "user_id,role,barbershop_id", ignoreDuplicates: true },
-      );
-    if (roleErr) throw roleErr;
+      .select("id")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .eq("barbershop_id", data.barbershopId)
+      .maybeSingle();
+    if (!existingRole) {
+      const { error: roleErr } = await supabaseAdmin
+        .from("user_roles")
+        .insert({ user_id: userId, role: "admin", barbershop_id: data.barbershopId });
+      if (roleErr) throw roleErr;
+    }
 
     // Guarda o username visível
     const { error: shopErr } = await supabaseAdmin
