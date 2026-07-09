@@ -109,7 +109,7 @@ function AuthPage() {
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
             <Scissors className="h-4 w-4" />
           </div>
-          <span className="font-semibold">Barbearia Azul</span>
+          <span className="font-semibold">BarberSaaS</span>
         </Link>
         <h1 className="text-2xl font-semibold text-foreground">
           {mode === "signin" ? "Entrar" : "Criar conta"}
