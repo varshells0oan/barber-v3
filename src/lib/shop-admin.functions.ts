@@ -30,8 +30,8 @@ function usernameToEmail(username: string): string {
  * O usuário nunca vê nem digita esse prefixo — é aplicado no servidor tanto
  * no set quanto no login.
  */
-const PWD_SALT = "bsx9_";
-function wrapPassword(pwd: string): string {
+export const PWD_SALT = "bsx9_";
+export function wrapPassword(pwd: string): string {
   return `${PWD_SALT}${pwd}`;
 }
 
