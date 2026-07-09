@@ -114,6 +114,7 @@ function SuperAdminDetail() {
         </div>
 
         {tab === "resumo" && <ResumoTab shop={shop} onSaved={load} counts={counts} />}
+        {tab === "links" && <LinksTab shop={shop} />}
         {tab === "servicos" && (
           <QuickTab
             title="Serviços"
