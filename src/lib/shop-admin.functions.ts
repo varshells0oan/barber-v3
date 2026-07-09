@@ -5,8 +5,34 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
  * Converte um username simples em um "email sintético" usado internamente
  * pelo Supabase Auth. O usuário nunca digita esse email — ele digita só o username.
  */
+/**
+ * Normaliza um nome de usuário digitado ("Barber Neto", " João ", etc.)
+ * para uma forma segura pra usar como parte de e-mail: minúsculo, sem acento,
+ * espaços e caracteres estranhos viram "-".
+ */
+function normalizeUsername(raw: string): string {
+  return String(raw ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function usernameToEmail(username: string): string {
-  return `${username.toLowerCase().trim()}@bs.local`;
+  return `${normalizeUsername(username)}@bs.local`;
+}
+
+/**
+ * Supabase Auth exige senha com >= 6 caracteres. Como o dono do SaaS quer
+ * poder definir senhas curtas ("123"), prefixamos internamente com um sal fixo.
+ * O usuário nunca vê nem digita esse prefixo — é aplicado no servidor tanto
+ * no set quanto no login.
+ */
+const PWD_SALT = "bsx9_";
+function wrapPassword(pwd: string): string {
+  return `${PWD_SALT}${pwd}`;
 }
 
 /**
