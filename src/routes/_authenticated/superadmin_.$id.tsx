@@ -72,7 +72,10 @@ function SuperAdminDetail() {
   if (checking || !shop) {
     return (
       <div className="dark min-h-screen grid place-items-center bg-background text-foreground">
-        <span className="text-sm text-muted-foreground">Carregando…</span>
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary/30 border-t-primary" />
+          Carregando…
+        </div>
       </div>
     );
   }
@@ -87,26 +90,44 @@ function SuperAdminDetail() {
   ];
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border/60 bg-card/60 px-4 backdrop-blur">
-        <Link to="/superadmin" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Voltar
-        </Link>
-        <Shield className="h-5 w-5 text-primary" />
-        <span className="font-heading text-lg">{shop.name}</span>
-        <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-          shop.status === "active" ? "bg-emerald-500/15 text-emerald-500" : "bg-muted text-muted-foreground"
-        }`}>
-          {shop.status === "active" ? "Ativa" : "Inativa"}
-        </span>
+    <div className="dark relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-40 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-primary/25 opacity-40 blur-[140px]" />
+        <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-chart-4/20 opacity-30 blur-[120px]" />
+      </div>
+
+      <header className="sticky top-0 z-30 border-b border-border/40 bg-background/60 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-5xl items-center gap-3 px-4 sm:px-6">
+          <Link to="/superadmin" className="flex items-center gap-1.5 rounded-lg border border-border/50 bg-card/40 px-2.5 py-1.5 text-xs text-muted-foreground transition hover:border-border hover:text-foreground">
+            <ArrowLeft className="h-3.5 w-3.5" /> Voltar
+          </Link>
+          <div className="ml-1 flex items-center gap-2.5">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-primary to-chart-3 shadow-lg shadow-primary/30">
+              <Shield className="h-4 w-4 text-primary-foreground" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-heading text-base">{shop.name}</span>
+              <span className="font-mono text-[10px] text-muted-foreground">/{shop.slug}</span>
+            </div>
+          </div>
+          <span className={`ml-auto rounded-full px-2.5 py-1 text-[10px] font-medium ${
+            shop.status === "active"
+              ? "bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30"
+              : "bg-muted text-muted-foreground"
+          }`}>
+            {shop.status === "active" ? "Ativa" : "Inativa"}
+          </span>
+        </div>
       </header>
 
-      <main className="mx-auto max-w-4xl p-4 sm:p-6">
-        <div className="mb-4 flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1">
+      <main className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6">
+        <div className="scrollbar-hide mb-5 flex gap-1.5 overflow-x-auto rounded-2xl border border-border/50 bg-card/40 p-1.5 backdrop-blur-xl">
           {tabs.map((t) => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
-                tab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+              className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-sm transition ${
+                tab === t.id
+                  ? "bg-gradient-to-br from-primary to-chart-3 text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-muted-foreground hover:bg-card/60 hover:text-foreground"
               }`}>
               <t.icon className="h-4 w-4" /> {t.label}
             </button>
