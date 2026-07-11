@@ -80,14 +80,11 @@ function Config() {
       loyalty_reward: s.loyalty_reward,
       theme_preset: (s.theme_preset as ThemePresetKey) ?? DEFAULT_PRESET,
     };
-    let q;
-    if (s.id) {
-      q = supabase.from("shop_settings").update(payload).eq("id", s.id);
-    } else {
-      const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
-      q = supabase.from("shop_settings").insert({ ...payload, barbershop_id: await getDefaultBarbershopId(slug) });
-    }
-    const { error } = await q;
+    const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
+    const bid = s.barbershop_id ?? (await getDefaultBarbershopId(slug));
+    const { error } = await supabase
+      .from("shop_settings")
+      .upsert({ ...payload, barbershop_id: bid }, { onConflict: "barbershop_id" });
     if (error) return toast.error(error.message);
     toast.success("Configurações salvas");
   };

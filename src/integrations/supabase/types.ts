@@ -538,7 +538,7 @@ export type Database = {
           {
             foreignKeyName: "shop_settings_barbershop_id_fkey"
             columns: ["barbershop_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "barbershops"
             referencedColumns: ["id"]
           },
@@ -655,7 +655,7 @@ export type Database = {
           {
             foreignKeyName: "shop_settings_barbershop_id_fkey"
             columns: ["barbershop_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "barbershops"
             referencedColumns: ["id"]
           },
