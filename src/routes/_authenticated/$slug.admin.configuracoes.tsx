@@ -123,6 +123,47 @@ function Config() {
         </div>
       </Section>
 
+      <Section title="Tema visual da página pública">
+        <p className="-mt-2 text-xs text-muted-foreground">
+          Escolha a paleta de cores que seus clientes verão na landing page e no agendamento. O painel administrativo não é afetado.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {Object.values(THEME_PRESETS).map((p) => {
+            const selected = (s.theme_preset ?? DEFAULT_PRESET) === p.key;
+            return (
+              <button
+                key={p.key}
+                type="button"
+                onClick={() => setS({ ...s, theme_preset: p.key })}
+                className={`group relative overflow-hidden rounded-xl border p-4 text-left transition ${
+                  selected
+                    ? "border-primary ring-2 ring-primary/40"
+                    : "border-border hover:border-primary/60"
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  {p.swatches.map((c, i) => (
+                    <span
+                      key={i}
+                      className="h-8 w-8 rounded-full ring-1 ring-black/10"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-3 text-sm font-semibold">{p.label}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">{p.description}</div>
+                {selected && (
+                  <span className="absolute right-3 top-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+                    Selecionado
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+
       <Section title="Contato e redes">
         <div className="grid gap-4 sm:grid-cols-2">
           <Row label="Telefone">
