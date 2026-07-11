@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PublicHeader } from "@/components/PublicHeader";
+import { PublicTheme } from "@/components/PublicTheme";
 import { brl, cleanPhone, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { Search, CalendarDays, Clock, Scissors, User, Sparkles, Gift, Loader2, PhoneCall } from "lucide-react";
 
@@ -40,7 +41,7 @@ function ClientArea() {
   const history = appts.filter((a) => a.status === "atendido");
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
+    <PublicTheme preset={shop?.theme_preset}>
       <PublicHeader slug={slug} />
 
       {/* Hero */}
@@ -138,7 +139,7 @@ function ClientArea() {
           </div>
         )}
       </div>
-    </div>
+    </PublicTheme>
   );
 }
 
