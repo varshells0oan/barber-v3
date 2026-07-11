@@ -78,6 +78,7 @@ function Config() {
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
+      theme_preset: (s.theme_preset as ThemePresetKey) ?? DEFAULT_PRESET,
     };
     let q;
     if (s.id) {
