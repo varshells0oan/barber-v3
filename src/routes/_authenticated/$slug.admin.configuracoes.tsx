@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
+import { THEME_PRESETS, DEFAULT_PRESET, type ThemePresetKey } from "@/lib/theme-presets";
 
 export const Route = createFileRoute("/_authenticated/$slug/admin/configuracoes")({
   component: Config,
