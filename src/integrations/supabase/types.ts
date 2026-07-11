@@ -485,6 +485,7 @@ export type Database = {
           name: string
           phone: string | null
           slot_buffer_min: number
+          theme_preset: string
           updated_at: string
           whatsapp: string | null
           work_hours: Json
@@ -506,6 +507,7 @@ export type Database = {
           name?: string
           phone?: string | null
           slot_buffer_min?: number
+          theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
           work_hours?: Json
@@ -527,6 +529,7 @@ export type Database = {
           name?: string
           phone?: string | null
           slot_buffer_min?: number
+          theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
           work_hours?: Json
@@ -644,6 +647,7 @@ export type Database = {
           name: string | null
           phone: string | null
           slot_buffer_min: number | null
+          theme_preset: string | null
           whatsapp: string | null
           work_hours: Json | null
         }

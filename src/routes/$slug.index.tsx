@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PublicHeader } from "@/components/PublicHeader";
+import { PublicTheme } from "@/components/PublicTheme";
 import { brl } from "@/lib/format";
 import {
   Scissors,
@@ -57,7 +58,7 @@ function Landing() {
   const workHours = (shop?.work_hours ?? {}) as Record<string, { start: string; end: string }>;
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
+    <PublicTheme preset={shop?.theme_preset}>
       <PublicHeader slug={slug} shopName={shopName} />
 
       {/* HERO */}
@@ -279,7 +280,7 @@ function Landing() {
       <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} {shopName}. Todos os direitos reservados.
       </footer>
-    </div>
+    </PublicTheme>
   );
 }
 

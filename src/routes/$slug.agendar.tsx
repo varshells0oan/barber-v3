@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PublicHeader } from "@/components/PublicHeader";
+import { PublicTheme } from "@/components/PublicTheme";
 import { brl, cleanPhone, timeToMin, minToTime, todayISO } from "@/lib/format";
 import { Calendar } from "@/components/ui/calendar";
 import { Check, ChevronLeft, Clock, Star, CalendarDays, Sun, Sunset } from "lucide-react";
@@ -194,7 +195,7 @@ function Booking() {
   };
 
   return (
-    <div className="dark min-h-screen bg-background text-foreground">
+    <PublicTheme preset={shop?.theme_preset}>
       <PublicHeader slug={slug} />
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -451,6 +452,6 @@ function Booking() {
           </>
         )}
       </div>
-    </div>
+    </PublicTheme>
   );
 }
