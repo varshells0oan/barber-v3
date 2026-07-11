@@ -12,7 +12,7 @@ import {
   Phone,
   Instagram,
   CalendarCheck,
-  Sparkles,
+  
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
