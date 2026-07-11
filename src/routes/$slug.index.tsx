@@ -194,6 +194,110 @@ function Landing() {
         </div>
       </section>
 
+      {/* GALERIA */}
+      {Array.isArray(shop?.gallery_urls) && shop.gallery_urls.length > 0 && (
+        <section id="galeria" className="border-t border-border/60">
+          <div className="mx-auto max-w-6xl px-4 py-20">
+            <div className="mb-10 flex items-end justify-between gap-4">
+              <div>
+                <span className="text-xs font-medium uppercase tracking-widest text-primary">Nosso trabalho</span>
+                <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
+                  Cortes que falam por si
+                </h2>
+              </div>
+              {shop?.instagram && (
+                <a
+                  href={`https://instagram.com/${shop.instagram.replace("@", "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hidden items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground sm:inline-flex"
+                >
+                  <Instagram className="h-4 w-4" /> Ver mais no Instagram
+                </a>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              {shop.gallery_urls.map((url: string, i: number) => (
+                <a
+                  key={i}
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-card"
+                >
+                  <img
+                    src={url}
+                    alt={`Trabalho ${i + 1}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* DEPOIMENTOS */}
+      {Array.isArray(shop?.testimonials) && shop.testimonials.length > 0 && (
+        <section id="depoimentos" className="border-t border-border/60 bg-card/20">
+          <div className="mx-auto max-w-6xl px-4 py-20">
+            <div className="mb-10">
+              <span className="text-xs font-medium uppercase tracking-widest text-primary">Quem já passou por aqui</span>
+              <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
+                O que os clientes dizem
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {shop.testimonials.map((t: any, i: number) => (
+                <figure
+                  key={i}
+                  className="flex h-full flex-col justify-between rounded-2xl border border-border bg-card p-6"
+                >
+                  <div className="flex gap-0.5 text-amber-500">
+                    {Array.from({ length: Math.max(1, Math.min(5, Number(t.rating) || 5)) }).map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground">
+                    “{t.text}”
+                  </blockquote>
+                  <figcaption className="mt-4 text-xs uppercase tracking-widest text-muted-foreground">
+                    — {t.name}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* INSTAGRAM CTA */}
+      {shop?.instagram && (
+        <section className="border-t border-border/60">
+          <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 md:flex-row md:items-center md:justify-between">
+            <div>
+              <span className="text-xs font-medium uppercase tracking-widest text-primary">Instagram</span>
+              <h3 className="mt-2 font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
+                Acompanhe o dia a dia da barbearia
+              </h3>
+              <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+                Bastidores, novos cortes, promoções e a rotina do salão — direto no nosso perfil.
+              </p>
+            </div>
+            <a
+              href={`https://instagram.com/${shop.instagram.replace("@", "")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-3 font-medium text-foreground transition hover:border-primary"
+            >
+              <Instagram className="h-4 w-4 text-primary" /> {shop.instagram}
+            </a>
+          </div>
+        </section>
+      )}
+
+
       {/* INFO / CONTATO */}
       <section className="mx-auto max-w-6xl px-4 py-20">
         <div className="grid gap-6 lg:grid-cols-2">
