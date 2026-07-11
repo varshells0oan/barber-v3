@@ -34,7 +34,7 @@ export function PublicHeader({ shopName = "Barbearia", slug }: Props) {
             Meus agendamentos
           </Link>
           <Link
-            to="/$slug"
+            to="/$slug/agendar"
             params={{ slug }}
             className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110"
           >
@@ -42,7 +42,7 @@ export function PublicHeader({ shopName = "Barbearia", slug }: Props) {
           </Link>
         </nav>
         <Link
-          to="/$slug"
+          to="/$slug/agendar"
           params={{ slug }}
           className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground sm:hidden"
         >
