@@ -139,60 +139,6 @@ function Landing() {
         </div>
       </section>
 
-      {/* SERVIÇOS */}
-      <section id="servicos" className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mb-10 flex items-end justify-between gap-4">
-          <div>
-            <span className="text-xs font-medium uppercase tracking-widest text-primary">Serviços</span>
-            <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
-              O que fazemos
-            </h2>
-          </div>
-          <Link
-            to="/$slug/agendar"
-            params={{ slug }}
-            className="hidden items-center gap-1 text-sm text-muted-foreground transition hover:text-foreground sm:inline-flex"
-          >
-            Ver tudo <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <Link
-              key={s.id}
-              to="/$slug/agendar"
-              params={{ slug }}
-              search={{ service: s.id }}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition hover:border-primary hover:shadow-lg hover:shadow-primary/10"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
-                  <Scissors className="h-5 w-5" />
-                </div>
-                <div className="font-semibold text-primary">{brl(s.price)}</div>
-              </div>
-              <h3 className="mt-4 font-heading text-lg font-semibold text-foreground">{s.name}</h3>
-              {s.description && (
-                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{s.description}</p>
-              )}
-              <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" /> {s.duration} min
-                </span>
-                <span className="inline-flex items-center gap-1 text-primary opacity-0 transition group-hover:opacity-100">
-                  Agendar <ArrowRight className="h-3.5 w-3.5" />
-                </span>
-              </div>
-            </Link>
-          ))}
-          {services.length === 0 && (
-            <div className="col-span-full rounded-2xl border border-dashed border-border bg-card/40 p-10 text-center text-sm text-muted-foreground">
-              Em breve novos serviços.
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* EQUIPE */}
       <section id="equipe" className="border-t border-border/60 bg-card/20">
