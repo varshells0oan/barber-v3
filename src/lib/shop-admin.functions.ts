@@ -216,7 +216,7 @@ export const recordShopLoginResult = createServerFn({ method: "POST" })
       .eq("slug", data.slug)
       .maybeSingle();
 
-    await supabaseAdmin.rpc("log_audit_event", {
+    await supabaseAdmin.rpc("log_audit_event" as any, {
       _barbershop_id: shop?.id ?? null,
       _actor_kind: "admin",
       _actor_id: null,
@@ -225,7 +225,7 @@ export const recordShopLoginResult = createServerFn({ method: "POST" })
       _ip: ip,
       _user_agent: ua,
       _metadata: { slug: data.slug },
-    });
+    } as any);
 
     return { ok: true };
   });
