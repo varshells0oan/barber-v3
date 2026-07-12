@@ -506,3 +506,52 @@ function Input({
     />
   );
 }
+
+const CUSTOM_SLOTS: { key: string; label: string; hint: string }[] = [
+  { key: "bg", label: "Fundo", hint: "Cor principal do site" },
+  { key: "surface", label: "Superfície", hint: "Cards e caixas" },
+  { key: "secondary", label: "Secundária", hint: "Detalhes e bordas" },
+  { key: "primary", label: "Destaque", hint: "Botões e ações" },
+];
+
+function ColorSlot({
+  label,
+  hint,
+  value,
+  onChange,
+}: {
+  label: string;
+  hint: string;
+  value: string;
+  onChange: (hex: string) => void;
+}) {
+  return (
+    <div className="rounded-lg border border-border bg-background/50 p-2.5">
+      <div className="flex items-center gap-2.5">
+        <label className="relative block h-10 w-10 shrink-0 cursor-pointer overflow-hidden rounded-md ring-1 ring-black/20">
+          <span
+            className="absolute inset-0"
+            style={{ background: value }}
+          />
+          <input
+            type="color"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="absolute inset-0 cursor-pointer opacity-0"
+          />
+        </label>
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-medium">{label}</div>
+          <div className="truncate text-[10px] text-muted-foreground">{hint}</div>
+        </div>
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="mt-2 w-full rounded border border-input bg-background px-2 py-1 font-mono text-[11px] uppercase"
+        placeholder="#000000"
+      />
+    </div>
+  );
+}
