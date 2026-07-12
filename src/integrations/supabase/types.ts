@@ -488,6 +488,7 @@ export type Database = {
           slot_buffer_min: number
           tagline: string | null
           testimonials: Json
+          theme_custom: Json | null
           theme_preset: string
           updated_at: string
           whatsapp: string | null
@@ -513,6 +514,7 @@ export type Database = {
           slot_buffer_min?: number
           tagline?: string | null
           testimonials?: Json
+          theme_custom?: Json | null
           theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
@@ -538,6 +540,7 @@ export type Database = {
           slot_buffer_min?: number
           tagline?: string | null
           testimonials?: Json
+          theme_custom?: Json | null
           theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
@@ -647,7 +650,6 @@ export type Database = {
           barbershop_id: string | null
           blocked_dates: Json | null
           description: string | null
-          differentials: Json | null
           gallery: Json | null
           gallery_urls: Json | null
           instagram: string | null
@@ -659,9 +661,54 @@ export type Database = {
           slot_buffer_min: number | null
           tagline: string | null
           testimonials: Json | null
+          theme_custom: Json | null
           theme_preset: string | null
           whatsapp: string | null
           work_hours: Json | null
+        }
+        Insert: {
+          address?: string | null
+          banner_url?: string | null
+          barbershop_id?: string | null
+          blocked_dates?: Json | null
+          description?: string | null
+          gallery?: Json | null
+          gallery_urls?: Json | null
+          instagram?: string | null
+          logo_url?: string | null
+          loyalty_reward?: string | null
+          loyalty_target?: number | null
+          name?: string | null
+          phone?: string | null
+          slot_buffer_min?: number | null
+          tagline?: string | null
+          testimonials?: Json | null
+          theme_custom?: Json | null
+          theme_preset?: string | null
+          whatsapp?: string | null
+          work_hours?: Json | null
+        }
+        Update: {
+          address?: string | null
+          banner_url?: string | null
+          barbershop_id?: string | null
+          blocked_dates?: Json | null
+          description?: string | null
+          gallery?: Json | null
+          gallery_urls?: Json | null
+          instagram?: string | null
+          logo_url?: string | null
+          loyalty_reward?: string | null
+          loyalty_target?: number | null
+          name?: string | null
+          phone?: string | null
+          slot_buffer_min?: number | null
+          tagline?: string | null
+          testimonials?: Json | null
+          theme_custom?: Json | null
+          theme_preset?: string | null
+          whatsapp?: string | null
+          work_hours?: Json | null
         }
         Relationships: [
           {

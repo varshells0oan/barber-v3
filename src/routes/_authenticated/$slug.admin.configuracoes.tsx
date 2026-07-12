@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
-import { THEME_PRESETS, DEFAULT_PRESET, type ThemePresetKey } from "@/lib/theme-presets";
+import {
+  THEME_PRESETS,
+  DEFAULT_PRESET,
+  DEFAULT_CUSTOM_COLORS,
+  CUSTOM_PRESET_KEY,
+  type ThemePresetKey,
+} from "@/lib/theme-presets";
 
 export const Route = createFileRoute("/_authenticated/$slug/admin/configuracoes")({
   component: Config,
@@ -96,7 +102,13 @@ function Config() {
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
-      theme_preset: (s.theme_preset as ThemePresetKey) ?? DEFAULT_PRESET,
+      theme_preset: (s.theme_preset as string) ?? DEFAULT_PRESET,
+      theme_custom:
+        s.theme_preset === CUSTOM_PRESET_KEY
+          ? (Array.isArray(s.theme_custom) && s.theme_custom.length >= 4
+              ? s.theme_custom.slice(0, 4)
+              : DEFAULT_CUSTOM_COLORS)
+          : (s.theme_custom ?? null),
     };
     const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
     const bid = s.barbershop_id ?? (await getDefaultBarbershopId(slug));
@@ -181,8 +193,72 @@ function Config() {
               </button>
             );
           })}
+
+          {/* Custom palette card */}
+          {(() => {
+            const selected = s.theme_preset === CUSTOM_PRESET_KEY;
+            const cur: string[] =
+              Array.isArray(s.theme_custom) && s.theme_custom.length >= 4
+                ? s.theme_custom
+                : [...DEFAULT_CUSTOM_COLORS];
+            return (
+              <div
+                onClick={() =>
+                  !selected &&
+                  setS({
+                    ...s,
+                    theme_preset: CUSTOM_PRESET_KEY,
+                    theme_custom: cur,
+                  })
+                }
+                className={`relative overflow-hidden rounded-xl border p-4 text-left transition ${
+                  selected
+                    ? "border-primary ring-2 ring-primary/40"
+                    : "cursor-pointer border-dashed border-border hover:border-primary/60"
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  {cur.map((c, i) => (
+                    <span
+                      key={i}
+                      className="h-8 w-8 rounded-full ring-1 ring-black/10"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-3 text-sm font-semibold">Personalizada</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">
+                  Escolha suas próprias cores.
+                </div>
+
+                {selected && (
+                  <>
+                    <span className="absolute right-3 top-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+                      Selecionado
+                    </span>
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      {CUSTOM_SLOTS.map((slot, i) => (
+                        <ColorSlot
+                          key={slot.key}
+                          label={slot.label}
+                          hint={slot.hint}
+                          value={cur[i] ?? DEFAULT_CUSTOM_COLORS[i]}
+                          onChange={(hex) => {
+                            const next = [...cur];
+                            next[i] = hex;
+                            setS({ ...s, theme_custom: next });
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </Section>
+
 
 
       <Section title="Contato e redes">
@@ -428,5 +504,54 @@ function Input({
       onChange={(e) => onChange(e.target.value)}
       className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
     />
+  );
+}
+
+const CUSTOM_SLOTS: { key: string; label: string; hint: string }[] = [
+  { key: "bg", label: "Fundo", hint: "Cor principal do site" },
+  { key: "surface", label: "Superfície", hint: "Cards e caixas" },
+  { key: "secondary", label: "Secundária", hint: "Detalhes e bordas" },
+  { key: "primary", label: "Destaque", hint: "Botões e ações" },
+];
+
+function ColorSlot({
+  label,
+  hint,
+  value,
+  onChange,
+}: {
+  label: string;
+  hint: string;
+  value: string;
+  onChange: (hex: string) => void;
+}) {
+  return (
+    <div className="rounded-lg border border-border bg-background/50 p-2.5">
+      <div className="flex items-center gap-2.5">
+        <label className="relative block h-10 w-10 shrink-0 cursor-pointer overflow-hidden rounded-md ring-1 ring-black/20">
+          <span
+            className="absolute inset-0"
+            style={{ background: value }}
+          />
+          <input
+            type="color"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="absolute inset-0 cursor-pointer opacity-0"
+          />
+        </label>
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-medium">{label}</div>
+          <div className="truncate text-[10px] text-muted-foreground">{hint}</div>
+        </div>
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="mt-2 w-full rounded border border-input bg-background px-2 py-1 font-mono text-[11px] uppercase"
+        placeholder="#000000"
+      />
+    </div>
   );
 }
