@@ -102,7 +102,13 @@ function Config() {
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
       loyalty_reward: s.loyalty_reward,
-      theme_preset: (s.theme_preset as ThemePresetKey) ?? DEFAULT_PRESET,
+      theme_preset: (s.theme_preset as string) ?? DEFAULT_PRESET,
+      theme_custom:
+        s.theme_preset === CUSTOM_PRESET_KEY
+          ? (Array.isArray(s.theme_custom) && s.theme_custom.length >= 4
+              ? s.theme_custom.slice(0, 4)
+              : DEFAULT_CUSTOM_COLORS)
+          : (s.theme_custom ?? null),
     };
     const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
     const bid = s.barbershop_id ?? (await getDefaultBarbershopId(slug));
