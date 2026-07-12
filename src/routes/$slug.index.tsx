@@ -58,7 +58,7 @@ function Landing() {
   const workHours = (shop?.work_hours ?? {}) as Record<string, { start: string; end: string }>;
 
   return (
-    <PublicTheme preset={shop?.theme_preset}>
+    <PublicTheme preset={shop?.theme_preset} slug={slug}>
       <PublicHeader slug={slug} shopName={shopName} />
 
       {/* HERO */}
