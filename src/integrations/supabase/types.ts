@@ -420,6 +420,30 @@ export type Database = {
           },
         ]
       }
+      login_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip: string
+          slug: string
+          success: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip: string
+          slug: string
+          success: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip?: string
+          slug?: string
+          success?: boolean
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           active: boolean
@@ -736,6 +760,13 @@ export type Database = {
         Returns: boolean
       }
       cancel_barbershop_invite: { Args: { _id: string }; Returns: boolean }
+      check_login_rate_limit: {
+        Args: { _ip: string; _slug: string }
+        Returns: {
+          allowed: boolean
+          retry_after_seconds: number
+        }[]
+      }
       claim_superadmin: { Args: never; Returns: boolean }
       create_barbershop_invite: {
         Args: { _barbershop_id: string; _email: string; _token_hash: string }
@@ -823,6 +854,10 @@ export type Database = {
       public_upsert_client: {
         Args: { _barbershop_id: string; _name: string; _phone: string }
         Returns: string
+      }
+      record_login_attempt: {
+        Args: { _ip: string; _slug: string; _success: boolean }
+        Returns: undefined
       }
       set_barber_credentials: {
         Args: {
