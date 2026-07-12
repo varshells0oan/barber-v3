@@ -15,6 +15,7 @@ function ShopLoginPage() {
   const { slug } = Route.useParams();
   const navigate = useNavigate();
   const resolve = useServerFn(resolveShopLogin);
+  const record = useServerFn(recordShopLoginResult);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,8 @@ function ShopLoginPage() {
       await supabase.auth.signOut();
       const { email } = await resolve({ data: { slug, username: username.trim() } });
       const { error } = await supabase.auth.signInWithPassword({ email, password: wrapPassword(password) });
+      // registra sucesso ou falha (alimenta rate limit)
+      await record({ data: { slug, success: !error } }).catch(() => {});
       if (error) throw new Error("Usuário ou senha inválidos");
       toast.success("Bem-vindo!");
       navigate({ to: "/$slug/admin", params: { slug } });
