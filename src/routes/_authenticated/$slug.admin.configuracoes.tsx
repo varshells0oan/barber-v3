@@ -193,8 +193,72 @@ function Config() {
               </button>
             );
           })}
+
+          {/* Custom palette card */}
+          {(() => {
+            const selected = s.theme_preset === CUSTOM_PRESET_KEY;
+            const cur: string[] =
+              Array.isArray(s.theme_custom) && s.theme_custom.length >= 4
+                ? s.theme_custom
+                : [...DEFAULT_CUSTOM_COLORS];
+            return (
+              <div
+                onClick={() =>
+                  !selected &&
+                  setS({
+                    ...s,
+                    theme_preset: CUSTOM_PRESET_KEY,
+                    theme_custom: cur,
+                  })
+                }
+                className={`relative overflow-hidden rounded-xl border p-4 text-left transition ${
+                  selected
+                    ? "border-primary ring-2 ring-primary/40"
+                    : "cursor-pointer border-dashed border-border hover:border-primary/60"
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  {cur.map((c, i) => (
+                    <span
+                      key={i}
+                      className="h-8 w-8 rounded-full ring-1 ring-black/10"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </div>
+                <div className="mt-3 text-sm font-semibold">Personalizada</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">
+                  Escolha suas próprias cores.
+                </div>
+
+                {selected && (
+                  <>
+                    <span className="absolute right-3 top-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+                      Selecionado
+                    </span>
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      {CUSTOM_SLOTS.map((slot, i) => (
+                        <ColorSlot
+                          key={slot.key}
+                          label={slot.label}
+                          hint={slot.hint}
+                          value={cur[i] ?? DEFAULT_CUSTOM_COLORS[i]}
+                          onChange={(hex) => {
+                            const next = [...cur];
+                            next[i] = hex;
+                            setS({ ...s, theme_custom: next });
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </Section>
+
 
 
       <Section title="Contato e redes">
