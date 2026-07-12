@@ -124,8 +124,22 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
   });
 
 /**
+ * Extrai o IP do request (server-only). Cai em "unknown" se nenhum header estiver disponível.
+ */
+async function getClientIp(): Promise<string> {
+  const { getRequest } = await import("@tanstack/react-start/server");
+  const req = getRequest();
+  const h = req?.headers;
+  if (!h) return "unknown";
+  const xff = h.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0]!.trim();
+  return h.get("cf-connecting-ip") ?? h.get("x-real-ip") ?? "unknown";
+}
+
+/**
  * Faz login por usuário+senha em uma barbearia específica.
  * Retorna o email sintético — o cliente usa isso pra chamar supabase.auth.signInWithPassword.
+ * Antes de responder, verifica rate limit: 5 falhas em 15 min pra combinação IP+slug bloqueia.
  */
 export const resolveShopLogin = createServerFn({ method: "POST" })
   .inputValidator((data: { slug: string; username: string }) => {
@@ -136,6 +150,20 @@ export const resolveShopLogin = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const ip = await getClientIp();
+
+    // Rate limit ANTES de qualquer validação
+    const { data: rl } = await supabaseAdmin.rpc("check_login_rate_limit", {
+      _ip: ip,
+      _slug: data.slug,
+    });
+    const rlRow = Array.isArray(rl) ? rl[0] : rl;
+    if (rlRow && rlRow.allowed === false) {
+      throw new Error(
+        `Muitas tentativas. Tente novamente em ${rlRow.retry_after_seconds}s.`,
+      );
+    }
+
     const { data: shop, error } = await supabaseAdmin
       .from("barbershops")
       .select("id, admin_username, status")
@@ -143,7 +171,33 @@ export const resolveShopLogin = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw error;
     if (!shop || shop.status !== "active" || shop.admin_username !== data.username) {
+      // registra a falha do próprio "usuário inexistente"
+      await supabaseAdmin.rpc("record_login_attempt", {
+        _ip: ip,
+        _slug: data.slug,
+        _success: false,
+      });
       throw new Error("Usuário ou senha inválidos");
     }
     return { email: usernameToEmail(data.username) };
+  });
+
+/**
+ * Registra o resultado final do login (chamado pelo cliente após signInWithPassword).
+ * Sucesso ou falha, alimenta o rate limit.
+ */
+export const recordShopLoginResult = createServerFn({ method: "POST" })
+  .inputValidator((data: { slug: string; success: boolean }) => ({
+    slug: String(data.slug ?? "").trim().toLowerCase(),
+    success: Boolean(data.success),
+  }))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const ip = await getClientIp();
+    await supabaseAdmin.rpc("record_login_attempt", {
+      _ip: ip,
+      _slug: data.slug,
+      _success: data.success,
+    });
+    return { ok: true };
   });
