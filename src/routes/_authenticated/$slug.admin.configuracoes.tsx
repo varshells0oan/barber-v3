@@ -267,11 +267,96 @@ function Config() {
         </Row>
       </Section>
 
-      <Section title="Galeria (uma URL por linha)">
+      <Section title="Galeria de cortes (uma URL de foto por linha)">
+        <p className="-mt-2 text-xs text-muted-foreground">
+          Cole aqui os links de fotos dos cortes que você quer mostrar na landing. Uma URL por linha.
+        </p>
+        <textarea
+          value={galleryUrls}
+          onChange={(e) => setGalleryUrls(e.target.value)}
+          rows={6}
+          placeholder="https://..."
+          className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
+        />
+      </Section>
+
+      <Section title="Depoimentos de clientes">
+        <p className="-mt-2 text-xs text-muted-foreground">
+          Cadastre o que seus clientes dizem sobre a barbearia. Aparecem na landing como cards.
+        </p>
+        <div className="grid gap-3">
+          {testimonials.map((t, i) => (
+            <div key={i} className="rounded-lg border border-border bg-background/60 p-3">
+              <div className="grid gap-2 sm:grid-cols-[1fr_120px_auto]">
+                <input
+                  type="text"
+                  value={t.name}
+                  placeholder="Nome do cliente"
+                  onChange={(e) => {
+                    const arr = [...testimonials];
+                    arr[i] = { ...arr[i], name: e.target.value };
+                    setTestimonials(arr);
+                  }}
+                  className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+                <select
+                  value={t.rating ?? 5}
+                  onChange={(e) => {
+                    const arr = [...testimonials];
+                    arr[i] = { ...arr[i], rating: Number(e.target.value) };
+                    setTestimonials(arr);
+                  }}
+                  className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {[5, 4, 3, 2, 1].map((n) => (
+                    <option key={n} value={n}>
+                      {n} estrela{n > 1 ? "s" : ""}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setTestimonials(testimonials.filter((_, idx) => idx !== i))
+                  }
+                  className="rounded-md border border-border px-3 py-2 text-xs hover:bg-destructive/10 hover:text-destructive"
+                >
+                  Remover
+                </button>
+              </div>
+              <textarea
+                value={t.text}
+                placeholder="Depoimento do cliente..."
+                onChange={(e) => {
+                  const arr = [...testimonials];
+                  arr[i] = { ...arr[i], text: e.target.value };
+                  setTestimonials(arr);
+                }}
+                rows={2}
+                className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() =>
+              setTestimonials([...testimonials, { name: "", text: "", rating: 5 }])
+            }
+            className="self-start rounded-md border border-dashed border-border px-4 py-2 text-sm hover:border-primary hover:text-primary"
+          >
+            + Adicionar depoimento
+          </button>
+        </div>
+      </Section>
+
+      <Section title="Galeria (campo legado — pode ignorar)">
+        <p className="-mt-2 text-xs text-muted-foreground">
+          Campo antigo mantido por compatibilidade. Use "Galeria de cortes" acima.
+        </p>
         <textarea
           value={gallery}
           onChange={(e) => setGallery(e.target.value)}
-          rows={5}
+          rows={3}
           placeholder="https://... "
           className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs"
         />
