@@ -21,11 +21,15 @@ const DAYS = [
 
 type Hours = Record<string, { start: string; end: string } | null>;
 
+type Testimonial = { name: string; text: string; rating: number };
+
 function Config() {
   const { slug } = Route.useParams();
   const [s, setS] = useState<any>(null);
   const [hours, setHours] = useState<Hours>({});
   const [gallery, setGallery] = useState<string>("");
+  const [galleryUrls, setGalleryUrls] = useState<string>("");
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
 
   useEffect(() => {
@@ -40,6 +44,8 @@ function Config() {
       setS(data ?? { barbershop_id: id });
       setHours((data?.work_hours as Hours) ?? {});
       setGallery(((data?.gallery as string[]) ?? []).join("\n"));
+      setGalleryUrls((((data as any)?.gallery_urls as string[]) ?? []).join("\n"));
+      setTestimonials((((data as any)?.testimonials as Testimonial[]) ?? []));
       setBlockedDates((((data as any)?.blocked_dates as string[]) ?? []).slice().sort());
     })();
   }, [slug]);
