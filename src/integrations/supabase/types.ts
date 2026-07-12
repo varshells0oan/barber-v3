@@ -162,6 +162,45 @@ export type Database = {
           },
         ]
       }
+      audit_log: {
+        Row: {
+          actor_id: string | null
+          actor_kind: string
+          actor_label: string | null
+          barbershop_id: string | null
+          created_at: string
+          event: string
+          id: string
+          ip: string | null
+          metadata: Json
+          user_agent: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_kind: string
+          actor_label?: string | null
+          barbershop_id?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          ip?: string | null
+          metadata?: Json
+          user_agent?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          actor_kind?: string
+          actor_label?: string | null
+          barbershop_id?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          ip?: string | null
+          metadata?: Json
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       barbers: {
         Row: {
           access_password_hash: string | null
@@ -785,6 +824,19 @@ export type Database = {
         }
         Returns: string
       }
+      get_audit_log: {
+        Args: { _barbershop_id: string; _limit?: number }
+        Returns: {
+          actor_kind: string
+          actor_label: string
+          barbershop_id: string
+          created_at: string
+          event: string
+          id: string
+          ip: string
+          metadata: Json
+        }[]
+      }
       get_invite_by_hash: {
         Args: { _token_hash: string }
         Returns: {
@@ -811,12 +863,45 @@ export type Database = {
         Returns: boolean
       }
       is_superadmin: { Args: { _user_id: string }; Returns: boolean }
+      log_audit_event: {
+        Args: {
+          _actor_id: string
+          _actor_kind: string
+          _actor_label: string
+          _barbershop_id: string
+          _event: string
+          _ip: string
+          _metadata: Json
+          _user_agent: string
+        }
+        Returns: undefined
+      }
       login_barber: {
         Args: { _password: string; _slug: string; _username: string }
         Returns: string
       }
+      login_barber_v2: {
+        Args: {
+          _ip: string
+          _password: string
+          _slug: string
+          _user_agent: string
+          _username: string
+        }
+        Returns: string
+      }
       login_barbershop_admin: {
         Args: { _password: string; _slug: string; _username: string }
+        Returns: string
+      }
+      login_barbershop_admin_v2: {
+        Args: {
+          _ip: string
+          _password: string
+          _slug: string
+          _user_agent: string
+          _username: string
+        }
         Returns: string
       }
       public_cancel_my_appointment: {
