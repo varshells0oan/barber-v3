@@ -145,7 +145,57 @@ export const THEME_PRESETS: Record<ThemePresetKey, ThemePreset> = {
 
 export const DEFAULT_PRESET: ThemePresetKey = "classic";
 
-export function resolvePreset(key: string | null | undefined): ThemePreset {
+export const CUSTOM_PRESET_KEY = "custom";
+
+// Default 4 hex colors for the custom palette (bg, surface, secondary, primary).
+export const DEFAULT_CUSTOM_COLORS: [string, string, string, string] = [
+  "#0d0d0d",
+  "#1f1f1f",
+  "#3a3a3a",
+  "#c9a84c",
+];
+
+export function buildCustomPreset(colors: string[]): ThemePreset {
+  const [c0, c1, c2, c3] = [
+    colors[0] || DEFAULT_CUSTOM_COLORS[0],
+    colors[1] || DEFAULT_CUSTOM_COLORS[1],
+    colors[2] || DEFAULT_CUSTOM_COLORS[2],
+    colors[3] || DEFAULT_CUSTOM_COLORS[3],
+  ];
+  return {
+    key: "classic",
+    label: "Personalizada",
+    description: "Suas cores.",
+    swatches: [c0, c1, c2, c3],
+    vars: {
+      "--background": c0,
+      "--foreground": "#f5f5f5",
+      "--card": c1,
+      "--card-foreground": "#f5f5f5",
+      "--popover": c1,
+      "--popover-foreground": "#f5f5f5",
+      "--primary": c3,
+      "--primary-foreground": "#0a0a0a",
+      "--secondary": c2,
+      "--secondary-foreground": "#f5f5f5",
+      "--muted": c1,
+      "--muted-foreground": "#a1a1a1",
+      "--accent": c2,
+      "--accent-foreground": "#f5f5f5",
+      "--border": `color-mix(in oklab, ${c2} 40%, transparent)`,
+      "--input": c1,
+      "--ring": c3,
+    },
+  };
+}
+
+export function resolvePreset(
+  key: string | null | undefined,
+  customColors?: string[] | null,
+): ThemePreset {
+  if (key === CUSTOM_PRESET_KEY && customColors && customColors.length >= 4) {
+    return buildCustomPreset(customColors);
+  }
   if (key && key in THEME_PRESETS) return THEME_PRESETS[key as ThemePresetKey];
   return THEME_PRESETS[DEFAULT_PRESET];
 }
