@@ -109,9 +109,10 @@ function SuperAdminPage() {
     const u = String(fd.get("username") ?? "").trim();
     const p = String(fd.get("password") ?? "");
     if (!u || !p) return toast.error("Preencha usuário e senha");
+    if (p.length < 6) return toast.error("Senha deve ter no mínimo 6 caracteres");
     try {
       await setCreds({ data: { barbershopId: credsFor.id, username: u, password: p } });
-      toast.success("Credenciais atualizadas");
+      toast.success("Credenciais atualizadas. Sessões antigas foram encerradas.");
       setCredsFor(null);
       load();
     } catch (err: any) {
