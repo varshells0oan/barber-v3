@@ -182,22 +182,50 @@ export const resolveShopLogin = createServerFn({ method: "POST" })
     return { email: usernameToEmail(data.username) };
   });
 
+async function getUserAgent(): Promise<string | null> {
+  const { getRequest } = await import("@tanstack/react-start/server");
+  const req = getRequest();
+  return req?.headers?.get("user-agent") ?? null;
+}
+
 /**
  * Registra o resultado final do login (chamado pelo cliente após signInWithPassword).
- * Sucesso ou falha, alimenta o rate limit.
+ * Sucesso ou falha, alimenta o rate limit e o log de auditoria.
  */
 export const recordShopLoginResult = createServerFn({ method: "POST" })
-  .inputValidator((data: { slug: string; success: boolean }) => ({
+  .inputValidator((data: { slug: string; success: boolean; username?: string }) => ({
     slug: String(data.slug ?? "").trim().toLowerCase(),
     success: Boolean(data.success),
+    username: data.username ? normalizeUsername(data.username) : null,
   }))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const ip = await getClientIp();
+    const ua = await getUserAgent();
+
     await supabaseAdmin.rpc("record_login_attempt", {
       _ip: ip,
       _slug: data.slug,
       _success: data.success,
     });
+
+    // resolve barbershop_id pra correlacionar no audit
+    const { data: shop } = await supabaseAdmin
+      .from("barbershops")
+      .select("id")
+      .eq("slug", data.slug)
+      .maybeSingle();
+
+    await supabaseAdmin.rpc("log_audit_event" as any, {
+      _barbershop_id: shop?.id ?? null,
+      _actor_kind: "admin",
+      _actor_id: null,
+      _actor_label: data.username,
+      _event: data.success ? "login_success" : "login_failed",
+      _ip: ip,
+      _user_agent: ua,
+      _metadata: { slug: data.slug },
+    } as any);
+
     return { ok: true };
   });
