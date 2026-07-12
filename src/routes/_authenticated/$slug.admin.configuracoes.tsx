@@ -128,6 +128,12 @@ function Config() {
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
           />
         </Row>
+        <Row label="Tagline (frase curta em destaque no topo da landing)">
+          <Input
+            value={s.tagline ?? ""}
+            onChange={(v) => setS({ ...s, tagline: v })}
+          />
+        </Row>
         <div className="grid gap-4 sm:grid-cols-2">
           <Row label="URL do logo">
             <Input value={s.logo_url ?? ""} onChange={(v) => setS({ ...s, logo_url: v })} />
