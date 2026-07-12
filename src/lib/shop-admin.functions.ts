@@ -51,7 +51,9 @@ export const setShopAdminCredentials = createServerFn({ method: "POST" })
       if (usernameNorm.length < 2 || usernameNorm.length > 40) {
         throw new Error("Usuário deve ter entre 2 e 40 caracteres");
       }
-      if (password.length < 1) throw new Error("Senha obrigatória");
+      if (password.length < 6) {
+        throw new Error("Senha deve ter no mínimo 6 caracteres");
+      }
       if (!barbershopId) throw new Error("Barbearia inválida");
       return { barbershopId, username: usernameNorm, password };
     },
