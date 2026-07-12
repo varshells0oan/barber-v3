@@ -41,7 +41,7 @@ function ClientArea() {
   const history = appts.filter((a) => a.status === "atendido");
 
   return (
-    <PublicTheme preset={shop?.theme_preset} slug={slug}>
+    <PublicTheme preset={shop?.theme_preset} customColors={shop?.theme_custom} slug={slug}>
       <PublicHeader slug={slug} />
 
       {/* Hero */}
