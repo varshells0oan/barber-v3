@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { resolveShopLogin, wrapPassword } from "@/lib/shop-admin.functions";
+import { resolveShopLogin, recordShopLoginResult, wrapPassword } from "@/lib/shop-admin.functions";
 import { Lock, User } from "lucide-react";
 import { toast } from "sonner";
 
