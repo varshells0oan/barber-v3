@@ -374,7 +374,8 @@ function SuperAdminPage() {
                 <input name="username" defaultValue={credsFor.admin_username ?? ""} className={inputCls} />
               </Field>
               <Field icon={<Lock className="h-3 w-3" />} label="Nova senha">
-                <input name="password" type="text" className={inputCls} />
+                <input name="password" type="text" minLength={6} className={inputCls} />
+                <p className="mt-1 text-[10px] text-muted-foreground">Mínimo 6 caracteres. Ao salvar, sessões antigas do dono serão encerradas.</p>
               </Field>
             </div>
             <div className="mt-5 flex justify-end gap-2">
