@@ -80,6 +80,18 @@ function Config() {
         .split(/\n+/)
         .map((x) => x.trim())
         .filter(Boolean),
+      gallery_urls: galleryUrls
+        .split(/\n+/)
+        .map((x) => x.trim())
+        .filter(Boolean),
+      testimonials: testimonials
+        .map((t) => ({
+          name: (t.name ?? "").trim(),
+          text: (t.text ?? "").trim(),
+          rating: Math.max(1, Math.min(5, Number(t.rating) || 5)),
+        }))
+        .filter((t) => t.name && t.text),
+      tagline: (s.tagline ?? "").trim() || null,
       blocked_dates: blockedDates.map((x) => x.trim()).filter(Boolean),
       slot_buffer_min: Number(s.slot_buffer_min) || 0,
       loyalty_target: Number(s.loyalty_target) || 10,
