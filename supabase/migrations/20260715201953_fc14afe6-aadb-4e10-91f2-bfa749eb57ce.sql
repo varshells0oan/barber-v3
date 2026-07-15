@@ -1,0 +1,4 @@
+GRANT SELECT (id, barbershop_id, name, photo_url, specialty, bio, rating, work_hours, blocked_dates, services, active, breaks) ON public.barbers TO anon;
+GRANT SELECT (barbershop_id, name, description, phone, whatsapp, instagram, address, logo_url, banner_url, work_hours, gallery, gallery_urls, testimonials, tagline, blocked_dates, slot_buffer_min, loyalty_target, loyalty_reward, theme_preset, theme_custom) ON public.shop_settings TO anon;
+CREATE POLICY "Anon reads safe barber columns" ON public.barbers FOR SELECT TO anon USING (active = true);
+CREATE POLICY "Anon reads safe shop_settings columns" ON public.shop_settings FOR SELECT TO anon USING (EXISTS (SELECT 1 FROM public.barbershops b WHERE b.id = shop_settings.barbershop_id AND b.status = 'active'));
