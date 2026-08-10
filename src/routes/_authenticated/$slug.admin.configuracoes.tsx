@@ -266,6 +266,68 @@ function Config() {
 
 
 
+      <Section title="Notificações WhatsApp">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Row label="Ativar Lembretes Automáticos">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={s.whatsapp_enabled ?? false}
+                onChange={(e) => setS({ ...s, whatsapp_enabled: e.target.checked })}
+                className="h-4 w-4 rounded border-border bg-background text-primary focus:ring-primary"
+              />
+              <span className="text-sm text-muted-foreground">
+                Enviar mensagens via Meta Cloud API
+              </span>
+            </div>
+          </Row>
+          <Row label="Tempo de antecedência (horas)">
+            <input
+              type="number"
+              value={s.whatsapp_reminder_hours ?? 2}
+              onChange={(e) => setS({ ...s, whatsapp_reminder_hours: Number(e.target.value) })}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Row>
+        </div>
+        {s.whatsapp_enabled && (
+          <div className="mt-4 grid gap-4 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:grid-cols-2">
+            <Row label="WhatsApp API Token">
+              <input
+                type="password"
+                value={s.whatsapp_api_token ?? ""}
+                onChange={(e) => setS({ ...s, whatsapp_api_token: e.target.value })}
+                placeholder="EAAB..."
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </Row>
+            <Row label="WhatsApp Phone ID">
+              <input
+                type="text"
+                value={s.whatsapp_phone_id ?? ""}
+                onChange={(e) => setS({ ...s, whatsapp_phone_id: e.target.value })}
+                placeholder="1234567890..."
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </Row>
+            <Row label="Nome do Template">
+              <input
+                type="text"
+                value={s.whatsapp_template_name ?? "reminder"}
+                onChange={(e) => setS({ ...s, whatsapp_template_name: e.target.value })}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </Row>
+            <div className="flex flex-col justify-center">
+              <p className="text-[10px] text-muted-foreground">
+                Nota: O custo da Meta Cloud API é cobrado por conversa. 
+                As primeiras 1.000 mensagens de serviço por mês são gratuitas.
+              </p>
+            </div>
+          </div>
+        )}
+      </Section>
+
       <Section title="Contato e redes">
         <div className="grid gap-4 sm:grid-cols-2">
           <Row label="Telefone">
