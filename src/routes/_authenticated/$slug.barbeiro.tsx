@@ -27,7 +27,7 @@ function BarberLayout() {
       <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border/60 bg-card/60 px-4 backdrop-blur">
         <span className="font-heading text-lg">Painel do Barbeiro</span>
         <div className="ml-auto flex items-center gap-2 text-sm">
-          <Link to="/$slug/admin" params={{ slug }} as any className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+          <Link to="/$slug/admin" params={{ slug }} {...({} as any)} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <Shield className="h-4 w-4" /> Admin
           </Link>
           <button onClick={signOut} className="text-muted-foreground hover:text-foreground">
