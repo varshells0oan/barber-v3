@@ -29,23 +29,23 @@ function AdminLayout() {
     {
       label: "Visão Geral",
       items: [
-        { to: base, exact: true, label: "Dashboard", icon: LayoutDashboard },
-        { to: `${base}/agendamentos`, label: "Agendamentos", icon: Calendar },
+        { to: "/$slug/admin", params: { slug }, exact: true, label: "Dashboard", icon: LayoutDashboard },
+        { to: "/$slug/admin/agendamentos", params: { slug }, label: "Agendamentos", icon: Calendar },
       ],
     },
     {
       label: "Cadastro",
       items: [
-        { to: `${base}/barbeiros`, label: "Barbeiros", icon: UserCog },
-        { to: `${base}/servicos`, label: "Serviços", icon: Scissors },
-        { to: `${base}/clientes`, label: "Clientes", icon: Users },
+        { to: "/$slug/admin/barbeiros", params: { slug }, label: "Barbeiros", icon: UserCog },
+        { to: "/$slug/admin/servicos", params: { slug }, label: "Serviços", icon: Scissors },
+        { to: "/$slug/admin/clientes", params: { slug }, label: "Clientes", icon: Users },
       ],
     },
     {
       label: "Gestão",
       items: [
-        { to: `${base}/financeiro`, label: "Financeiro", icon: DollarSign },
-        { to: `${base}/configuracoes`, label: "Configurações", icon: Settings },
+        { to: "/$slug/admin/financeiro", params: { slug }, label: "Financeiro", icon: DollarSign },
+        { to: "/$slug/admin/configuracoes", params: { slug }, label: "Configurações", icon: Settings },
       ],
     },
   ];
@@ -68,7 +68,8 @@ function AdminLayout() {
               return (
                 <Link
                   key={n.to}
-                  to={n.to}
+                  to={n.to as any}
+                  params={(n as any).params}
                   onClick={onNavigate}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                     active
@@ -88,7 +89,7 @@ function AdminLayout() {
 
   const Brand = () => (
     <div className="border-b border-border/60 p-4">
-      <Link to={base} className="flex items-center gap-2 font-heading text-lg text-foreground">
+      <Link to="/$slug/admin" params={{ slug }} className="flex items-center gap-2 font-heading text-lg text-foreground">
         <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
           <Scissors className="h-4 w-4" />
         </div>
@@ -100,7 +101,9 @@ function AdminLayout() {
   const Footer = ({ onNavigate }: { onNavigate?: () => void }) => (
     <div className="border-t border-border/60 p-3">
       <Link
-        to={`/${slug}/barbeiro`}
+        to="/$slug/barbeiro"
+        params={{ slug }}
+        {...({} as any)}
         onClick={onNavigate}
         className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent/40 hover:text-foreground"
       >
@@ -142,7 +145,7 @@ function AdminLayout() {
           <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
           <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r border-border/60 bg-card shadow-2xl">
             <div className="flex items-center justify-between border-b border-border/60 p-4">
-              <Link to={base} onClick={() => setOpen(false)} className="flex items-center gap-2 font-heading text-lg">
+              <Link to="/$slug/admin" params={{ slug }} onClick={() => setOpen(false)} className="flex items-center gap-2 font-heading text-lg">
                 <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
                   <Scissors className="h-4 w-4" />
                 </div>

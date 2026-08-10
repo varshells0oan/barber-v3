@@ -83,6 +83,8 @@ export type Database = {
           status: string
           time: string
           updated_at: string
+          whatsapp_reminder_error: string | null
+          whatsapp_reminder_sent: boolean | null
         }
         Insert: {
           barber_id?: string | null
@@ -103,6 +105,8 @@ export type Database = {
           status?: string
           time: string
           updated_at?: string
+          whatsapp_reminder_error?: string | null
+          whatsapp_reminder_sent?: boolean | null
         }
         Update: {
           barber_id?: string | null
@@ -123,6 +127,8 @@ export type Database = {
           status?: string
           time?: string
           updated_at?: string
+          whatsapp_reminder_error?: string | null
+          whatsapp_reminder_sent?: boolean | null
         }
         Relationships: [
           {
@@ -555,6 +561,11 @@ export type Database = {
           theme_preset: string
           updated_at: string
           whatsapp: string | null
+          whatsapp_api_token: string | null
+          whatsapp_enabled: boolean | null
+          whatsapp_phone_id: string | null
+          whatsapp_reminder_hours: number | null
+          whatsapp_template_name: string | null
           work_hours: Json
         }
         Insert: {
@@ -581,6 +592,11 @@ export type Database = {
           theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
+          whatsapp_api_token?: string | null
+          whatsapp_enabled?: boolean | null
+          whatsapp_phone_id?: string | null
+          whatsapp_reminder_hours?: number | null
+          whatsapp_template_name?: string | null
           work_hours?: Json
         }
         Update: {
@@ -607,6 +623,11 @@ export type Database = {
           theme_preset?: string
           updated_at?: string
           whatsapp?: string | null
+          whatsapp_api_token?: string | null
+          whatsapp_enabled?: boolean | null
+          whatsapp_phone_id?: string | null
+          whatsapp_reminder_hours?: number | null
+          whatsapp_template_name?: string | null
           work_hours?: Json
         }
         Relationships: [
