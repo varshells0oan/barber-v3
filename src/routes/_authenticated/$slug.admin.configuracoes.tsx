@@ -109,6 +109,11 @@ function Config() {
               ? s.theme_custom.slice(0, 4)
               : DEFAULT_CUSTOM_COLORS)
           : (s.theme_custom ?? null),
+      whatsapp_enabled: !!s.whatsapp_enabled,
+      whatsapp_api_token: s.whatsapp_api_token || null,
+      whatsapp_phone_id: s.whatsapp_phone_id || null,
+      whatsapp_reminder_hours: Number(s.whatsapp_reminder_hours) || 2,
+      whatsapp_template_name: s.whatsapp_template_name || 'reminder',
     };
     const { getDefaultBarbershopId } = await import("@/lib/current-barbershop");
     const bid = s.barbershop_id ?? (await getDefaultBarbershopId(slug));

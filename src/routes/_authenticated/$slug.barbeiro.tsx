@@ -17,9 +17,9 @@ function BarberLayout() {
 
   const base = `/${slug}/barbeiro`;
   const nav = [
-    { to: base, label: "Agenda", icon: Calendar },
-    { to: `${base}/historico`, label: "Histórico", icon: History },
-    { to: `${base}/ganhos`, label: "Ganhos", icon: DollarSign },
+    { to: "/$slug/barbeiro", params: { slug }, label: "Agenda", icon: Calendar },
+    { to: "/$slug/barbeiro/historico", params: { slug }, label: "Histórico", icon: History },
+    { to: "/$slug/barbeiro/ganhos", params: { slug }, label: "Ganhos", icon: DollarSign },
   ];
 
   return (
@@ -27,7 +27,7 @@ function BarberLayout() {
       <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border/60 bg-card/60 px-4 backdrop-blur">
         <span className="font-heading text-lg">Painel do Barbeiro</span>
         <div className="ml-auto flex items-center gap-2 text-sm">
-          <Link to={`/${slug}/admin`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+          <Link to="/$slug/admin" params={{ slug }} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <Shield className="h-4 w-4" /> Admin
           </Link>
           <button onClick={signOut} className="text-muted-foreground hover:text-foreground">
@@ -44,7 +44,8 @@ function BarberLayout() {
           return (
             <Link
               key={n.to}
-              to={n.to}
+              to={n.to as any}
+              params={(n as any).params}
               className={`flex flex-col items-center gap-1 py-3 text-xs ${
                 active ? "text-primary" : "text-muted-foreground"
               }`}
