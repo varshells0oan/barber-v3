@@ -19,6 +19,7 @@ import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-ag
 import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
 import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
 import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
+import { Route as ApiPublicWhatsappCronRouteImport } from './routes/api/public/whatsapp-cron'
 import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
 import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
 import { Route as AuthenticatedSlugAdminRouteImport } from './routes/_authenticated/$slug.admin'
@@ -83,6 +84,11 @@ const SlugAgendamentoConfirmadoRoute =
     path: '/$slug/agendamento-confirmado',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicWhatsappCronRoute = ApiPublicWhatsappCronRouteImport.update({
+  id: '/api/public/whatsapp-cron',
+  path: '/api/public/whatsapp-cron',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedSuperadminIdRoute =
   AuthenticatedSuperadminIdRouteImport.update({
     id: '/superadmin_/$id',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
   '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
+  '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/$slug': typeof SlugIndexRoute
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
+  '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/_authenticated/$slug/admin': typeof AuthenticatedSlugAdminRouteWithChildren
   '/_authenticated/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/_authenticated/superadmin_/$id': typeof AuthenticatedSuperadminIdRoute
+  '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/_authenticated/$slug/admin/agendamentos': typeof AuthenticatedSlugAdminAgendamentosRoute
   '/_authenticated/$slug/admin/barbeiros': typeof AuthenticatedSlugAdminBarbeirosRoute
   '/_authenticated/$slug/admin/clientes': typeof AuthenticatedSlugAdminClientesRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/$slug/admin'
     | '/$slug/barbeiro'
     | '/superadmin/$id'
+    | '/api/public/whatsapp-cron'
     | '/$slug/admin/agendamentos'
     | '/$slug/admin/barbeiros'
     | '/$slug/admin/clientes'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/superadmin'
     | '/$slug'
     | '/superadmin/$id'
+    | '/api/public/whatsapp-cron'
     | '/$slug/admin/agendamentos'
     | '/$slug/admin/barbeiros'
     | '/$slug/admin/clientes'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/_authenticated/$slug/admin'
     | '/_authenticated/$slug/barbeiro'
     | '/_authenticated/superadmin_/$id'
+    | '/api/public/whatsapp-cron'
     | '/_authenticated/$slug/admin/agendamentos'
     | '/_authenticated/$slug/admin/barbeiros'
     | '/_authenticated/$slug/admin/clientes'
@@ -317,6 +329,7 @@ export interface RootRouteChildren {
   SlugEntrarRoute: typeof SlugEntrarRoute
   SlugMeusAgendamentosRoute: typeof SlugMeusAgendamentosRoute
   SlugIndexRoute: typeof SlugIndexRoute
+  ApiPublicWhatsappCronRoute: typeof ApiPublicWhatsappCronRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -389,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/$slug/agendamento-confirmado'
       fullPath: '/$slug/agendamento-confirmado'
       preLoaderRoute: typeof SlugAgendamentoConfirmadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/whatsapp-cron': {
+      id: '/api/public/whatsapp-cron'
+      path: '/api/public/whatsapp-cron'
+      fullPath: '/api/public/whatsapp-cron'
+      preLoaderRoute: typeof ApiPublicWhatsappCronRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/superadmin_/$id': {
@@ -560,6 +580,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugEntrarRoute: SlugEntrarRoute,
   SlugMeusAgendamentosRoute: SlugMeusAgendamentosRoute,
   SlugIndexRoute: SlugIndexRoute,
+  ApiPublicWhatsappCronRoute: ApiPublicWhatsappCronRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
