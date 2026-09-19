@@ -77,10 +77,10 @@ export const Route = createFileRoute("/api/public/whatsapp-cron")({
                         {
                           type: "body",
                           parameters: [
-                            { type: "text", text: appt.customer_name ?? "Cliente" },
+                            { type: "text", text: appt.client_name ?? "Cliente" },
                             {
                               type: "text",
-                              text: new Date(appt.starts_at).toLocaleString("pt-BR", {
+                              text: startsAt.toLocaleString("pt-BR", {
                                 timeZone: "America/Sao_Paulo",
                               }),
                             },
