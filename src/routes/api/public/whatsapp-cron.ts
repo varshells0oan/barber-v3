@@ -32,15 +32,17 @@ export const Route = createFileRoute("/api/public/whatsapp-cron")({
           const hours = Number(s.whatsapp_reminder_hours ?? 2);
           const now = new Date();
           const until = new Date(now.getTime() + hours * 3600_000);
+          const dayKey = (d: Date) =>
+            new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
 
           const { data: appts, error: apptError } = await supabaseAdmin
             .from("appointments")
-            .select("id, starts_at, customer_phone, customer_name")
+            .select("id, date, time, client_phone, client_name")
             .eq("barbershop_id", s.barbershop_id)
             .eq("status", "confirmed")
-            .eq("whatsapp_reminder_sent", false)
-            .gte("starts_at", now.toISOString())
-            .lte("starts_at", until.toISOString());
+            .or("whatsapp_reminder_sent.is.null,whatsapp_reminder_sent.eq.false")
+            .gte("date", dayKey(now))
+            .lte("date", dayKey(until));
 
           if (apptError) {
             failed += 1;
@@ -48,7 +50,11 @@ export const Route = createFileRoute("/api/public/whatsapp-cron")({
           }
 
           for (const appt of appts ?? []) {
-            const phone = (appt.customer_phone ?? "").replace(/\D/g, "");
+            // Horário local da barbearia (America/Sao_Paulo, UTC-3).
+            const startsAt = new Date(`${appt.date}T${appt.time.slice(0, 5)}:00-03:00`);
+            if (startsAt < now || startsAt > until) continue;
+
+            const phone = (appt.client_phone ?? "").replace(/\D/g, "");
             if (!phone) continue;
 
             try {
