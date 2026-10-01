@@ -47,7 +47,7 @@ function SuperAdminDetail() {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return navigate({ to: "/auth" });
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id);
-      if (!(roles ?? []).some((r: any) => r.role === "superadmin")) return navigate({ to: "/" });
+      if (!(roles ?? []).some((r: any) => r.role === "superadmin")) return navigate({ to: "/auth" });
       setChecking(false);
       await load();
     })();
