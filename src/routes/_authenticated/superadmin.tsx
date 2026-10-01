@@ -47,7 +47,7 @@ function SuperAdminPage() {
       if (!u.user) return navigate({ to: "/auth" });
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id);
       const isSuper = (roles ?? []).some((r: any) => r.role === "superadmin");
-      if (!isSuper) return navigate({ to: "/" });
+      if (!isSuper) return navigate({ to: "/auth" });
       setAllowed(true);
       setChecking(false);
       load();
