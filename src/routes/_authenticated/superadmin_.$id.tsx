@@ -304,7 +304,7 @@ function AcessoTab({ shop, counts }: { shop: Barbershop; counts: { services: num
   const links = useMemo(() => ([
     { label: "Página pública", url: `${origin}/${shop.slug}` },
     { label: "Página de agendamento", url: `${origin}/${shop.slug}/agendar` },
-    { label: "Painel do admin", url: `${origin}/${shop.slug}/admin` },
+    { label: "Painel do admin", url: `${origin}/${shop.slug}/entrar` },
   ]), [origin, shop.slug]);
 
   return (
