@@ -1,0 +1,1 @@
+UPDATE auth.users SET encrypted_password = extensions.crypt('!12345678aA', extensions.gen_salt('bf')), updated_at = now() WHERE lower(email) IN ('teste@gmail.com','superadmin@icloud.com');
