@@ -60,15 +60,27 @@ function AuthPage() {
     return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug }, replace: true });
   };
 
+  // Não redireciona automaticamente: se já houver sessão (ex.: dono de barbearia),
+  // mostramos a conta atual com opção de continuar ou trocar — senão o superadmin
+  // ficaria preso sendo jogado para o painel da barbearia.
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user) {
         setCurrentEmail(data.session.user.email ?? null);
-        await routeAfterLogin(data.session.user.id);
+        setCurrentUserId(data.session.user.id);
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const continueAs = async () => {
+    if (!currentUserId) return;
+    try {
+      await routeAfterLogin(currentUserId);
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao continuar");
+    }
+  };
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -118,9 +130,12 @@ function AuthPage() {
           Acesso da equipe (admin/barbeiro)
         </p>
         {currentEmail && (
-          <div className="mt-4 flex items-center justify-between rounded-md border border-border bg-card/40 px-3 py-2 text-xs">
-            <span className="truncate text-muted-foreground">Logado como {currentEmail} (sem acesso)</span>
-            <button onClick={signOut} className="rounded border border-border px-2 py-1 hover:bg-accent/40">Sair</button>
+          <div className="mt-4 flex items-center justify-between gap-2 rounded-md border border-border bg-card/40 px-3 py-2 text-xs">
+            <span className="truncate text-muted-foreground">Logado como {currentEmail}</span>
+            <div className="flex shrink-0 gap-1">
+              <button onClick={continueAs} className="rounded border border-border px-2 py-1 hover:bg-accent/40">Continuar</button>
+              <button onClick={signOut} className="rounded border border-border px-2 py-1 hover:bg-accent/40">Trocar conta</button>
+            </div>
           </div>
         )}
         <form onSubmit={submit} className="mt-6 space-y-3">

@@ -47,7 +47,7 @@ function SuperAdminDetail() {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return navigate({ to: "/auth" });
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id);
-      if (!(roles ?? []).some((r: any) => r.role === "superadmin")) return navigate({ to: "/" });
+      if (!(roles ?? []).some((r: any) => r.role === "superadmin")) return navigate({ to: "/auth" });
       setChecking(false);
       await load();
     })();
@@ -304,7 +304,7 @@ function AcessoTab({ shop, counts }: { shop: Barbershop; counts: { services: num
   const links = useMemo(() => ([
     { label: "Página pública", url: `${origin}/${shop.slug}` },
     { label: "Página de agendamento", url: `${origin}/${shop.slug}/agendar` },
-    { label: "Painel do admin", url: `${origin}/${shop.slug}/admin` },
+    { label: "Painel do admin", url: `${origin}/${shop.slug}/entrar` },
   ]), [origin, shop.slug]);
 
   return (
