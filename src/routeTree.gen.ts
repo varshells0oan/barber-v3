@@ -9,38 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AceitarConviteRouteImport } from './routes/aceitar-convite'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AceitarConviteRouteImport } from './routes/aceitar-convite'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugIndexRouteImport } from './routes/$slug.index'
-import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
-import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
-import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
-import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
-import { Route as AuthenticatedSlugAdminRouteImport } from './routes/_authenticated/$slug.admin'
-import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
-import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
+import { Route as SlugMeusAgendamentosRouteImport } from './routes/$slug.meus-agendamentos'
+import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
+import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
+import { Route as SlugAgendamentoConfirmadoRouteImport } from './routes/$slug.agendamento-confirmado'
 import { Route as ApiPublicWhatsappCronRouteImport } from './routes/api/public/whatsapp-cron'
-import { Route as AuthenticatedSlugAdminIndexRouteImport } from './routes/_authenticated/$slug.admin.index'
-import { Route as AuthenticatedSlugAdminAgendamentosRouteImport } from './routes/_authenticated/$slug.admin.agendamentos'
-import { Route as AuthenticatedSlugAdminBarbeirosRouteImport } from './routes/_authenticated/$slug.admin.barbeiros'
-import { Route as AuthenticatedSlugAdminClientesRouteImport } from './routes/_authenticated/$slug.admin.clientes'
-import { Route as AuthenticatedSlugAdminConfiguracoesRouteImport } from './routes/_authenticated/$slug.admin.configuracoes'
-import { Route as AuthenticatedSlugAdminFinanceiroRouteImport } from './routes/_authenticated/$slug.admin.financeiro'
-import { Route as AuthenticatedSlugAdminServicosRouteImport } from './routes/_authenticated/$slug.admin.servicos'
+import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
+import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
+import { Route as AuthenticatedSlugAdminRouteImport } from './routes/_authenticated/$slug.admin'
 import { Route as AuthenticatedSlugBarbeiroIndexRouteImport } from './routes/_authenticated/$slug.barbeiro.index'
-import { Route as AuthenticatedSlugBarbeiroGanhosRouteImport } from './routes/_authenticated/$slug.barbeiro.ganhos'
+import { Route as AuthenticatedSlugAdminIndexRouteImport } from './routes/_authenticated/$slug.admin.index'
 import { Route as AuthenticatedSlugBarbeiroHistoricoRouteImport } from './routes/_authenticated/$slug.barbeiro.historico'
+import { Route as AuthenticatedSlugBarbeiroGanhosRouteImport } from './routes/_authenticated/$slug.barbeiro.ganhos'
+import { Route as AuthenticatedSlugAdminServicosRouteImport } from './routes/_authenticated/$slug.admin.servicos'
+import { Route as AuthenticatedSlugAdminFinanceiroRouteImport } from './routes/_authenticated/$slug.admin.financeiro'
+import { Route as AuthenticatedSlugAdminConfiguracoesRouteImport } from './routes/_authenticated/$slug.admin.configuracoes'
+import { Route as AuthenticatedSlugAdminClientesRouteImport } from './routes/_authenticated/$slug.admin.clientes'
+import { Route as AuthenticatedSlugAdminBarbeirosRouteImport } from './routes/_authenticated/$slug.admin.barbeiros'
+import { Route as AuthenticatedSlugAdminAgendamentosRouteImport } from './routes/_authenticated/$slug.admin.agendamentos'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AceitarConviteRoute = AceitarConviteRouteImport.update({
@@ -48,14 +44,38 @@ const AceitarConviteRoute = AceitarConviteRouteImport.update({
   path: '/aceitar-convite',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugIndexRoute = SlugIndexRouteImport.update({
   id: '/$slug/',
   path: '/$slug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
+  id: '/superadmin',
+  path: '/superadmin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const SlugMeusAgendamentosRoute = SlugMeusAgendamentosRouteImport.update({
+  id: '/$slug/meus-agendamentos',
+  path: '/$slug/meus-agendamentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugEntrarRoute = SlugEntrarRouteImport.update({
+  id: '/$slug/entrar',
+  path: '/$slug/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugAgendarRoute = SlugAgendarRouteImport.update({
+  id: '/$slug/agendar',
+  path: '/$slug/agendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugAgendamentoConfirmadoRoute =
@@ -64,94 +84,44 @@ const SlugAgendamentoConfirmadoRoute =
     path: '/$slug/agendamento-confirmado',
     getParentRoute: () => rootRouteImport,
   } as any)
-const SlugAgendarRoute = SlugAgendarRouteImport.update({
-  id: '/$slug/agendar',
-  path: '/$slug/agendar',
+const ApiPublicWhatsappCronRoute = ApiPublicWhatsappCronRouteImport.update({
+  id: '/api/public/whatsapp-cron',
+  path: '/api/public/whatsapp-cron',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SlugEntrarRoute = SlugEntrarRouteImport.update({
-  id: '/$slug/entrar',
-  path: '/$slug/entrar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SlugMeusAgendamentosRoute = SlugMeusAgendamentosRouteImport.update({
-  id: '/$slug/meus-agendamentos',
-  path: '/$slug/meus-agendamentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
-  id: '/superadmin',
-  path: '/superadmin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedSlugAdminRoute = AuthenticatedSlugAdminRouteImport.update({
-  id: '/$slug/admin',
-  path: '/$slug/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedSlugBarbeiroRoute =
-  AuthenticatedSlugBarbeiroRouteImport.update({
-    id: '/$slug/barbeiro',
-    path: '/$slug/barbeiro',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedSuperadminIdRoute =
   AuthenticatedSuperadminIdRouteImport.update({
     id: '/superadmin_/$id',
     path: '/superadmin/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const ApiPublicWhatsappCronRoute = ApiPublicWhatsappCronRouteImport.update({
-  id: '/api/public/whatsapp-cron',
-  path: '/api/public/whatsapp-cron',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedSlugBarbeiroRoute =
+  AuthenticatedSlugBarbeiroRouteImport.update({
+    id: '/$slug/barbeiro',
+    path: '/$slug/barbeiro',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSlugAdminRoute = AuthenticatedSlugAdminRouteImport.update({
+  id: '/$slug/admin',
+  path: '/$slug/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSlugBarbeiroIndexRoute =
+  AuthenticatedSlugBarbeiroIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
+  } as any)
 const AuthenticatedSlugAdminIndexRoute =
   AuthenticatedSlugAdminIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
-const AuthenticatedSlugAdminAgendamentosRoute =
-  AuthenticatedSlugAdminAgendamentosRouteImport.update({
-    id: '/agendamentos',
-    path: '/agendamentos',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugAdminBarbeirosRoute =
-  AuthenticatedSlugAdminBarbeirosRouteImport.update({
-    id: '/barbeiros',
-    path: '/barbeiros',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugAdminClientesRoute =
-  AuthenticatedSlugAdminClientesRouteImport.update({
-    id: '/clientes',
-    path: '/clientes',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugAdminConfiguracoesRoute =
-  AuthenticatedSlugAdminConfiguracoesRouteImport.update({
-    id: '/configuracoes',
-    path: '/configuracoes',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugAdminFinanceiroRoute =
-  AuthenticatedSlugAdminFinanceiroRouteImport.update({
-    id: '/financeiro',
-    path: '/financeiro',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugAdminServicosRoute =
-  AuthenticatedSlugAdminServicosRouteImport.update({
-    id: '/servicos',
-    path: '/servicos',
-    getParentRoute: () => AuthenticatedSlugAdminRoute,
-  } as any)
-const AuthenticatedSlugBarbeiroIndexRoute =
-  AuthenticatedSlugBarbeiroIndexRouteImport.update({
-    id: '/',
-    path: '/',
+const AuthenticatedSlugBarbeiroHistoricoRoute =
+  AuthenticatedSlugBarbeiroHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
     getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
 const AuthenticatedSlugBarbeiroGanhosRoute =
@@ -160,11 +130,41 @@ const AuthenticatedSlugBarbeiroGanhosRoute =
     path: '/ganhos',
     getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
-const AuthenticatedSlugBarbeiroHistoricoRoute =
-  AuthenticatedSlugBarbeiroHistoricoRouteImport.update({
-    id: '/historico',
-    path: '/historico',
-    getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
+const AuthenticatedSlugAdminServicosRoute =
+  AuthenticatedSlugAdminServicosRouteImport.update({
+    id: '/servicos',
+    path: '/servicos',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugAdminFinanceiroRoute =
+  AuthenticatedSlugAdminFinanceiroRouteImport.update({
+    id: '/financeiro',
+    path: '/financeiro',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugAdminConfiguracoesRoute =
+  AuthenticatedSlugAdminConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugAdminClientesRoute =
+  AuthenticatedSlugAdminClientesRouteImport.update({
+    id: '/clientes',
+    path: '/clientes',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugAdminBarbeirosRoute =
+  AuthenticatedSlugAdminBarbeirosRouteImport.update({
+    id: '/barbeiros',
+    path: '/barbeiros',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
+  } as any)
+const AuthenticatedSlugAdminAgendamentosRoute =
+  AuthenticatedSlugAdminAgendamentosRouteImport.update({
+    id: '/agendamentos',
+    path: '/agendamentos',
+    getParentRoute: () => AuthenticatedSlugAdminRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -334,18 +334,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aceitar-convite': {
@@ -355,11 +348,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AceitarConviteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/': {
@@ -369,18 +369,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$slug/agendamento-confirmado': {
-      id: '/$slug/agendamento-confirmado'
-      path: '/$slug/agendamento-confirmado'
-      fullPath: '/$slug/agendamento-confirmado'
-      preLoaderRoute: typeof SlugAgendamentoConfirmadoRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/superadmin': {
+      id: '/_authenticated/superadmin'
+      path: '/superadmin'
+      fullPath: '/superadmin'
+      preLoaderRoute: typeof AuthenticatedSuperadminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/$slug/agendar': {
-      id: '/$slug/agendar'
-      path: '/$slug/agendar'
-      fullPath: '/$slug/agendar'
-      preLoaderRoute: typeof SlugAgendarRouteImport
+    '/$slug/meus-agendamentos': {
+      id: '/$slug/meus-agendamentos'
+      path: '/$slug/meus-agendamentos'
+      fullPath: '/$slug/meus-agendamentos'
+      preLoaderRoute: typeof SlugMeusAgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/entrar': {
@@ -390,25 +390,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugEntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$slug/meus-agendamentos': {
-      id: '/$slug/meus-agendamentos'
-      path: '/$slug/meus-agendamentos'
-      fullPath: '/$slug/meus-agendamentos'
-      preLoaderRoute: typeof SlugMeusAgendamentosRouteImport
+    '/$slug/agendar': {
+      id: '/$slug/agendar'
+      path: '/$slug/agendar'
+      fullPath: '/$slug/agendar'
+      preLoaderRoute: typeof SlugAgendarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/superadmin': {
-      id: '/_authenticated/superadmin'
-      path: '/superadmin'
-      fullPath: '/superadmin'
-      preLoaderRoute: typeof AuthenticatedSuperadminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/$slug/agendamento-confirmado': {
+      id: '/$slug/agendamento-confirmado'
+      path: '/$slug/agendamento-confirmado'
+      fullPath: '/$slug/agendamento-confirmado'
+      preLoaderRoute: typeof SlugAgendamentoConfirmadoRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/$slug/admin': {
-      id: '/_authenticated/$slug/admin'
-      path: '/$slug/admin'
-      fullPath: '/$slug/admin'
-      preLoaderRoute: typeof AuthenticatedSlugAdminRouteImport
+    '/api/public/whatsapp-cron': {
+      id: '/api/public/whatsapp-cron'
+      path: '/api/public/whatsapp-cron'
+      fullPath: '/api/public/whatsapp-cron'
+      preLoaderRoute: typeof ApiPublicWhatsappCronRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/superadmin_/$id': {
+      id: '/_authenticated/superadmin_/$id'
+      path: '/superadmin/$id'
+      fullPath: '/superadmin/$id'
+      preLoaderRoute: typeof AuthenticatedSuperadminIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/$slug/barbeiro': {
@@ -418,19 +425,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlugBarbeiroRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/superadmin_/$id': {
-      id: '/_authenticated/superadmin_/$id'
-      path: '/superadmin/$id'
-      fullPath: '/superadmin/$id'
-      preLoaderRoute: typeof AuthenticatedSuperadminIdRouteImport
+    '/_authenticated/$slug/admin': {
+      id: '/_authenticated/$slug/admin'
+      path: '/$slug/admin'
+      fullPath: '/$slug/admin'
+      preLoaderRoute: typeof AuthenticatedSlugAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/whatsapp-cron': {
-      id: '/api/public/whatsapp-cron'
-      path: '/api/public/whatsapp-cron'
-      fullPath: '/api/public/whatsapp-cron'
-      preLoaderRoute: typeof ApiPublicWhatsappCronRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/$slug/barbeiro/': {
+      id: '/_authenticated/$slug/barbeiro/'
+      path: '/'
+      fullPath: '/$slug/barbeiro/'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroIndexRouteImport
+      parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
     '/_authenticated/$slug/admin/': {
       id: '/_authenticated/$slug/admin/'
@@ -439,53 +446,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlugAdminIndexRouteImport
       parentRoute: typeof AuthenticatedSlugAdminRoute
     }
-    '/_authenticated/$slug/admin/agendamentos': {
-      id: '/_authenticated/$slug/admin/agendamentos'
-      path: '/agendamentos'
-      fullPath: '/$slug/admin/agendamentos'
-      preLoaderRoute: typeof AuthenticatedSlugAdminAgendamentosRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/admin/barbeiros': {
-      id: '/_authenticated/$slug/admin/barbeiros'
-      path: '/barbeiros'
-      fullPath: '/$slug/admin/barbeiros'
-      preLoaderRoute: typeof AuthenticatedSlugAdminBarbeirosRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/admin/clientes': {
-      id: '/_authenticated/$slug/admin/clientes'
-      path: '/clientes'
-      fullPath: '/$slug/admin/clientes'
-      preLoaderRoute: typeof AuthenticatedSlugAdminClientesRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/admin/configuracoes': {
-      id: '/_authenticated/$slug/admin/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/$slug/admin/configuracoes'
-      preLoaderRoute: typeof AuthenticatedSlugAdminConfiguracoesRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/admin/financeiro': {
-      id: '/_authenticated/$slug/admin/financeiro'
-      path: '/financeiro'
-      fullPath: '/$slug/admin/financeiro'
-      preLoaderRoute: typeof AuthenticatedSlugAdminFinanceiroRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/admin/servicos': {
-      id: '/_authenticated/$slug/admin/servicos'
-      path: '/servicos'
-      fullPath: '/$slug/admin/servicos'
-      preLoaderRoute: typeof AuthenticatedSlugAdminServicosRouteImport
-      parentRoute: typeof AuthenticatedSlugAdminRoute
-    }
-    '/_authenticated/$slug/barbeiro/': {
-      id: '/_authenticated/$slug/barbeiro/'
-      path: '/'
-      fullPath: '/$slug/barbeiro/'
-      preLoaderRoute: typeof AuthenticatedSlugBarbeiroIndexRouteImport
+    '/_authenticated/$slug/barbeiro/historico': {
+      id: '/_authenticated/$slug/barbeiro/historico'
+      path: '/historico'
+      fullPath: '/$slug/barbeiro/historico'
+      preLoaderRoute: typeof AuthenticatedSlugBarbeiroHistoricoRouteImport
       parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
     '/_authenticated/$slug/barbeiro/ganhos': {
@@ -495,12 +460,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlugBarbeiroGanhosRouteImport
       parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
-    '/_authenticated/$slug/barbeiro/historico': {
-      id: '/_authenticated/$slug/barbeiro/historico'
-      path: '/historico'
-      fullPath: '/$slug/barbeiro/historico'
-      preLoaderRoute: typeof AuthenticatedSlugBarbeiroHistoricoRouteImport
-      parentRoute: typeof AuthenticatedSlugBarbeiroRoute
+    '/_authenticated/$slug/admin/servicos': {
+      id: '/_authenticated/$slug/admin/servicos'
+      path: '/servicos'
+      fullPath: '/$slug/admin/servicos'
+      preLoaderRoute: typeof AuthenticatedSlugAdminServicosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
+    }
+    '/_authenticated/$slug/admin/financeiro': {
+      id: '/_authenticated/$slug/admin/financeiro'
+      path: '/financeiro'
+      fullPath: '/$slug/admin/financeiro'
+      preLoaderRoute: typeof AuthenticatedSlugAdminFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
+    }
+    '/_authenticated/$slug/admin/configuracoes': {
+      id: '/_authenticated/$slug/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/$slug/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedSlugAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
+    }
+    '/_authenticated/$slug/admin/clientes': {
+      id: '/_authenticated/$slug/admin/clientes'
+      path: '/clientes'
+      fullPath: '/$slug/admin/clientes'
+      preLoaderRoute: typeof AuthenticatedSlugAdminClientesRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
+    }
+    '/_authenticated/$slug/admin/barbeiros': {
+      id: '/_authenticated/$slug/admin/barbeiros'
+      path: '/barbeiros'
+      fullPath: '/$slug/admin/barbeiros'
+      preLoaderRoute: typeof AuthenticatedSlugAdminBarbeirosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
+    }
+    '/_authenticated/$slug/admin/agendamentos': {
+      id: '/_authenticated/$slug/admin/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/$slug/admin/agendamentos'
+      preLoaderRoute: typeof AuthenticatedSlugAdminAgendamentosRouteImport
+      parentRoute: typeof AuthenticatedSlugAdminRoute
     }
   }
 }
