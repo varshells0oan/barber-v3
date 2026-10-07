@@ -51,7 +51,7 @@ function Agenda() {
     load();
   };
 
-  const upcoming = items.filter((a) => ["pendente", "confirmado"].includes(a.status));
+  const upcoming = items.filter((a) => ["pendente", "agendado", "confirmado", "em_atendimento"].includes(a.status));
   const done = items.filter((a) => a.status === "atendido");
   const stats = {
     total: items.length,

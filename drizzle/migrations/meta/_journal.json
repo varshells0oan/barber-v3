@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791392648413,
+      "tag": "0000_three_areas_saas",
+      "breakpoints": true
+    }
+  ]
+}

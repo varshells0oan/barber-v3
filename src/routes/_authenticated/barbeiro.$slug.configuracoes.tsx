@@ -11,7 +11,7 @@ import {
   type ThemePresetKey,
 } from "@/lib/theme-presets";
 
-export const Route = createFileRoute("/_authenticated/$slug/admin/configuracoes")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/configuracoes")({
   component: Config,
 });
 

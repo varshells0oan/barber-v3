@@ -55,7 +55,7 @@ function AcceptInvitePage() {
     if (error) throw error;
     const slug = data as string;
     toast.success("Convite aceito!");
-    navigate({ to: "/$slug/admin", params: { slug } });
+    navigate({ to: "/barbeiro/$slug/admin", params: { slug } });
   };
 
   const submit = async (e: React.FormEvent) => {

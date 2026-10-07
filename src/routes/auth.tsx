@@ -55,7 +55,7 @@ function AuthPage() {
     if (!shop?.slug) return;
 
     if (adminRow) {
-      return navigate({ to: "/$slug/admin", params: { slug: shop.slug }, replace: true });
+      return navigate({ to: "/barbeiro/$slug/admin", params: { slug: shop.slug }, replace: true });
     }
     return navigate({ to: "/$slug/barbeiro", params: { slug: shop.slug }, replace: true });
   };

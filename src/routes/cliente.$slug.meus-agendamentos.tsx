@@ -6,7 +6,7 @@ import { PublicTheme } from "@/components/PublicTheme";
 import { brl, cleanPhone, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { Search, CalendarDays, Clock, Scissors, User, Sparkles, Gift, Loader2, PhoneCall } from "lucide-react";
 
-export const Route = createFileRoute("/$slug/meus-agendamentos")({
+export const Route = createFileRoute("/cliente/$slug/meus-agendamentos")({
   component: ClientArea,
 });
 
@@ -37,7 +37,7 @@ function ClientArea() {
     setLoading(false);
   };
 
-  const upcoming = appts.filter((a) => ["pendente", "confirmado"].includes(a.status));
+  const upcoming = appts.filter((a) => ["pendente", "agendado", "confirmado", "em_atendimento"].includes(a.status));
   const history = appts.filter((a) => a.status === "atendido");
 
   return (
