@@ -5,7 +5,7 @@ import { brl, cleanPhone, formatPhone } from "@/lib/format";
 import { MessageCircle } from "lucide-react";
 import { useBarbershopId } from "@/hooks/useBarbershopId";
 
-export const Route = createFileRoute("/_authenticated/barbeiro/$slug/relatoriosclientes")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/clientes")({
   component: ClientsPage,
 });
 
