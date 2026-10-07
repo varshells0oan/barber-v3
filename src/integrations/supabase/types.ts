@@ -207,6 +207,67 @@ export type Database = {
         }
         Relationships: []
       }
+      barber_time_blocks: {
+        Row: {
+          barber_id: string
+          barbershop_id: string
+          created_at: string
+          date: string
+          end_time: string
+          id: string
+          note: string | null
+          reason: string
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          barber_id: string
+          barbershop_id: string
+          created_at?: string
+          date: string
+          end_time: string
+          id?: string
+          note?: string | null
+          reason?: string
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          barber_id?: string
+          barbershop_id?: string
+          created_at?: string
+          date?: string
+          end_time?: string
+          id?: string
+          note?: string | null
+          reason?: string
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "barber_time_blocks_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "barber_time_blocks_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "public_barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "barber_time_blocks_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       barbers: {
         Row: {
           access_password_hash: string | null
@@ -336,74 +397,119 @@ export type Database = {
       }
       barbershops: {
         Row: {
+          accepting_bookings: boolean
           address: string | null
           admin_password_hash: string | null
           admin_username: string | null
+          allow_reschedule: boolean
+          approved_at: string | null
           banner_url: string | null
           blocked_dates: Json
           created_at: string
           custom_domain: string | null
           description: string | null
+          external_customer_id: string | null
+          grace_period_until: string | null
           hero_image_url: string | null
           id: string
           instagram: string | null
           logo_url: string | null
           name: string
+          onboarding_completed: boolean
           opening_hours: Json
+          owner_email: string | null
+          owner_name: string | null
+          owner_phone: string | null
+          owner_user_id: string | null
+          payment_provider: string | null
           phone: string | null
           plan: string
+          plan_id: string | null
           primary_color: string | null
           secondary_color: string | null
           slug: string
           status: string
+          subscription_ends_at: string | null
+          subscription_started_at: string | null
+          subscription_status: string
           updated_at: string
           whatsapp: string | null
         }
         Insert: {
+          accepting_bookings?: boolean
           address?: string | null
           admin_password_hash?: string | null
           admin_username?: string | null
+          allow_reschedule?: boolean
+          approved_at?: string | null
           banner_url?: string | null
           blocked_dates?: Json
           created_at?: string
           custom_domain?: string | null
           description?: string | null
+          external_customer_id?: string | null
+          grace_period_until?: string | null
           hero_image_url?: string | null
           id?: string
           instagram?: string | null
           logo_url?: string | null
           name: string
+          onboarding_completed?: boolean
           opening_hours?: Json
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          owner_user_id?: string | null
+          payment_provider?: string | null
           phone?: string | null
           plan?: string
+          plan_id?: string | null
           primary_color?: string | null
           secondary_color?: string | null
           slug: string
           status?: string
+          subscription_ends_at?: string | null
+          subscription_started_at?: string | null
+          subscription_status?: string
           updated_at?: string
           whatsapp?: string | null
         }
         Update: {
+          accepting_bookings?: boolean
           address?: string | null
           admin_password_hash?: string | null
           admin_username?: string | null
+          allow_reschedule?: boolean
+          approved_at?: string | null
           banner_url?: string | null
           blocked_dates?: Json
           created_at?: string
           custom_domain?: string | null
           description?: string | null
+          external_customer_id?: string | null
+          grace_period_until?: string | null
           hero_image_url?: string | null
           id?: string
           instagram?: string | null
           logo_url?: string | null
           name?: string
+          onboarding_completed?: boolean
           opening_hours?: Json
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          owner_user_id?: string | null
+          payment_provider?: string | null
           phone?: string | null
           plan?: string
+          plan_id?: string | null
           primary_color?: string | null
           secondary_color?: string | null
           slug?: string
           status?: string
+          subscription_ends_at?: string | null
+          subscription_started_at?: string | null
+          subscription_status?: string
           updated_at?: string
           whatsapp?: string | null
         }
@@ -493,6 +599,7 @@ export type Database = {
         Row: {
           active: boolean
           barbershop_id: string
+          buffer_min: number
           category: string
           created_at: string
           description: string | null
@@ -505,6 +612,7 @@ export type Database = {
         Insert: {
           active?: boolean
           barbershop_id: string
+          buffer_min?: number
           category?: string
           created_at?: string
           description?: string | null
@@ -517,6 +625,7 @@ export type Database = {
         Update: {
           active?: boolean
           barbershop_id?: string
+          buffer_min?: number
           category?: string
           created_at?: string
           description?: string | null
@@ -549,11 +658,15 @@ export type Database = {
           gallery_urls: Json
           id: string
           instagram: string | null
+          instagram_handle: string | null
           logo_url: string | null
           loyalty_reward: string | null
           loyalty_target: number
+          map_url: string | null
           name: string
           phone: string | null
+          public_email: string | null
+          public_visibility: Json
           slot_buffer_min: number
           tagline: string | null
           testimonials: Json
@@ -580,11 +693,15 @@ export type Database = {
           gallery_urls?: Json
           id?: string
           instagram?: string | null
+          instagram_handle?: string | null
           logo_url?: string | null
           loyalty_reward?: string | null
           loyalty_target?: number
+          map_url?: string | null
           name?: string
           phone?: string | null
+          public_email?: string | null
+          public_visibility?: Json
           slot_buffer_min?: number
           tagline?: string | null
           testimonials?: Json
@@ -611,11 +728,15 @@ export type Database = {
           gallery_urls?: Json
           id?: string
           instagram?: string | null
+          instagram_handle?: string | null
           logo_url?: string | null
           loyalty_reward?: string | null
           loyalty_target?: number
+          map_url?: string | null
           name?: string
           phone?: string | null
+          public_email?: string | null
+          public_visibility?: Json
           slot_buffer_min?: number
           tagline?: string | null
           testimonials?: Json
@@ -668,6 +789,74 @@ export type Database = {
             columns: ["barbershop_id"]
             isOneToOne: false
             referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      waitlist_entries: {
+        Row: {
+          barber_id: string | null
+          barbershop_id: string
+          client_name: string
+          client_phone: string
+          created_at: string
+          desired_date: string
+          id: string
+          service_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          barber_id?: string | null
+          barbershop_id: string
+          client_name: string
+          client_phone: string
+          created_at?: string
+          desired_date: string
+          id?: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          barber_id?: string | null
+          barbershop_id?: string
+          client_name?: string
+          client_phone?: string
+          created_at?: string
+          desired_date?: string
+          id?: string
+          service_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_entries_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "public_barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_barbershop_id_fkey"
+            columns: ["barbershop_id"]
+            isOneToOne: false
+            referencedRelation: "barbershops"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
             referencedColumns: ["id"]
           },
         ]
@@ -925,6 +1114,16 @@ export type Database = {
         }
         Returns: string
       }
+      my_shop_access: {
+        Args: { _slug: string }
+        Returns: {
+          barbershop_id: string
+          is_owner: boolean
+          name: string
+          onboarding_completed: boolean
+          subscription_status: string
+        }[]
+      }
       public_cancel_my_appointment: {
         Args: { _id: string; _phone: string }
         Returns: boolean
@@ -934,6 +1133,16 @@ export type Database = {
         Returns: {
           loyalty_points: number
           name: string
+        }[]
+      }
+      public_get_client_summary: {
+        Args: { _barbershop_id: string; _phone: string }
+        Returns: {
+          loyalty_points: number
+          loyalty_reward: string
+          loyalty_target: number
+          name: string
+          visits: number
         }[]
       }
       public_get_my_appointments: {
@@ -957,6 +1166,21 @@ export type Database = {
           time: string
         }[]
       }
+      public_join_waitlist: {
+        Args: {
+          _barber_id: string
+          _barbershop_id: string
+          _date: string
+          _name: string
+          _phone: string
+          _service_id: string
+        }
+        Returns: string
+      }
+      public_reschedule_my_appointment: {
+        Args: { _date: string; _id: string; _phone: string; _time: string }
+        Returns: boolean
+      }
       public_upsert_client: {
         Args: { _barbershop_id: string; _name: string; _phone: string }
         Returns: string
@@ -976,6 +1200,10 @@ export type Database = {
       }
       set_barbershop_admin_credentials: {
         Args: { _barbershop_id: string; _password: string; _username: string }
+        Returns: boolean
+      }
+      set_shop_account_status: {
+        Args: { _action: string; _id: string }
         Returns: boolean
       }
       shop_barbers_gate_info: {
