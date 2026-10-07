@@ -17,7 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-export const Route = createFileRoute("/$slug/")({
+export const Route = createFileRoute("/cliente/$slug/")({
   component: Landing,
   head: () => ({
     meta: [
@@ -94,7 +94,7 @@ function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                to="/$slug/agendar"
+                to="/cliente/$slug/agendar"
                 params={{ slug }}
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110"
               >
@@ -102,7 +102,7 @@ function Landing() {
                 Agendar agora
               </Link>
               <Link
-                to="/$slug/meus-agendamentos"
+                to="/cliente/$slug/meus-agendamentos"
                 params={{ slug }}
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-6 py-3 font-medium text-foreground backdrop-blur transition hover:border-primary"
               >
@@ -354,7 +354,7 @@ function Landing() {
             </div>
 
             <Link
-              to="/$slug/agendar"
+              to="/cliente/$slug/agendar"
               params={{ slug }}
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110"
             >
@@ -374,7 +374,7 @@ function Landing() {
             Escolha o serviço, o profissional e o melhor horário. Leva menos de 1 minuto.
           </p>
           <Link
-            to="/$slug/agendar"
+            to="/cliente/$slug/agendar"
             params={{ slug }}
             className="mt-8 inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:brightness-110"
           >

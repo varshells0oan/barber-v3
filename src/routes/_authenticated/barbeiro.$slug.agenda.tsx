@@ -5,7 +5,7 @@ import { brl, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { toast } from "sonner";
 import { useBarbershopId } from "@/hooks/useBarbershopId";
 
-export const Route = createFileRoute("/_authenticated/$slug/admin/agendamentos")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/agenda")({
   component: Appointments,
 });
 

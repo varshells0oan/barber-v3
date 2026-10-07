@@ -15,7 +15,7 @@ const searchSchema = z.object({
   service: z.string().optional(),
 });
 
-export const Route = createFileRoute("/$slug/agendar")({
+export const Route = createFileRoute("/cliente/$slug/agendar")({
   validateSearch: (s) => searchSchema.parse(s),
   component: Booking,
 });
@@ -178,7 +178,7 @@ function Booking() {
         _notes: notes || null,
       });
       if (apptErr) throw apptErr;
-      navigate({ to: "/$slug/agendamento-confirmado", params: { slug } });
+      navigate({ to: "/cliente/$slug/agendamento-confirmado", params: { slug } });
     } catch (e: any) {
       const msg = String(e?.message ?? "");
       if (msg.includes("SLOT_TAKEN") || e?.code === "23505") {

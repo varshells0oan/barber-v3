@@ -33,7 +33,7 @@ function ShopLoginPage() {
       await record({ data: { slug, success: !error, username: username.trim() } }).catch(() => {});
       if (error) throw new Error("Usuário ou senha inválidos");
       toast.success("Bem-vindo!");
-      navigate({ to: "/$slug/admin", params: { slug } });
+      navigate({ to: "/barbeiro/$slug/admin", params: { slug } });
     } catch (err: any) {
       toast.error(err.message ?? "Falha no login");
     } finally {

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicHeader } from "@/components/PublicHeader";
 import { CheckCircle2 } from "lucide-react";
 
-export const Route = createFileRoute("/$slug/agendamento-confirmado")({
+export const Route = createFileRoute("/cliente/$slug/agendamento-confirmado")({
   component: Confirmed,
 });
 
@@ -21,14 +21,14 @@ function Confirmed() {
         </p>
         <div className="mt-8 flex flex-col gap-2">
           <Link
-            to="/$slug/meus-agendamentos"
+            to="/cliente/$slug/meus-agendamentos"
             params={{ slug }}
             className="rounded-md bg-primary py-3 font-medium text-primary-foreground hover:bg-primary/90"
           >
             Ver meus agendamentos
           </Link>
           <Link
-            to="/$slug"
+            to="/cliente/$slug"
             params={{ slug }}
             className="rounded-md border border-border py-3 font-medium"
           >

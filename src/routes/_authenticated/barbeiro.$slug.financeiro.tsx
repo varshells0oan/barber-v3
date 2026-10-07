@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { brl, todayISO } from "@/lib/format";
 import { useBarbershopId } from "@/hooks/useBarbershopId";
 
-export const Route = createFileRoute("/_authenticated/$slug/admin/financeiro")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/relatoriosfinanceiro")({
   component: Financial,
 });
 

@@ -5,7 +5,7 @@ import { brl } from "@/lib/format";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/$slug/admin/servicos")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/relatoriosservicos")({
   component: ServicesPage,
 });
 

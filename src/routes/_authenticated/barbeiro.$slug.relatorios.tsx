@@ -19,7 +19,7 @@ import {
   ListChecks,
 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/$slug/admin/")({
+export const Route = createFileRoute("/_authenticated/barbeiro/$slug/relatorios")({
   component: Dashboard,
 });
 
@@ -306,7 +306,7 @@ function Dashboard() {
             subtitle="Faturamento no mês"
             tint="amber"
             right={
-              <Link to="/$slug/admin/financeiro" params={{ slug }} {...({} as any)} className="flex items-center gap-1 text-xs text-primary hover:underline">
+              <Link to="/barbeiro/$slug/financeiro" params={{ slug }} {...({} as any)} className="flex items-center gap-1 text-xs text-primary hover:underline">
                 Financeiro <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
@@ -372,7 +372,7 @@ function Dashboard() {
           subtitle={upcoming.length === 0 ? "Sem agendamentos ativos" : `${upcoming.length} em andamento`}
           tint="emerald"
           right={
-            <Link to="/$slug/admin/agendamentos" params={{ slug }} {...({} as any)} className="flex items-center gap-1 text-xs text-primary hover:underline">
+            <Link to="/barbeiro/$slug/agenda" params={{ slug }} {...({} as any)} className="flex items-center gap-1 text-xs text-primary hover:underline">
               Ver todos <ArrowUpRight className="h-3 w-3" />
             </Link>
           }
