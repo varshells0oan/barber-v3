@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/barbeiro/$slug/agenda")({
   component: Appointments,
 });
 
-const STATUSES = ["todos", "pendente", "confirmado", "atendido", "cancelado", "nao_compareceu"];
+const STATUSES = ["todos", "agendado", "confirmado", "em_atendimento", "atendido", "cancelado", "nao_compareceu"];
 
 function Appointments() {
   const { slug } = Route.useParams();
@@ -41,7 +41,7 @@ function Appointments() {
   };
 
   const filtered = items.filter((a) => {
-    if (status !== "todos" && a.status !== status) return false;
+    if (status !== "todos" && a.status !== status && !(status === "agendado" && a.status === "pendente")) return false;
     if (q && !`${a.client_name} ${a.barber_name}`.toLowerCase().includes(q.toLowerCase()))
       return false;
     return true;
@@ -49,7 +49,12 @@ function Appointments() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-foreground">Agendamentos</h1>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="text-2xl font-semibold text-foreground">Agenda</h1>
+        <Link to="/barbeiro/$slug/espera" params={{ slug }} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent/40">
+          Lista de espera
+        </Link>
+      </div>
       <div className="mt-4 flex flex-wrap gap-2">
         <input
           value={q}
@@ -91,15 +96,18 @@ function Appointments() {
               </span>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
-              {a.status === "pendente" && (
+              {(a.status === "pendente" || a.status === "agendado") && (
                 <>
                   <Btn onClick={() => update(a.id, "confirmado")}>Confirmar</Btn>
                   <Btn variant="destructive" onClick={() => update(a.id, "cancelado")}>Cancelar</Btn>
                 </>
               )}
-              {(a.status === "pendente" || a.status === "confirmado") && (
+              {["pendente", "agendado", "confirmado", "em_atendimento"].includes(a.status) && (
                 <>
-                  <Btn variant="success" onClick={() => update(a.id, "atendido")}>Atendido</Btn>
+                  {a.status !== "em_atendimento" && (
+                    <Btn variant="ghost" onClick={() => update(a.id, "em_atendimento")}>Iniciar atendimento</Btn>
+                  )}
+                  <Btn variant="success" onClick={() => update(a.id, "atendido")}>Concluir</Btn>
                   <Btn variant="ghost" onClick={() => update(a.id, "nao_compareceu")}>
                     Não compareceu
                   </Btn>

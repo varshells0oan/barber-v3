@@ -119,7 +119,7 @@ function Dashboard() {
   const maxServiceCount = Math.max(...topServices.map((s) => s.count), 1);
 
   const upcoming = todayList
-    .filter((a) => ["pendente", "confirmado"].includes(a.status))
+    .filter((a) => ["pendente", "agendado", "confirmado", "em_atendimento"].includes(a.status))
     .sort((a, b) => a.time.localeCompare(b.time));
   const nextOne = upcoming[0];
 

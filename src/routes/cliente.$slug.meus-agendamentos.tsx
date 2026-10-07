@@ -37,7 +37,7 @@ function ClientArea() {
     setLoading(false);
   };
 
-  const upcoming = appts.filter((a) => ["pendente", "confirmado"].includes(a.status));
+  const upcoming = appts.filter((a) => ["pendente", "agendado", "confirmado", "em_atendimento"].includes(a.status));
   const history = appts.filter((a) => a.status === "atendido");
 
   return (
