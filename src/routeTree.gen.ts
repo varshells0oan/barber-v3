@@ -25,10 +25,12 @@ import { Route as ClienteSlugMeusAgendamentosRouteImport } from './routes/client
 import { Route as AuthenticatedSlugBarbeiroIndexRouteImport } from './routes/_authenticated/$slug.barbeiro.index'
 import { Route as AuthenticatedSlugBarbeiroGanhosRouteImport } from './routes/_authenticated/$slug.barbeiro.ganhos'
 import { Route as AuthenticatedSlugBarbeiroHistoricoRouteImport } from './routes/_authenticated/$slug.barbeiro.historico'
+import { Route as AuthenticatedBarbeiroSlugAdminRouteImport } from './routes/_authenticated/barbeiro.$slug.admin'
 import { Route as AuthenticatedBarbeiroSlugAgendaRouteImport } from './routes/_authenticated/barbeiro.$slug.agenda'
 import { Route as AuthenticatedBarbeiroSlugClientesRouteImport } from './routes/_authenticated/barbeiro.$slug.clientes'
 import { Route as AuthenticatedBarbeiroSlugConfiguracoesRouteImport } from './routes/_authenticated/barbeiro.$slug.configuracoes'
 import { Route as AuthenticatedBarbeiroSlugEquipeRouteImport } from './routes/_authenticated/barbeiro.$slug.equipe'
+import { Route as AuthenticatedBarbeiroSlugEsperaRouteImport } from './routes/_authenticated/barbeiro.$slug.espera'
 import { Route as AuthenticatedBarbeiroSlugFinanceiroRouteImport } from './routes/_authenticated/barbeiro.$slug.financeiro'
 import { Route as AuthenticatedBarbeiroSlugRelatoriosRouteImport } from './routes/_authenticated/barbeiro.$slug.relatorios'
 import { Route as AuthenticatedBarbeiroSlugServicosRouteImport } from './routes/_authenticated/barbeiro.$slug.servicos'
@@ -119,6 +121,12 @@ const AuthenticatedSlugBarbeiroHistoricoRoute =
     path: '/historico',
     getParentRoute: () => AuthenticatedSlugBarbeiroRoute,
   } as any)
+const AuthenticatedBarbeiroSlugAdminRoute =
+  AuthenticatedBarbeiroSlugAdminRouteImport.update({
+    id: '/barbeiro/$slug/admin',
+    path: '/barbeiro/$slug/admin',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedBarbeiroSlugAgendaRoute =
   AuthenticatedBarbeiroSlugAgendaRouteImport.update({
     id: '/barbeiro/$slug/agenda',
@@ -141,6 +149,12 @@ const AuthenticatedBarbeiroSlugEquipeRoute =
   AuthenticatedBarbeiroSlugEquipeRouteImport.update({
     id: '/barbeiro/$slug/equipe',
     path: '/barbeiro/$slug/equipe',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBarbeiroSlugEsperaRoute =
+  AuthenticatedBarbeiroSlugEsperaRouteImport.update({
+    id: '/barbeiro/$slug/espera',
+    path: '/barbeiro/$slug/espera',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBarbeiroSlugFinanceiroRoute =
@@ -177,10 +191,12 @@ export interface FileRoutesByFullPath {
   '/cliente/$slug/': typeof ClienteSlugIndexRoute
   '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/barbeiro/$slug/admin': typeof AuthenticatedBarbeiroSlugAdminRoute
   '/barbeiro/$slug/agenda': typeof AuthenticatedBarbeiroSlugAgendaRoute
   '/barbeiro/$slug/clientes': typeof AuthenticatedBarbeiroSlugClientesRoute
   '/barbeiro/$slug/configuracoes': typeof AuthenticatedBarbeiroSlugConfiguracoesRoute
   '/barbeiro/$slug/equipe': typeof AuthenticatedBarbeiroSlugEquipeRoute
+  '/barbeiro/$slug/espera': typeof AuthenticatedBarbeiroSlugEsperaRoute
   '/barbeiro/$slug/financeiro': typeof AuthenticatedBarbeiroSlugFinanceiroRoute
   '/barbeiro/$slug/relatorios': typeof AuthenticatedBarbeiroSlugRelatoriosRoute
   '/barbeiro/$slug/servicos': typeof AuthenticatedBarbeiroSlugServicosRoute
@@ -200,10 +216,12 @@ export interface FileRoutesByTo {
   '/cliente/$slug': typeof ClienteSlugIndexRoute
   '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/barbeiro/$slug/admin': typeof AuthenticatedBarbeiroSlugAdminRoute
   '/barbeiro/$slug/agenda': typeof AuthenticatedBarbeiroSlugAgendaRoute
   '/barbeiro/$slug/clientes': typeof AuthenticatedBarbeiroSlugClientesRoute
   '/barbeiro/$slug/configuracoes': typeof AuthenticatedBarbeiroSlugConfiguracoesRoute
   '/barbeiro/$slug/equipe': typeof AuthenticatedBarbeiroSlugEquipeRoute
+  '/barbeiro/$slug/espera': typeof AuthenticatedBarbeiroSlugEsperaRoute
   '/barbeiro/$slug/financeiro': typeof AuthenticatedBarbeiroSlugFinanceiroRoute
   '/barbeiro/$slug/relatorios': typeof AuthenticatedBarbeiroSlugRelatoriosRoute
   '/barbeiro/$slug/servicos': typeof AuthenticatedBarbeiroSlugServicosRoute
@@ -226,10 +244,12 @@ export interface FileRoutesById {
   '/cliente/$slug/': typeof ClienteSlugIndexRoute
   '/_authenticated/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/_authenticated/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
+  '/_authenticated/barbeiro/$slug/admin': typeof AuthenticatedBarbeiroSlugAdminRoute
   '/_authenticated/barbeiro/$slug/agenda': typeof AuthenticatedBarbeiroSlugAgendaRoute
   '/_authenticated/barbeiro/$slug/clientes': typeof AuthenticatedBarbeiroSlugClientesRoute
   '/_authenticated/barbeiro/$slug/configuracoes': typeof AuthenticatedBarbeiroSlugConfiguracoesRoute
   '/_authenticated/barbeiro/$slug/equipe': typeof AuthenticatedBarbeiroSlugEquipeRoute
+  '/_authenticated/barbeiro/$slug/espera': typeof AuthenticatedBarbeiroSlugEsperaRoute
   '/_authenticated/barbeiro/$slug/financeiro': typeof AuthenticatedBarbeiroSlugFinanceiroRoute
   '/_authenticated/barbeiro/$slug/relatorios': typeof AuthenticatedBarbeiroSlugRelatoriosRoute
   '/_authenticated/barbeiro/$slug/servicos': typeof AuthenticatedBarbeiroSlugServicosRoute
@@ -252,10 +272,12 @@ export interface FileRouteTypes {
     | '/cliente/$slug/'
     | '/$slug/barbeiro/ganhos'
     | '/$slug/barbeiro/historico'
+    | '/barbeiro/$slug/admin'
     | '/barbeiro/$slug/agenda'
     | '/barbeiro/$slug/clientes'
     | '/barbeiro/$slug/configuracoes'
     | '/barbeiro/$slug/equipe'
+    | '/barbeiro/$slug/espera'
     | '/barbeiro/$slug/financeiro'
     | '/barbeiro/$slug/relatorios'
     | '/barbeiro/$slug/servicos'
@@ -275,10 +297,12 @@ export interface FileRouteTypes {
     | '/cliente/$slug'
     | '/$slug/barbeiro/ganhos'
     | '/$slug/barbeiro/historico'
+    | '/barbeiro/$slug/admin'
     | '/barbeiro/$slug/agenda'
     | '/barbeiro/$slug/clientes'
     | '/barbeiro/$slug/configuracoes'
     | '/barbeiro/$slug/equipe'
+    | '/barbeiro/$slug/espera'
     | '/barbeiro/$slug/financeiro'
     | '/barbeiro/$slug/relatorios'
     | '/barbeiro/$slug/servicos'
@@ -300,10 +324,12 @@ export interface FileRouteTypes {
     | '/cliente/$slug/'
     | '/_authenticated/$slug/barbeiro/ganhos'
     | '/_authenticated/$slug/barbeiro/historico'
+    | '/_authenticated/barbeiro/$slug/admin'
     | '/_authenticated/barbeiro/$slug/agenda'
     | '/_authenticated/barbeiro/$slug/clientes'
     | '/_authenticated/barbeiro/$slug/configuracoes'
     | '/_authenticated/barbeiro/$slug/equipe'
+    | '/_authenticated/barbeiro/$slug/espera'
     | '/_authenticated/barbeiro/$slug/financeiro'
     | '/_authenticated/barbeiro/$slug/relatorios'
     | '/_authenticated/barbeiro/$slug/servicos'
@@ -437,6 +463,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSlugBarbeiroHistoricoRouteImport
       parentRoute: typeof AuthenticatedSlugBarbeiroRoute
     }
+    '/_authenticated/barbeiro/$slug/admin': {
+      id: '/_authenticated/barbeiro/$slug/admin'
+      path: '/barbeiro/$slug/admin'
+      fullPath: '/barbeiro/$slug/admin'
+      preLoaderRoute: typeof AuthenticatedBarbeiroSlugAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/barbeiro/$slug/agenda': {
       id: '/_authenticated/barbeiro/$slug/agenda'
       path: '/barbeiro/$slug/agenda'
@@ -463,6 +496,13 @@ declare module '@tanstack/react-router' {
       path: '/barbeiro/$slug/equipe'
       fullPath: '/barbeiro/$slug/equipe'
       preLoaderRoute: typeof AuthenticatedBarbeiroSlugEquipeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/barbeiro/$slug/espera': {
+      id: '/_authenticated/barbeiro/$slug/espera'
+      path: '/barbeiro/$slug/espera'
+      fullPath: '/barbeiro/$slug/espera'
+      preLoaderRoute: typeof AuthenticatedBarbeiroSlugEsperaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/barbeiro/$slug/financeiro': {
@@ -512,10 +552,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
   AuthenticatedSlugBarbeiroRoute: typeof AuthenticatedSlugBarbeiroRouteWithChildren
   AuthenticatedSuperadminIdRoute: typeof AuthenticatedSuperadminIdRoute
+  AuthenticatedBarbeiroSlugAdminRoute: typeof AuthenticatedBarbeiroSlugAdminRoute
   AuthenticatedBarbeiroSlugAgendaRoute: typeof AuthenticatedBarbeiroSlugAgendaRoute
   AuthenticatedBarbeiroSlugClientesRoute: typeof AuthenticatedBarbeiroSlugClientesRoute
   AuthenticatedBarbeiroSlugConfiguracoesRoute: typeof AuthenticatedBarbeiroSlugConfiguracoesRoute
   AuthenticatedBarbeiroSlugEquipeRoute: typeof AuthenticatedBarbeiroSlugEquipeRoute
+  AuthenticatedBarbeiroSlugEsperaRoute: typeof AuthenticatedBarbeiroSlugEsperaRoute
   AuthenticatedBarbeiroSlugFinanceiroRoute: typeof AuthenticatedBarbeiroSlugFinanceiroRoute
   AuthenticatedBarbeiroSlugRelatoriosRoute: typeof AuthenticatedBarbeiroSlugRelatoriosRoute
   AuthenticatedBarbeiroSlugServicosRoute: typeof AuthenticatedBarbeiroSlugServicosRoute
@@ -525,12 +567,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
   AuthenticatedSlugBarbeiroRoute: AuthenticatedSlugBarbeiroRouteWithChildren,
   AuthenticatedSuperadminIdRoute: AuthenticatedSuperadminIdRoute,
+  AuthenticatedBarbeiroSlugAdminRoute: AuthenticatedBarbeiroSlugAdminRoute,
   AuthenticatedBarbeiroSlugAgendaRoute: AuthenticatedBarbeiroSlugAgendaRoute,
   AuthenticatedBarbeiroSlugClientesRoute:
     AuthenticatedBarbeiroSlugClientesRoute,
   AuthenticatedBarbeiroSlugConfiguracoesRoute:
     AuthenticatedBarbeiroSlugConfiguracoesRoute,
   AuthenticatedBarbeiroSlugEquipeRoute: AuthenticatedBarbeiroSlugEquipeRoute,
+  AuthenticatedBarbeiroSlugEsperaRoute: AuthenticatedBarbeiroSlugEsperaRoute,
   AuthenticatedBarbeiroSlugFinanceiroRoute:
     AuthenticatedBarbeiroSlugFinanceiroRoute,
   AuthenticatedBarbeiroSlugRelatoriosRoute:
