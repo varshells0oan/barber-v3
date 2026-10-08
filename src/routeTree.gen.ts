@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as BSlugRouteImport } from './routes/b.$slug'
@@ -81,6 +82,11 @@ const LoginRoute = LoginRouteImport.update({
 const PainelRoute = PainelRouteImport.update({
   id: '/painel',
   path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrimeiroAcessoRoute = PrimeiroAcessoRouteImport.update({
+  id: '/primeiro-acesso',
+  path: '/primeiro-acesso',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugEntrarRoute = SlugEntrarRouteImport.update({
@@ -239,6 +245,7 @@ export interface FileRoutesByFullPath {
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/b/$slug': typeof BSlugRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/b/$slug': typeof BSlugRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
+  '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
   '/b/$slug': typeof BSlugRoute
@@ -347,6 +356,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/login'
     | '/painel'
+    | '/primeiro-acesso'
     | '/$slug/entrar'
     | '/superadmin'
     | '/b/$slug'
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/login'
     | '/painel'
+    | '/primeiro-acesso'
     | '/$slug/entrar'
     | '/superadmin'
     | '/b/$slug'
@@ -417,6 +428,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/login'
     | '/painel'
+    | '/primeiro-acesso'
     | '/$slug/entrar'
     | '/_authenticated/superadmin'
     | '/b/$slug'
@@ -454,6 +466,7 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   LoginRoute: typeof LoginRoute
   PainelRoute: typeof PainelRoute
+  PrimeiroAcessoRoute: typeof PrimeiroAcessoRoute
   SlugEntrarRoute: typeof SlugEntrarRoute
   BSlugRoute: typeof BSlugRoute
   BarbeiroCadastroRoute: typeof BarbeiroCadastroRoute
@@ -520,6 +533,13 @@ declare module '@tanstack/react-router' {
       path: '/painel'
       fullPath: '/painel'
       preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/primeiro-acesso': {
+      id: '/primeiro-acesso'
+      path: '/primeiro-acesso'
+      fullPath: '/primeiro-acesso'
+      preLoaderRoute: typeof PrimeiroAcessoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/entrar': {
@@ -791,6 +811,7 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroRoute: CadastroRoute,
   LoginRoute: LoginRoute,
   PainelRoute: PainelRoute,
+  PrimeiroAcessoRoute: PrimeiroAcessoRoute,
   SlugEntrarRoute: SlugEntrarRoute,
   BSlugRoute: BSlugRoute,
   BarbeiroCadastroRoute: BarbeiroCadastroRoute,
