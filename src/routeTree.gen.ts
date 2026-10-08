@@ -27,6 +27,11 @@ import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authent
 import { Route as AuthenticatedBarbeiroSlugRouteImport } from './routes/_authenticated/barbeiro.$slug'
 import { Route as AuthenticatedDonoIndexRouteImport } from './routes/_authenticated/dono.index'
 import { Route as AuthenticatedDonoSplatRouteImport } from './routes/_authenticated/dono.$'
+import { Route as AuthenticatedDonoAprovacoesRouteImport } from './routes/_authenticated/dono.aprovacoes'
+import { Route as AuthenticatedDonoAssinaturasRouteImport } from './routes/_authenticated/dono.assinaturas'
+import { Route as AuthenticatedDonoBarbeariasRouteImport } from './routes/_authenticated/dono.barbearias'
+import { Route as AuthenticatedDonoConfiguracoesRouteImport } from './routes/_authenticated/dono.configuracoes'
+import { Route as AuthenticatedDonoPagamentosRouteImport } from './routes/_authenticated/dono.pagamentos'
 import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
 import { Route as ApiPublicWhatsappCronRouteImport } from './routes/api/public/whatsapp-cron'
 import { Route as ClienteSlugIndexRouteImport } from './routes/cliente.$slug.index'
@@ -137,6 +142,36 @@ const AuthenticatedDonoSplatRoute = AuthenticatedDonoSplatRouteImport.update({
   path: '/$',
   getParentRoute: () => AuthenticatedDonoRoute,
 } as any)
+const AuthenticatedDonoAprovacoesRoute =
+  AuthenticatedDonoAprovacoesRouteImport.update({
+    id: '/aprovacoes',
+    path: '/aprovacoes',
+    getParentRoute: () => AuthenticatedDonoRoute,
+  } as any)
+const AuthenticatedDonoAssinaturasRoute =
+  AuthenticatedDonoAssinaturasRouteImport.update({
+    id: '/assinaturas',
+    path: '/assinaturas',
+    getParentRoute: () => AuthenticatedDonoRoute,
+  } as any)
+const AuthenticatedDonoBarbeariasRoute =
+  AuthenticatedDonoBarbeariasRouteImport.update({
+    id: '/barbearias',
+    path: '/barbearias',
+    getParentRoute: () => AuthenticatedDonoRoute,
+  } as any)
+const AuthenticatedDonoConfiguracoesRoute =
+  AuthenticatedDonoConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedDonoRoute,
+  } as any)
+const AuthenticatedDonoPagamentosRoute =
+  AuthenticatedDonoPagamentosRouteImport.update({
+    id: '/pagamentos',
+    path: '/pagamentos',
+    getParentRoute: () => AuthenticatedDonoRoute,
+  } as any)
 const AuthenticatedSuperadminIdRoute =
   AuthenticatedSuperadminIdRouteImport.update({
     id: '/superadmin_/$id',
@@ -260,6 +295,11 @@ export interface FileRoutesByFullPath {
   '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
   '/dono/$': typeof AuthenticatedDonoSplatRoute
+  '/dono/aprovacoes': typeof AuthenticatedDonoAprovacoesRoute
+  '/dono/assinaturas': typeof AuthenticatedDonoAssinaturasRoute
+  '/dono/barbearias': typeof AuthenticatedDonoBarbeariasRoute
+  '/dono/configuracoes': typeof AuthenticatedDonoConfiguracoesRoute
+  '/dono/pagamentos': typeof AuthenticatedDonoPagamentosRoute
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
@@ -295,6 +335,11 @@ export interface FileRoutesByTo {
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
   '/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
   '/dono/$': typeof AuthenticatedDonoSplatRoute
+  '/dono/aprovacoes': typeof AuthenticatedDonoAprovacoesRoute
+  '/dono/assinaturas': typeof AuthenticatedDonoAssinaturasRoute
+  '/dono/barbearias': typeof AuthenticatedDonoBarbeariasRoute
+  '/dono/configuracoes': typeof AuthenticatedDonoConfiguracoesRoute
+  '/dono/pagamentos': typeof AuthenticatedDonoPagamentosRoute
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
@@ -334,6 +379,11 @@ export interface FileRoutesById {
   '/_authenticated/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/_authenticated/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
   '/_authenticated/dono/$': typeof AuthenticatedDonoSplatRoute
+  '/_authenticated/dono/aprovacoes': typeof AuthenticatedDonoAprovacoesRoute
+  '/_authenticated/dono/assinaturas': typeof AuthenticatedDonoAssinaturasRoute
+  '/_authenticated/dono/barbearias': typeof AuthenticatedDonoBarbeariasRoute
+  '/_authenticated/dono/configuracoes': typeof AuthenticatedDonoConfiguracoesRoute
+  '/_authenticated/dono/pagamentos': typeof AuthenticatedDonoPagamentosRoute
   '/_authenticated/superadmin_/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
@@ -373,6 +423,11 @@ export interface FileRouteTypes {
     | '/$slug/barbeiro'
     | '/barbeiro/$slug'
     | '/dono/$'
+    | '/dono/aprovacoes'
+    | '/dono/assinaturas'
+    | '/dono/barbearias'
+    | '/dono/configuracoes'
+    | '/dono/pagamentos'
     | '/superadmin/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
@@ -408,6 +463,11 @@ export interface FileRouteTypes {
     | '/barbeiro/cadastro'
     | '/barbeiro/$slug'
     | '/dono/$'
+    | '/dono/aprovacoes'
+    | '/dono/assinaturas'
+    | '/dono/barbearias'
+    | '/dono/configuracoes'
+    | '/dono/pagamentos'
     | '/superadmin/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
@@ -446,6 +506,11 @@ export interface FileRouteTypes {
     | '/_authenticated/$slug/barbeiro'
     | '/_authenticated/barbeiro/$slug'
     | '/_authenticated/dono/$'
+    | '/_authenticated/dono/aprovacoes'
+    | '/_authenticated/dono/assinaturas'
+    | '/_authenticated/dono/barbearias'
+    | '/_authenticated/dono/configuracoes'
+    | '/_authenticated/dono/pagamentos'
     | '/_authenticated/superadmin_/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
@@ -615,6 +680,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonoSplatRouteImport
       parentRoute: typeof AuthenticatedDonoRoute
     }
+    '/_authenticated/dono/aprovacoes': {
+      id: '/_authenticated/dono/aprovacoes'
+      path: '/aprovacoes'
+      fullPath: '/dono/aprovacoes'
+      preLoaderRoute: typeof AuthenticatedDonoAprovacoesRouteImport
+      parentRoute: typeof AuthenticatedDonoRoute
+    }
+    '/_authenticated/dono/assinaturas': {
+      id: '/_authenticated/dono/assinaturas'
+      path: '/assinaturas'
+      fullPath: '/dono/assinaturas'
+      preLoaderRoute: typeof AuthenticatedDonoAssinaturasRouteImport
+      parentRoute: typeof AuthenticatedDonoRoute
+    }
+    '/_authenticated/dono/barbearias': {
+      id: '/_authenticated/dono/barbearias'
+      path: '/barbearias'
+      fullPath: '/dono/barbearias'
+      preLoaderRoute: typeof AuthenticatedDonoBarbeariasRouteImport
+      parentRoute: typeof AuthenticatedDonoRoute
+    }
+    '/_authenticated/dono/configuracoes': {
+      id: '/_authenticated/dono/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/dono/configuracoes'
+      preLoaderRoute: typeof AuthenticatedDonoConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedDonoRoute
+    }
+    '/_authenticated/dono/pagamentos': {
+      id: '/_authenticated/dono/pagamentos'
+      path: '/pagamentos'
+      fullPath: '/dono/pagamentos'
+      preLoaderRoute: typeof AuthenticatedDonoPagamentosRouteImport
+      parentRoute: typeof AuthenticatedDonoRoute
+    }
     '/_authenticated/superadmin_/$id': {
       id: '/_authenticated/superadmin_/$id'
       path: '/superadmin/$id'
@@ -746,11 +846,21 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedDonoRouteChildren {
   AuthenticatedDonoSplatRoute: typeof AuthenticatedDonoSplatRoute
+  AuthenticatedDonoAprovacoesRoute: typeof AuthenticatedDonoAprovacoesRoute
+  AuthenticatedDonoAssinaturasRoute: typeof AuthenticatedDonoAssinaturasRoute
+  AuthenticatedDonoBarbeariasRoute: typeof AuthenticatedDonoBarbeariasRoute
+  AuthenticatedDonoConfiguracoesRoute: typeof AuthenticatedDonoConfiguracoesRoute
+  AuthenticatedDonoPagamentosRoute: typeof AuthenticatedDonoPagamentosRoute
   AuthenticatedDonoIndexRoute: typeof AuthenticatedDonoIndexRoute
 }
 
 const AuthenticatedDonoRouteChildren: AuthenticatedDonoRouteChildren = {
   AuthenticatedDonoSplatRoute: AuthenticatedDonoSplatRoute,
+  AuthenticatedDonoAprovacoesRoute: AuthenticatedDonoAprovacoesRoute,
+  AuthenticatedDonoAssinaturasRoute: AuthenticatedDonoAssinaturasRoute,
+  AuthenticatedDonoBarbeariasRoute: AuthenticatedDonoBarbeariasRoute,
+  AuthenticatedDonoConfiguracoesRoute: AuthenticatedDonoConfiguracoesRoute,
+  AuthenticatedDonoPagamentosRoute: AuthenticatedDonoPagamentosRoute,
   AuthenticatedDonoIndexRoute: AuthenticatedDonoIndexRoute,
 }
 
