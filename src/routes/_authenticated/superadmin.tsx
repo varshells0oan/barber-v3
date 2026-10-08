@@ -7,6 +7,7 @@ import {
   Building2, Plus, LogOut, Shield, Settings2, KeyRound, User, Lock,
   Search, Sparkles, ArrowUpRight, X as XIcon,
 } from "lucide-react";
+import { PendingApprovals } from "@/components/owner/PendingApprovals";
 import { setShopAdminCredentials } from "@/lib/shop-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/superadmin")({
@@ -187,6 +188,7 @@ function SuperAdminPage() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6">
+        <PendingApprovals />
         {/* Hero */}
         <section className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-card/80 via-card/40 to-background p-6 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-8">
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
