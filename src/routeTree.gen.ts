@@ -12,12 +12,19 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AceitarConviteRouteImport } from './routes/aceitar-convite'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PainelRouteImport } from './routes/painel'
 import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
+import { Route as BSlugRouteImport } from './routes/b.$slug'
 import { Route as BarbeiroCadastroRouteImport } from './routes/barbeiro.cadastro'
 import { Route as AuthenticatedSlugBarbeiroRouteImport } from './routes/_authenticated/$slug.barbeiro'
 import { Route as AuthenticatedBarbeiroSlugRouteImport } from './routes/_authenticated/barbeiro.$slug'
+import { Route as AuthenticatedDonoIndexRouteImport } from './routes/_authenticated/dono.index'
+import { Route as AuthenticatedDonoSplatRouteImport } from './routes/_authenticated/dono.$'
 import { Route as AuthenticatedSuperadminIdRouteImport } from './routes/_authenticated/superadmin_.$id'
 import { Route as ApiPublicWhatsappCronRouteImport } from './routes/api/public/whatsapp-cron'
 import { Route as ClienteSlugIndexRouteImport } from './routes/cliente.$slug.index'
@@ -51,9 +58,29 @@ const AceitarConviteRoute = AceitarConviteRouteImport.update({
   path: '/aceitar-convite',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugEntrarRoute = SlugEntrarRouteImport.update({
@@ -65,6 +92,11 @@ const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
   id: '/superadmin',
   path: '/superadmin',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const BSlugRoute = BSlugRouteImport.update({
+  id: '/b/$slug',
+  path: '/b/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BarbeiroCadastroRoute = BarbeiroCadastroRouteImport.update({
   id: '/barbeiro/cadastro',
@@ -83,6 +115,16 @@ const AuthenticatedBarbeiroSlugRoute =
     path: '/barbeiro/$slug',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDonoIndexRoute = AuthenticatedDonoIndexRouteImport.update({
+  id: '/dono/',
+  path: '/dono/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDonoSplatRoute = AuthenticatedDonoSplatRouteImport.update({
+  id: '/dono/$',
+  path: '/dono/$',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSuperadminIdRoute =
   AuthenticatedSuperadminIdRouteImport.update({
     id: '/superadmin_/$id',
@@ -192,17 +234,24 @@ const AuthenticatedBarbeiroSlugServicosRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aceitar-convite': typeof AceitarConviteRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
+  '/painel': typeof PainelRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
+  '/b/$slug': typeof BSlugRoute
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
   '/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
+  '/dono/$': typeof AuthenticatedDonoSplatRoute
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
   '/cliente/$slug/agendar': typeof ClienteSlugAgendarRoute
   '/cliente/$slug/meus-agendamentos': typeof ClienteSlugMeusAgendamentosRoute
+  '/dono/': typeof AuthenticatedDonoIndexRoute
   '/cliente/$slug/': typeof ClienteSlugIndexRoute
   '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
@@ -220,16 +269,23 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aceitar-convite': typeof AceitarConviteRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
+  '/painel': typeof PainelRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/superadmin': typeof AuthenticatedSuperadminRoute
+  '/b/$slug': typeof BSlugRoute
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
   '/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
+  '/dono/$': typeof AuthenticatedDonoSplatRoute
   '/superadmin/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
   '/cliente/$slug/agendar': typeof ClienteSlugAgendarRoute
   '/cliente/$slug/meus-agendamentos': typeof ClienteSlugMeusAgendamentosRoute
+  '/dono': typeof AuthenticatedDonoIndexRoute
   '/cliente/$slug': typeof ClienteSlugIndexRoute
   '/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
@@ -249,17 +305,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/aceitar-convite': typeof AceitarConviteRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
+  '/painel': typeof PainelRoute
   '/$slug/entrar': typeof SlugEntrarRoute
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
+  '/b/$slug': typeof BSlugRoute
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
   '/_authenticated/$slug/barbeiro': typeof AuthenticatedSlugBarbeiroRouteWithChildren
   '/_authenticated/barbeiro/$slug': typeof AuthenticatedBarbeiroSlugRouteWithChildren
+  '/_authenticated/dono/$': typeof AuthenticatedDonoSplatRoute
   '/_authenticated/superadmin_/$id': typeof AuthenticatedSuperadminIdRoute
   '/api/public/whatsapp-cron': typeof ApiPublicWhatsappCronRoute
   '/cliente/$slug/agendamento-confirmado': typeof ClienteSlugAgendamentoConfirmadoRoute
   '/cliente/$slug/agendar': typeof ClienteSlugAgendarRoute
   '/cliente/$slug/meus-agendamentos': typeof ClienteSlugMeusAgendamentosRoute
+  '/_authenticated/dono/': typeof AuthenticatedDonoIndexRoute
   '/cliente/$slug/': typeof ClienteSlugIndexRoute
   '/_authenticated/$slug/barbeiro/ganhos': typeof AuthenticatedSlugBarbeiroGanhosRoute
   '/_authenticated/$slug/barbeiro/historico': typeof AuthenticatedSlugBarbeiroHistoricoRoute
@@ -279,17 +342,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aceitar-convite'
+    | '/admin'
     | '/auth'
+    | '/cadastro'
+    | '/login'
+    | '/painel'
     | '/$slug/entrar'
     | '/superadmin'
+    | '/b/$slug'
     | '/barbeiro/cadastro'
     | '/$slug/barbeiro'
     | '/barbeiro/$slug'
+    | '/dono/$'
     | '/superadmin/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
     | '/cliente/$slug/agendar'
     | '/cliente/$slug/meus-agendamentos'
+    | '/dono/'
     | '/cliente/$slug/'
     | '/$slug/barbeiro/ganhos'
     | '/$slug/barbeiro/historico'
@@ -307,16 +377,23 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aceitar-convite'
+    | '/admin'
     | '/auth'
+    | '/cadastro'
+    | '/login'
+    | '/painel'
     | '/$slug/entrar'
     | '/superadmin'
+    | '/b/$slug'
     | '/barbeiro/cadastro'
     | '/barbeiro/$slug'
+    | '/dono/$'
     | '/superadmin/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
     | '/cliente/$slug/agendar'
     | '/cliente/$slug/meus-agendamentos'
+    | '/dono'
     | '/cliente/$slug'
     | '/$slug/barbeiro/ganhos'
     | '/$slug/barbeiro/historico'
@@ -335,17 +412,24 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/aceitar-convite'
+    | '/admin'
     | '/auth'
+    | '/cadastro'
+    | '/login'
+    | '/painel'
     | '/$slug/entrar'
     | '/_authenticated/superadmin'
+    | '/b/$slug'
     | '/barbeiro/cadastro'
     | '/_authenticated/$slug/barbeiro'
     | '/_authenticated/barbeiro/$slug'
+    | '/_authenticated/dono/$'
     | '/_authenticated/superadmin_/$id'
     | '/api/public/whatsapp-cron'
     | '/cliente/$slug/agendamento-confirmado'
     | '/cliente/$slug/agendar'
     | '/cliente/$slug/meus-agendamentos'
+    | '/_authenticated/dono/'
     | '/cliente/$slug/'
     | '/_authenticated/$slug/barbeiro/ganhos'
     | '/_authenticated/$slug/barbeiro/historico'
@@ -365,8 +449,13 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AceitarConviteRoute: typeof AceitarConviteRoute
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
+  CadastroRoute: typeof CadastroRoute
+  LoginRoute: typeof LoginRoute
+  PainelRoute: typeof PainelRoute
   SlugEntrarRoute: typeof SlugEntrarRoute
+  BSlugRoute: typeof BSlugRoute
   BarbeiroCadastroRoute: typeof BarbeiroCadastroRoute
   ApiPublicWhatsappCronRoute: typeof ApiPublicWhatsappCronRoute
   ClienteSlugAgendamentoConfirmadoRoute: typeof ClienteSlugAgendamentoConfirmadoRoute
@@ -398,11 +487,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AceitarConviteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/entrar': {
@@ -418,6 +535,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/superadmin'
       preLoaderRoute: typeof AuthenticatedSuperadminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/b/$slug': {
+      id: '/b/$slug'
+      path: '/b/$slug'
+      fullPath: '/b/$slug'
+      preLoaderRoute: typeof BSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/barbeiro/cadastro': {
       id: '/barbeiro/cadastro'
@@ -438,6 +562,20 @@ declare module '@tanstack/react-router' {
       path: '/barbeiro/$slug'
       fullPath: '/barbeiro/$slug'
       preLoaderRoute: typeof AuthenticatedBarbeiroSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dono/': {
+      id: '/_authenticated/dono/'
+      path: '/dono'
+      fullPath: '/dono/'
+      preLoaderRoute: typeof AuthenticatedDonoIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dono/$': {
+      id: '/_authenticated/dono/$'
+      path: '/dono/$'
+      fullPath: '/dono/$'
+      preLoaderRoute: typeof AuthenticatedDonoSplatRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/superadmin_/$id': {
@@ -627,14 +765,18 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
   AuthenticatedSlugBarbeiroRoute: typeof AuthenticatedSlugBarbeiroRouteWithChildren
   AuthenticatedBarbeiroSlugRoute: typeof AuthenticatedBarbeiroSlugRouteWithChildren
+  AuthenticatedDonoSplatRoute: typeof AuthenticatedDonoSplatRoute
   AuthenticatedSuperadminIdRoute: typeof AuthenticatedSuperadminIdRoute
+  AuthenticatedDonoIndexRoute: typeof AuthenticatedDonoIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
   AuthenticatedSlugBarbeiroRoute: AuthenticatedSlugBarbeiroRouteWithChildren,
   AuthenticatedBarbeiroSlugRoute: AuthenticatedBarbeiroSlugRouteWithChildren,
+  AuthenticatedDonoSplatRoute: AuthenticatedDonoSplatRoute,
   AuthenticatedSuperadminIdRoute: AuthenticatedSuperadminIdRoute,
+  AuthenticatedDonoIndexRoute: AuthenticatedDonoIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -644,8 +786,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AceitarConviteRoute: AceitarConviteRoute,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
+  CadastroRoute: CadastroRoute,
+  LoginRoute: LoginRoute,
+  PainelRoute: PainelRoute,
   SlugEntrarRoute: SlugEntrarRoute,
+  BSlugRoute: BSlugRoute,
   BarbeiroCadastroRoute: BarbeiroCadastroRoute,
   ApiPublicWhatsappCronRoute: ApiPublicWhatsappCronRoute,
   ClienteSlugAgendamentoConfirmadoRoute: ClienteSlugAgendamentoConfirmadoRoute,
