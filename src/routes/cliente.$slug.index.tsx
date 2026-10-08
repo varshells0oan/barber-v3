@@ -55,6 +55,7 @@ function Landing() {
   }, [slug]);
 
   const shopName = shop?.name ?? "Barbearia";
+  const vis = (shop?.public_visibility ?? {}) as Record<string, boolean>;
   const workHours = (shop?.work_hours ?? {}) as Record<string, { start: string; end: string }>;
 
   return (
@@ -144,7 +145,7 @@ function Landing() {
 
 
       {/* EQUIPE */}
-      <section id="equipe" className="border-t border-border/60 bg-card/20">
+      <section id="equipe" className={`border-t border-border/60 bg-card/20 ${vis.equipe === false ? "hidden" : ""}`}>
         <div className="mx-auto max-w-6xl px-4 py-20">
           <div className="mb-10">
             <span className="text-xs font-medium uppercase tracking-widest text-primary">Equipe</span>
@@ -196,7 +197,7 @@ function Landing() {
 
       {/* GALERIA */}
       {Array.isArray(shop?.gallery_urls) && shop.gallery_urls.length > 0 && (
-        <section id="galeria" className="border-t border-border/60">
+        <section id="galeria" className={`border-t border-border/60 ${vis.galeria === false ? "hidden" : ""}`}>
           <div className="mx-auto max-w-6xl px-4 py-20">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
@@ -240,7 +241,7 @@ function Landing() {
 
       {/* DEPOIMENTOS */}
       {Array.isArray(shop?.testimonials) && shop.testimonials.length > 0 && (
-        <section id="depoimentos" className="border-t border-border/60 bg-card/20">
+        <section id="depoimentos" className={`border-t border-border/60 bg-card/20 ${vis.depoimentos === false ? "hidden" : ""}`}>
           <div className="mx-auto max-w-6xl px-4 py-20">
             <div className="mb-10">
               <span className="text-xs font-medium uppercase tracking-widest text-primary">Quem já passou por aqui</span>

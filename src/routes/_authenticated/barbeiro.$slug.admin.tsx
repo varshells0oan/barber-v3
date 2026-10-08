@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { brl, todayISO, STATUS_LABEL, STATUS_COLOR } from "@/lib/format";
 import { useBarbershopId } from "@/hooks/useBarbershopId";
+import { OwnerTools } from "@/components/owner/OwnerTools";
 import { Calendar, Users, Scissors, DollarSign, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/barbeiro/$slug/admin")({
@@ -43,7 +44,8 @@ function AdminHoje() {
 
   return (
     <div className="grid gap-6">
-      <h1 className="text-2xl font-semibold text-foreground">Hoje</h1>
+      <h1 className="font-heading text-2xl font-semibold text-foreground">Hoje</h1>
+      {barbershopId && <OwnerTools slug={slug} barbershopId={barbershopId} />}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat icon={Calendar} label="Agendamentos" value={appts.length} />
