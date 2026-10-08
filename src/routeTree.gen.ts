@@ -19,6 +19,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PainelRouteImport } from './routes/painel'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as SlugEntrarRouteImport } from './routes/$slug.entrar'
+import { Route as AuthenticatedDonoRouteImport } from './routes/_authenticated/dono'
 import { Route as AuthenticatedSuperadminRouteImport } from './routes/_authenticated/superadmin'
 import { Route as BSlugRouteImport } from './routes/b.$slug'
 import { Route as BarbeiroCadastroRouteImport } from './routes/barbeiro.cadastro'
@@ -94,6 +95,11 @@ const SlugEntrarRoute = SlugEntrarRouteImport.update({
   path: '/$slug/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDonoRoute = AuthenticatedDonoRouteImport.update({
+  id: '/dono',
+  path: '/dono',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSuperadminRoute = AuthenticatedSuperadminRouteImport.update({
   id: '/superadmin',
   path: '/superadmin',
@@ -122,14 +128,14 @@ const AuthenticatedBarbeiroSlugRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDonoIndexRoute = AuthenticatedDonoIndexRouteImport.update({
-  id: '/dono/',
-  path: '/dono/',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedDonoRoute,
 } as any)
 const AuthenticatedDonoSplatRoute = AuthenticatedDonoSplatRouteImport.update({
-  id: '/dono/$',
-  path: '/dono/$',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AuthenticatedDonoRoute,
 } as any)
 const AuthenticatedSuperadminIdRoute =
   AuthenticatedSuperadminIdRouteImport.update({
@@ -247,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/painel': typeof PainelRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/$slug/entrar': typeof SlugEntrarRoute
+  '/dono': typeof AuthenticatedDonoRouteWithChildren
   '/superadmin': typeof AuthenticatedSuperadminRoute
   '/b/$slug': typeof BSlugRoute
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
@@ -320,6 +327,7 @@ export interface FileRoutesById {
   '/painel': typeof PainelRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/$slug/entrar': typeof SlugEntrarRoute
+  '/_authenticated/dono': typeof AuthenticatedDonoRouteWithChildren
   '/_authenticated/superadmin': typeof AuthenticatedSuperadminRoute
   '/b/$slug': typeof BSlugRoute
   '/barbeiro/cadastro': typeof BarbeiroCadastroRoute
@@ -358,6 +366,7 @@ export interface FileRouteTypes {
     | '/painel'
     | '/primeiro-acesso'
     | '/$slug/entrar'
+    | '/dono'
     | '/superadmin'
     | '/b/$slug'
     | '/barbeiro/cadastro'
@@ -430,6 +439,7 @@ export interface FileRouteTypes {
     | '/painel'
     | '/primeiro-acesso'
     | '/$slug/entrar'
+    | '/_authenticated/dono'
     | '/_authenticated/superadmin'
     | '/b/$slug'
     | '/barbeiro/cadastro'
@@ -549,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugEntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dono': {
+      id: '/_authenticated/dono'
+      path: '/dono'
+      fullPath: '/dono'
+      preLoaderRoute: typeof AuthenticatedDonoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/superadmin': {
       id: '/_authenticated/superadmin'
       path: '/superadmin'
@@ -586,17 +603,17 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/dono/': {
       id: '/_authenticated/dono/'
-      path: '/dono'
+      path: '/'
       fullPath: '/dono/'
       preLoaderRoute: typeof AuthenticatedDonoIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedDonoRoute
     }
     '/_authenticated/dono/$': {
       id: '/_authenticated/dono/$'
-      path: '/dono/$'
+      path: '/$'
       fullPath: '/dono/$'
       preLoaderRoute: typeof AuthenticatedDonoSplatRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedDonoRoute
     }
     '/_authenticated/superadmin_/$id': {
       id: '/_authenticated/superadmin_/$id'
@@ -727,6 +744,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedDonoRouteChildren {
+  AuthenticatedDonoSplatRoute: typeof AuthenticatedDonoSplatRoute
+  AuthenticatedDonoIndexRoute: typeof AuthenticatedDonoIndexRoute
+}
+
+const AuthenticatedDonoRouteChildren: AuthenticatedDonoRouteChildren = {
+  AuthenticatedDonoSplatRoute: AuthenticatedDonoSplatRoute,
+  AuthenticatedDonoIndexRoute: AuthenticatedDonoIndexRoute,
+}
+
+const AuthenticatedDonoRouteWithChildren =
+  AuthenticatedDonoRoute._addFileChildren(AuthenticatedDonoRouteChildren)
+
 interface AuthenticatedSlugBarbeiroRouteChildren {
   AuthenticatedSlugBarbeiroGanhosRoute: typeof AuthenticatedSlugBarbeiroGanhosRoute
   AuthenticatedSlugBarbeiroHistoricoRoute: typeof AuthenticatedSlugBarbeiroHistoricoRoute
@@ -782,21 +812,19 @@ const AuthenticatedBarbeiroSlugRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDonoRoute: typeof AuthenticatedDonoRouteWithChildren
   AuthenticatedSuperadminRoute: typeof AuthenticatedSuperadminRoute
   AuthenticatedSlugBarbeiroRoute: typeof AuthenticatedSlugBarbeiroRouteWithChildren
   AuthenticatedBarbeiroSlugRoute: typeof AuthenticatedBarbeiroSlugRouteWithChildren
-  AuthenticatedDonoSplatRoute: typeof AuthenticatedDonoSplatRoute
   AuthenticatedSuperadminIdRoute: typeof AuthenticatedSuperadminIdRoute
-  AuthenticatedDonoIndexRoute: typeof AuthenticatedDonoIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDonoRoute: AuthenticatedDonoRouteWithChildren,
   AuthenticatedSuperadminRoute: AuthenticatedSuperadminRoute,
   AuthenticatedSlugBarbeiroRoute: AuthenticatedSlugBarbeiroRouteWithChildren,
   AuthenticatedBarbeiroSlugRoute: AuthenticatedBarbeiroSlugRouteWithChildren,
-  AuthenticatedDonoSplatRoute: AuthenticatedDonoSplatRoute,
   AuthenticatedSuperadminIdRoute: AuthenticatedSuperadminIdRoute,
-  AuthenticatedDonoIndexRoute: AuthenticatedDonoIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
