@@ -11,7 +11,7 @@ function DonoBarbearias() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Barbearias</h1>
-      <ShopsTable />
+      <ShopsTable mode="shops" />
     </div>
   );
 }

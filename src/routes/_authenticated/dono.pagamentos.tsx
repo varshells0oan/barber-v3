@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ShopsTable } from "@/components/owner/ShopsTable";
 
 export const Route = createFileRoute("/_authenticated/dono/pagamentos")({
   ssr: false,
@@ -10,7 +11,7 @@ function DonoPagamentos() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Pagamentos</h1>
-      <p className="text-sm text-muted-foreground">Em breve: histórico de cobranças e repasses.</p>
+      <ShopsTable mode="payments" />
     </div>
   );
 }
