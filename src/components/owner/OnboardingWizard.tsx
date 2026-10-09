@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const input = "w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm";
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -18,8 +19,7 @@ export function OnboardingWizard({ barbershopId, shopName, onDone }: { barbersho
     const name = shop.name.trim().slice(0, 100);
     const phone = shop.phone.replace(/\D/g, "");
     if (name.length < 2 || phone.length < 10) return toast.error("Informe nome e telefone/WhatsApp");
-    if (shop.logo && !/^https?:\/\//.test(shop.logo)) return toast.error("Logo deve ser um link https");
-    setSaving(true);
+        setSaving(true);
     const a = await supabase.from("barbershops").update({ name, phone, whatsapp: phone, ...(shop.logo ? { logo_url: shop.logo } : {}) } as any).eq("id", barbershopId);
     const b = await supabase.from("shop_settings").update({ name, phone, whatsapp: phone, ...(shop.logo ? { logo_url: shop.logo } : {}) } as any).eq("barbershop_id", barbershopId);
     setSaving(false);
@@ -63,7 +63,7 @@ export function OnboardingWizard({ barbershopId, shopName, onDone }: { barbersho
       {step === 0 && (
         <div className="mt-3 grid gap-2">
           <input className={input} placeholder="Nome da barbearia" value={shop.name} onChange={(e) => setShop({ ...shop, name: e.target.value })} />
-          <input className={input} placeholder="Link da logo (opcional)" value={shop.logo} onChange={(e) => setShop({ ...shop, logo: e.target.value })} />
+          <ImageUpload barbershopId={barbershopId} value={shop.logo || null} onChange={(u) => setShop({ ...shop, logo: u ?? "" })} />
           <input className={input} placeholder="Telefone / WhatsApp" inputMode="tel" value={shop.phone} onChange={(e) => setShop({ ...shop, phone: e.target.value })} />
           <button disabled={saving} onClick={saveShop} className="rounded-md bg-primary py-3 text-sm font-medium text-primary-foreground disabled:opacity-60">Continuar</button>
         </div>
