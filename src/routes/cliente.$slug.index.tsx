@@ -90,7 +90,7 @@ function Landing() {
               {shopName}
             </h1>
             <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {shop?.description ??
+              {vis.descricao === false ? null : shop?.description ??
                 "Cortes clássicos e modernos, barba impecável e uma experiência pensada para o homem que valoriza o próprio estilo."}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -274,7 +274,7 @@ function Landing() {
       )}
 
       {/* INSTAGRAM CTA */}
-      {shop?.instagram && (
+      {shop?.instagram && vis.instagram !== false && (
         <section className="border-t border-border/60">
           <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 md:flex-row md:items-center md:justify-between">
             <div>
@@ -302,7 +302,7 @@ function Landing() {
       {/* INFO / CONTATO */}
       <section className="mx-auto max-w-6xl px-4 py-20">
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
+          <div className={`rounded-2xl border border-border bg-card p-6 ${vis.horarios === false ? "hidden" : ""}`}>
             <h3 className="font-heading text-xl font-semibold text-foreground">Horário de funcionamento</h3>
             <ul className="mt-4 divide-y divide-border/60 text-sm">
               {DAY_LABELS.map((label, i) => {
@@ -322,7 +322,7 @@ function Landing() {
           <div className="rounded-2xl border border-border bg-card p-6">
             <h3 className="font-heading text-xl font-semibold text-foreground">Contato & localização</h3>
             <div className="mt-4 space-y-3 text-sm">
-              {shop?.address && (
+              {shop?.address && vis.endereco !== false && (
                 <a
                   className="flex items-start gap-3 text-muted-foreground transition hover:text-foreground"
                   href={`https://maps.google.com/?q=${encodeURIComponent(shop.address)}`}
@@ -332,7 +332,7 @@ function Landing() {
                   <MapPin className="mt-0.5 h-4 w-4 text-primary" /> {shop.address}
                 </a>
               )}
-              {(shop?.whatsapp || shop?.phone) && (
+              {(shop?.whatsapp || shop?.phone) && vis.whatsapp !== false && (
                 <a
                   className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground"
                   href={`https://wa.me/${(shop.whatsapp ?? shop.phone).replace(/\D/g, "")}`}
@@ -342,7 +342,7 @@ function Landing() {
                   <Phone className="h-4 w-4 text-primary" /> {shop.whatsapp ?? shop.phone}
                 </a>
               )}
-              {shop?.instagram && (
+              {shop?.instagram && vis.instagram !== false && (
                 <a
                   className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground"
                   href={`https://instagram.com/${shop.instagram.replace("@", "")}`}

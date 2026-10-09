@@ -52,6 +52,11 @@ export function OwnerTools({ slug, barbershopId }: { slug: string; barbershopId:
         <div className="grid gap-2 sm:grid-cols-2">
           <Toggle label="Aceitar agendamentos online" on={shop.accepting_bookings} onClick={() => updateShop({ accepting_bookings: !shop.accepting_bookings })} />
           <Toggle label="Cliente pode reagendar" on={shop.allow_reschedule} onClick={() => updateShop({ allow_reschedule: !shop.allow_reschedule })} />
+          <Toggle label="Mostrar descrição" on={vis.descricao !== false} onClick={() => toggleVis("descricao")} />
+          <Toggle label="Mostrar Instagram" on={vis.instagram !== false} onClick={() => toggleVis("instagram")} />
+          <Toggle label="Mostrar WhatsApp/telefone" on={vis.whatsapp !== false} onClick={() => toggleVis("whatsapp")} />
+          <Toggle label="Mostrar endereço/mapa" on={vis.endereco !== false} onClick={() => toggleVis("endereco")} />
+          <Toggle label="Mostrar horários" on={vis.horarios !== false} onClick={() => toggleVis("horarios")} />
           <Toggle label="Mostrar equipe" on={vis.equipe !== false} onClick={() => toggleVis("equipe")} />
           <Toggle label="Mostrar galeria" on={vis.galeria !== false} onClick={() => toggleVis("galeria")} />
           <Toggle label="Mostrar depoimentos" on={vis.depoimentos !== false} onClick={() => toggleVis("depoimentos")} />
