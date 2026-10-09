@@ -459,6 +459,7 @@ function Booking() {
           </>
         )}
       </div>
+      )}
     </PublicTheme>
   );
 }
