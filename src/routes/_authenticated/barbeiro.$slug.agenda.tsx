@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/barbeiro/$slug/agenda")({
   component: Appointments,
 });
 
-const STATUSES = ["todos", "agendado", "confirmado", "em_atendimento", "atendido", "cancelado", "nao_compareceu"];
+const STATUSES = ["todos", "agendado", "confirmado", "em_atendimento", "concluido", "cancelado", "nao_compareceu"];
 
 function Appointments() {
   const { slug } = Route.useParams();
@@ -107,7 +107,7 @@ function Appointments() {
                   {a.status !== "em_atendimento" && (
                     <Btn variant="ghost" onClick={() => update(a.id, "em_atendimento")}>Iniciar atendimento</Btn>
                   )}
-                  <Btn variant="success" onClick={() => update(a.id, "atendido")}>Concluir</Btn>
+                  <Btn variant="success" onClick={() => update(a.id, "concluido")}>Concluir</Btn>
                   <Btn variant="ghost" onClick={() => update(a.id, "nao_compareceu")}>
                     Não compareceu
                   </Btn>

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -197,6 +197,13 @@ function Booking() {
   return (
     <PublicTheme preset={shop?.theme_preset} customColors={shop?.theme_custom} slug={slug}>
       <PublicHeader slug={slug} />
+      {shop && shop.accepting_bookings === false ? (
+        <div className="mx-auto max-w-xl px-4 py-20 text-center">
+          <h1 className="font-heading text-2xl font-semibold text-foreground">Agendamentos pausados</h1>
+          <p className="mt-3 text-muted-foreground">No momento não estamos recebendo novos agendamentos online. Entre em contato pelo WhatsApp ou volte mais tarde.</p>
+          <Link to="/cliente/$slug" params={{ slug }} className="mt-6 inline-block rounded-lg border border-border px-5 py-2.5 text-sm">Voltar ao site</Link>
+        </div>
+      ) : (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           {step > 0 && (
@@ -452,6 +459,7 @@ function Booking() {
           </>
         )}
       </div>
+      )}
     </PublicTheme>
   );
 }

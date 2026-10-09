@@ -918,6 +918,7 @@ export type Database = {
       }
       public_shop_settings: {
         Row: {
+          accepting_bookings: boolean | null
           address: string | null
           banner_url: string | null
           barbershop_id: string | null
@@ -941,6 +942,7 @@ export type Database = {
           work_hours: Json | null
         }
         Insert: {
+          accepting_bookings?: never
           address?: string | null
           banner_url?: string | null
           barbershop_id?: string | null
@@ -964,6 +966,7 @@ export type Database = {
           work_hours?: Json | null
         }
         Update: {
+          accepting_bookings?: never
           address?: string | null
           banner_url?: string | null
           barbershop_id?: string | null
