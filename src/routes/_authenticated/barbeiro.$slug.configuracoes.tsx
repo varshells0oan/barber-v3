@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ImageUpload } from "@/components/ImageUpload";
 import { BlockedDatesPicker } from "@/components/BlockedDatesPicker";
 import {
   THEME_PRESETS,
@@ -152,11 +153,11 @@ function Config() {
           />
         </Row>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Row label="URL do logo">
-            <Input value={s.logo_url ?? ""} onChange={(v) => setS({ ...s, logo_url: v })} />
+          <Row label="Logo">
+            {barbershopId && <ImageUpload barbershopId={barbershopId} value={s.logo_url} onChange={(v) => setS({ ...s, logo_url: v })} />}
           </Row>
-          <Row label="URL do banner (topo)">
-            <Input value={s.banner_url ?? ""} onChange={(v) => setS({ ...s, banner_url: v })} />
+          <Row label="Capa (topo do site)">
+            {barbershopId && <ImageUpload barbershopId={barbershopId} folder="banner" label="Enviar capa" value={s.banner_url} onChange={(v) => setS({ ...s, banner_url: v })} />}
           </Row>
         </div>
       </Section>
