@@ -1,27 +1,5 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1791513189072,
-      "tag": "0000_public_view_accepting_bookings",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1791513479067,
-      "tag": "0001_public_view_email",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1791513952841,
-      "tag": "0002_shop_media_policies",
-      "breakpoints": true
-    }
-  ]
+  "entries": []
 }
