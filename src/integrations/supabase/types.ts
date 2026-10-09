@@ -932,6 +932,7 @@ export type Database = {
           loyalty_target: number | null
           name: string | null
           phone: string | null
+          public_email: string | null
           public_visibility: Json | null
           slot_buffer_min: number | null
           tagline: string | null
@@ -956,6 +957,7 @@ export type Database = {
           loyalty_target?: number | null
           name?: string | null
           phone?: string | null
+          public_email?: string | null
           public_visibility?: Json | null
           slot_buffer_min?: number | null
           tagline?: string | null
@@ -980,6 +982,7 @@ export type Database = {
           loyalty_target?: number | null
           name?: string | null
           phone?: string | null
+          public_email?: string | null
           public_visibility?: Json | null
           slot_buffer_min?: number | null
           tagline?: string | null

@@ -332,14 +332,19 @@ function Landing() {
                   <MapPin className="mt-0.5 h-4 w-4 text-primary" /> {shop.address}
                 </a>
               )}
-              {(shop?.whatsapp || shop?.phone) && vis.whatsapp !== false && (
-                <a
-                  className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground"
-                  href={`https://wa.me/${(shop.whatsapp ?? shop.phone).replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Phone className="h-4 w-4 text-primary" /> {shop.whatsapp ?? shop.phone}
+              {shop?.whatsapp && vis.whatsapp !== false && (
+                <a className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground" href={`https://wa.me/${shop.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
+                  <Phone className="h-4 w-4 text-primary" /> WhatsApp {shop.whatsapp}
+                </a>
+              )}
+              {shop?.phone && vis.telefone !== false && (
+                <a className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground" href={`tel:${shop.phone.replace(/\D/g, "")}`}>
+                  <Phone className="h-4 w-4 text-primary" /> {shop.phone}
+                </a>
+              )}
+              {shop?.public_email && vis.email !== false && (
+                <a className="flex items-center gap-3 text-muted-foreground transition hover:text-foreground" href={`mailto:${shop.public_email}`}>
+                  <span className="h-4 w-4 text-center text-primary">@</span> {shop.public_email}
                 </a>
               )}
               {shop?.instagram && vis.instagram !== false && (
