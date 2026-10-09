@@ -1017,6 +1017,7 @@ export type Database = {
         Args: { _barber_id: string; _barbershop_id: string; _user_id: string }
         Returns: boolean
       }
+      can_manage_shop: { Args: { _shop: string }; Returns: boolean }
       cancel_barbershop_invite: { Args: { _id: string }; Returns: boolean }
       check_login_rate_limit: {
         Args: { _ip: string; _slug: string }
