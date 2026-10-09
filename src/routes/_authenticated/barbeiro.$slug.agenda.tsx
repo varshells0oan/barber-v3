@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { brl, formatDateBR, STATUS_COLOR, STATUS_LABEL } from "@/lib/format";
 import { toast } from "sonner";
 import { useBarbershopId } from "@/hooks/useBarbershopId";
+import { DaySlots } from "@/components/owner/DaySlots";
 
 export const Route = createFileRoute("/_authenticated/barbeiro/$slug/agenda")({
   component: Appointments,
@@ -55,6 +56,7 @@ function Appointments() {
           Lista de espera
         </Link>
       </div>
+      {barbershopId && <DaySlots barbershopId={barbershopId} onSaved={load} />}
       <div className="mt-4 flex flex-wrap gap-2">
         <input
           value={q}
