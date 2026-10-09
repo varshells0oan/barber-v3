@@ -163,14 +163,14 @@ function AuthPage() {
             {loading ? "Aguarde..." : mode === "signin" ? "Entrar" : "Criar conta"}
           </button>
         </form>
-        <button
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-4 w-full text-sm text-muted-foreground hover:text-foreground"
+        <Link
+          to="/barbeiro/cadastro"
+          className="mt-4 block w-full text-center text-sm text-muted-foreground hover:text-foreground"
         >
-          {mode === "signin" ? "Ainda não tem conta? Criar" : "Já tem conta? Entrar"}
-        </button>
+          Tem uma barbearia? Cadastre-se aqui
+        </Link>
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          A primeira conta criada vira administradora automaticamente.
+          Novas barbearias passam por aprovação antes de serem liberadas.
         </p>
       </div>
     </div>
