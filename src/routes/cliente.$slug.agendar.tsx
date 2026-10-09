@@ -246,7 +246,7 @@ function Booking() {
                       <Clock className="h-3 w-3" /> {s.duration} min
                     </div>
                   </div>
-                  <div className="font-semibold text-primary">{brl(s.price)}</div>
+                  {shop?.public_visibility?.precos !== false && <div className="font-semibold text-primary">{brl(s.price)}</div>}
                 </button>
               ))}
             </div>
@@ -403,7 +403,7 @@ function Booking() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Valor</span>
-                  <span className="font-medium">{brl(selectedService?.price)}</span>
+                  <span className="font-medium">{shop?.public_visibility?.precos !== false ? brl(selectedService?.price) : "Consulte"}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Barbeiro</span>
