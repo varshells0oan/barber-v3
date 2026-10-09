@@ -154,10 +154,10 @@ function Config() {
         </Row>
         <div className="grid gap-4 sm:grid-cols-2">
           <Row label="Logo">
-            {barbershopId && <ImageUpload barbershopId={barbershopId} value={s.logo_url} onChange={(v) => setS({ ...s, logo_url: v })} />}
+            {s.barbershop_id && <ImageUpload barbershopId={s.barbershop_id} value={s.logo_url} onChange={(v) => setS({ ...s, logo_url: v })} />}
           </Row>
           <Row label="Capa (topo do site)">
-            {barbershopId && <ImageUpload barbershopId={barbershopId} folder="banner" label="Enviar capa" value={s.banner_url} onChange={(v) => setS({ ...s, banner_url: v })} />}
+            {s.barbershop_id && <ImageUpload barbershopId={s.barbershop_id} folder="banner" label="Enviar capa" value={s.banner_url} onChange={(v) => setS({ ...s, banner_url: v })} />}
           </Row>
         </div>
       </Section>
