@@ -31,7 +31,8 @@ const d = (s: string | null) => (s ? new Date(s).toLocaleDateString("pt-BR") : "
 export function ShopsTable({ mode }: { mode: "shops" | "subs" | "payments" }) {
   const { items, load } = useShops();
   const act = async (id: string, action: string) => {
-    const { error } = await supabase.rpc("set_shop_account_status", { _id: id, _action: action });
+    const rpcAction = action === "suspend" ? "block" : action;
+    const { error } = await supabase.rpc("set_shop_account_status", { _id: id, _action: rpcAction });
     if (error) return toast.error(error.message);
     toast.success("Atualizado"); load();
   };

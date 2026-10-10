@@ -35,7 +35,7 @@ function AuthPage() {
 
 
     if (list.some((r) => r.role === "superadmin")) {
-      return navigate({ to: "/superadmin", replace: true });
+      return navigate({ to: "/dono", replace: true });
     }
 
     const barberRow = list.find((r) => r.role === "barber" && r.barbershop_id);
